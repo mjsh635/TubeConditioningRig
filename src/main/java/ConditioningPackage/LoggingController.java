@@ -1,4 +1,4 @@
-package proto_manufacturing.tubeconditioner;
+package ConditioningPackage;
 
 import java.io.File;
 import java.io.FileWriter;

@@ -21,12 +21,7 @@ public class MainMethod {
             System.out.println("Starting Window");
             SetupFrame setup = new SetupFrame();
             setup.setVisible(true);
-            try{
-            Thread.sleep(10000);
-            }
-            catch(Exception e){
-                e.printStackTrace();
-            }
+            
         
         
     }

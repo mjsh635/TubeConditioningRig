@@ -477,17 +477,11 @@ public class SetupFrame extends javax.swing.JFrame {
     private JButton SettingFileLocationButton;
     private JTextField SettingFileLocationTBox;
     private JLabel Supply1IPAddressLabel;
-    private JLabel Supply1IPAddressLabel6;
-    private JLabel Supply1IPAddressLabel7;
     private JTextField Supply1IPAddressTBox;
-    private JTextField Supply1IPAddressTBox6;
-    private JTextField Supply1IPAddressTBox7;
     private JLabel Supply1Label;
-    private JLabel Supply1Label3;
     private JLabel Supply1PortLabel;
     private JTextField Supply1PortTBox;
     private JCheckBox Supply1UseCheckbox;
-    private JCheckBox Supply1UseCheckbox3;
     private JLabel Supply2IPAddressLabel2;
     private JTextField Supply2IPAddressTBox;
     private JLabel Supply2Label1;
@@ -509,7 +503,6 @@ public class SetupFrame extends javax.swing.JFrame {
     private JPanel SupplyPanel;
     private JPanel SupplyPanel1;
     private JPanel SupplyPanel2;
-    private JPanel SupplyPanel3;
     private JPanel SupplyPanel4;
     // End of variables declaration//GEN-END:variables
 }
