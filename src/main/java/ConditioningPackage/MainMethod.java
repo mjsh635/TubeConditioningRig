@@ -17,8 +17,17 @@ import javax.swing.JTabbedPane;
 public class MainMethod {
 
     public static void main(String[] args) {
-        System.out.println("Starting Window");
-        SetupFrame setup = new SetupFrame();
-        setup.setVisible(true);
+                  
+            System.out.println("Starting Window");
+            SetupFrame setup = new SetupFrame();
+            setup.setVisible(true);
+            try{
+            Thread.sleep(10000);
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+        
+        
     }
 }

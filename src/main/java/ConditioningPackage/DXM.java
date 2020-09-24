@@ -2,6 +2,7 @@ package proto_manufacturing.tubeconditioner;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.nio.charset.StandardCharsets;
@@ -21,7 +22,7 @@ public class DXM {
     String address;
     int port;
     boolean connected = false;
-    String modelNumber;
+    public String modelNumber = "";
     boolean ArcPresent = false;
     boolean OverTemperature = false;
     boolean OverVoltage = false;
@@ -34,6 +35,7 @@ public class DXM {
     boolean RemoteMode = false;
 
     public DXM(String address, int port) {
+        
         this.address = address;
         this.port = port;
         try{
@@ -54,6 +56,24 @@ public class DXM {
         return this.address;
     }
 
+    public Boolean Set_Voltage(double voltage){
+        try{
+            this._Set_Voltage(voltage);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+    
+    public Boolean Set_Current(double current){
+        try{
+            this._Set_Current(current);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+    
     public String Get_Model_Type() {
         // sets the supply to remote mode, and returns the supply type in X#### format
         try {
@@ -394,7 +414,7 @@ public class DXM {
         }
     }
 
-    private void _Set_Filament_Limit(double value) {
+    public void Set_Filament_Limit(double value) {
         try {
             int scaledValue = (int) Math.round(Double.valueOf(value) / 0.001221);
             this._Send_Command(12, String.valueOf(scaledValue));
@@ -404,7 +424,7 @@ public class DXM {
         }
     }
 
-    private void _Set_Filament_Preheat(double value) {
+    public void Set_Filament_Preheat(double value) {
         try {
             int scaledValue = (int) Math.round(Double.valueOf(value) / 0.0006105);
             this._Send_Command(13, String.valueOf(scaledValue));
@@ -457,7 +477,7 @@ public class DXM {
         }
     }
 
-    private boolean _Xray_On() {
+    public boolean Xray_On() {
         // command the supply to turn on xrays, returns true if command received successful
         try {
             String[] response = this._Send_Command(98, "1");
@@ -472,7 +492,7 @@ public class DXM {
         }
     }
 
-    private boolean _Xray_Off() {
+    public boolean Xray_Off() {
         // command the supply to turn off xrays, returns true if command received successful
         try {
             String[] response = this._Send_Command(98, "0");
@@ -529,8 +549,10 @@ public class DXM {
             Argument = Argument + ",";
         }
         String reply = "";
-        
-        try (Socket sock = new Socket(this.address,this.port)) {   // open socket, create message, send message, receive response, convert to string
+        //(Socket sock = new Socket(this.address,this.port))
+        try  {   // open socket, create message, send message, receive response, convert to string
+            Socket sock = new Socket();
+            sock.connect(new InetSocketAddress(this.address,this.port), 300);
             sock.setSoTimeout(500);
             
             String message = String.format("\002%1$s,%2$s\003", Command, Argument);
