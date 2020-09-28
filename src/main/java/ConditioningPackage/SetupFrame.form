@@ -508,11 +508,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Select Log File Storage Location"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="LogFileLocationButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="SettingFileLocationButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Select Setting File Location"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SettingFileLocationButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="SettingFileLocationTBox">
       <Properties>

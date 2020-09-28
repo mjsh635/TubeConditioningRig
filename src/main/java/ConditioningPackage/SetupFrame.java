@@ -9,10 +9,13 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -44,6 +47,8 @@ public class SetupFrame extends javax.swing.JFrame {
     Boolean UseSupply4 = false;
     String Supply4Address;
     String Supply4Port;
+    String SettingsFilePath;
+    String LogFolderPath;
     
     public SetupFrame() {
         initComponents();
@@ -326,8 +331,18 @@ public class SetupFrame extends javax.swing.JFrame {
         LogFileLocationTBox.setEditable(false);
 
         LogFileLocationButton.setText("Select Log File Storage Location");
+        LogFileLocationButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                LogFileLocationButtonActionPerformed(evt);
+            }
+        });
 
         SettingFileLocationButton.setText("Select Setting File Location");
+        SettingFileLocationButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                SettingFileLocationButtonActionPerformed(evt);
+            }
+        });
 
         SettingFileLocationTBox.setEditable(false);
 
@@ -412,21 +427,50 @@ public class SetupFrame extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_ContinueButtonActionPerformed
 
+    private void LogFileLocationButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_LogFileLocationButtonActionPerformed
+        JFileChooser folderChooser = new JFileChooser();
+        folderChooser.setFileSelectionMode(1);
+        int returnVal = folderChooser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION){
+            this.LogFolderPath = folderChooser.getSelectedFile().getPath();
+        }
+        else{
+            this.LogFolderPath = "";
+            
+        }
+        this.LogFileLocationTBox.setText(this.LogFolderPath);
+    }//GEN-LAST:event_LogFileLocationButtonActionPerformed
+
+    private void SettingFileLocationButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_SettingFileLocationButtonActionPerformed
+        
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(0);
+        int returnVal = fileChooser.showOpenDialog(this);
+        if(returnVal == JFileChooser.APPROVE_OPTION){
+            this.SettingsFilePath = fileChooser.getSelectedFile().getPath();
+        }
+        else{
+            this.SettingsFilePath = "";
+        }
+        this.SettingFileLocationTBox.setText(this.SettingsFilePath);
+        
+    }//GEN-LAST:event_SettingFileLocationButtonActionPerformed
+
     public void WindowMaker(){
         System.out.println("In WindowMaker");
         JFrame mainWindow = new JFrame();
         JTabbedPane tabbedPane = new JTabbedPane();
         if(UseSupply1){
-         tabbedPane.add("Supply1",new SupplyScreen(Supply1Address, Supply1Port).getContentPane());
+         tabbedPane.add("Supply1",new SupplyScreen(Supply1Address, Supply1Port,this.SettingsFilePath,this.LogFolderPath).getContentPane());
         }
         if(UseSupply2){
-         tabbedPane.add("Supply2",new SupplyScreen(Supply2Address, Supply2Port).getContentPane());
+         tabbedPane.add("Supply2",new SupplyScreen(Supply2Address, Supply2Port,this.SettingsFilePath,this.LogFolderPath).getContentPane());
         }
         if(UseSupply3){
-         tabbedPane.add("Supply3",new SupplyScreen(Supply3Address, Supply3Port).getContentPane());
+         tabbedPane.add("Supply3",new SupplyScreen(Supply3Address, Supply3Port,this.SettingsFilePath,this.LogFolderPath).getContentPane());
         }
         if(UseSupply4){
-         tabbedPane.add("Supply4",new SupplyScreen(Supply4Address, Supply4Port).getContentPane());
+         tabbedPane.add("Supply4",new SupplyScreen(Supply4Address, Supply4Port,this.SettingsFilePath,this.LogFolderPath).getContentPane());
         }
         tabbedPane.setTabPlacement(JTabbedPane.LEFT);
         
