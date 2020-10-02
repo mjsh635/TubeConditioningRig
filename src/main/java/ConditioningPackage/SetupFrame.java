@@ -25,6 +25,10 @@ import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.EtchedBorder;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  *
@@ -47,8 +51,12 @@ public class SetupFrame extends javax.swing.JFrame {
     Boolean UseSupply4 = false;
     String Supply4Address;
     String Supply4Port;
-    String SettingsFilePath;
+    String SettingsFilePath = "";
+    String SettingsFilePath1 = "";
+    String SettingsFilePath2 = "";
+    String SettingsFilePath3 = "";
     String LogFolderPath;
+    String settingPathRaw;
     
     public SetupFrame() {
         initComponents();
@@ -98,6 +106,7 @@ public class SetupFrame extends javax.swing.JFrame {
         SettingFileLocationTBox = new JTextField();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Setup Menu");
         setPreferredSize(new Dimension(700, 600));
 
         SupplyPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
@@ -345,6 +354,7 @@ public class SetupFrame extends javax.swing.JFrame {
         });
 
         SettingFileLocationTBox.setEditable(false);
+        SettingFileLocationTBox.setText("Z:\\MiscWorkJunk\\JavaTubeConditioner\\Settings.obj");
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -423,8 +433,14 @@ public class SetupFrame extends javax.swing.JFrame {
             Supply4Address = Supply4IPAddressTBox.getText();
             Supply4Port = Supply4PortTBox.getText();
         }
+        this.SettingsFileSelection();
+        System.out.println(this.SettingsFilePath);
+        System.out.println(this.SettingsFilePath1);
+        System.out.println(this.SettingsFilePath2);
+        System.out.println(this.SettingsFilePath3);
         this.WindowMaker();
-        this.setVisible(false);
+        this.dispose();
+        
     }//GEN-LAST:event_ContinueButtonActionPerformed
 
     private void LogFileLocationButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_LogFileLocationButtonActionPerformed
@@ -433,6 +449,7 @@ public class SetupFrame extends javax.swing.JFrame {
         int returnVal = folderChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION){
             this.LogFolderPath = folderChooser.getSelectedFile().getPath();
+            
         }
         else{
             this.LogFolderPath = "";
@@ -440,22 +457,38 @@ public class SetupFrame extends javax.swing.JFrame {
         }
         this.LogFileLocationTBox.setText(this.LogFolderPath);
     }//GEN-LAST:event_LogFileLocationButtonActionPerformed
-
+    
     private void SettingFileLocationButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_SettingFileLocationButtonActionPerformed
-        
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(0);
+       JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(2);
+        fileChooser.setCurrentDirectory(new File("Z:\\MiscWorkJunk\\JavaTubeConditioner"));
         int returnVal = fileChooser.showOpenDialog(this);
         if(returnVal == JFileChooser.APPROVE_OPTION){
-            this.SettingsFilePath = fileChooser.getSelectedFile().getPath();
-        }
-        else{
-            this.SettingsFilePath = "";
-        }
-        this.SettingFileLocationTBox.setText(this.SettingsFilePath);
-        
+            this.settingPathRaw = fileChooser.getSelectedFile().getPath();
+        }else{
+            this.settingPathRaw = "";}
+        this.SettingFileLocationTBox.setText(this.settingPathRaw);
+        SettingsFileSelection();
     }//GEN-LAST:event_SettingFileLocationButtonActionPerformed
-
+    public void SettingsFileSelection(){
+            String s = this.SettingFileLocationTBox.getText();
+            if (Files.isDirectory(Paths.get(s))){
+                this.SettingsFilePath = s+"\\Settings.obj";
+                this.SettingsFilePath1 = s+"\\Settings1.obj";
+                this.SettingsFilePath2 = s+"\\Settings2.obj";
+                this.SettingsFilePath3 = s+"\\Settings3.obj";
+            }
+            else{
+                
+                this.SettingsFilePath = s;
+                this.SettingsFilePath1 = (s.substring(0,s.length()-4))+"1.obj";
+                this.SettingsFilePath2 = (s.substring(0,s.length()-4))+"2.obj";
+                this.SettingsFilePath3 = (s.substring(0,s.length()-4))+"3.obj";
+               
+            }
+   
+        
+    }
     public void WindowMaker(){
         System.out.println("In WindowMaker");
         JFrame mainWindow = new JFrame();
@@ -464,19 +497,22 @@ public class SetupFrame extends javax.swing.JFrame {
          tabbedPane.add("Supply1",new SupplyScreen(Supply1Address, Supply1Port,this.SettingsFilePath,this.LogFolderPath).getContentPane());
         }
         if(UseSupply2){
-         tabbedPane.add("Supply2",new SupplyScreen(Supply2Address, Supply2Port,this.SettingsFilePath,this.LogFolderPath).getContentPane());
+         tabbedPane.add("Supply2",new SupplyScreen(Supply2Address, Supply2Port,this.SettingsFilePath1,this.LogFolderPath).getContentPane());
         }
         if(UseSupply3){
-         tabbedPane.add("Supply3",new SupplyScreen(Supply3Address, Supply3Port,this.SettingsFilePath,this.LogFolderPath).getContentPane());
+         tabbedPane.add("Supply3",new SupplyScreen(Supply3Address, Supply3Port,this.SettingsFilePath2,this.LogFolderPath).getContentPane());
         }
         if(UseSupply4){
-         tabbedPane.add("Supply4",new SupplyScreen(Supply4Address, Supply4Port,this.SettingsFilePath,this.LogFolderPath).getContentPane());
+         tabbedPane.add("Supply4",new SupplyScreen(Supply4Address, Supply4Port,this.SettingsFilePath3,this.LogFolderPath).getContentPane());
         }
         tabbedPane.setTabPlacement(JTabbedPane.LEFT);
         
         mainWindow.add(tabbedPane);
         mainWindow.setSize(800,600);
+        mainWindow.setTitle("Supply Window");
+        mainWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainWindow.setVisible(true);
+        
         System.out.println("Launching WindowMaker");
     }
     /**

@@ -6,9 +6,10 @@
 package ConditioningPackage;
 
 import com.sun.jdi.request.BreakpointRequest;
+import java.awt.Frame;
 import java.text.DecimalFormat;
 import java.util.HashSet;
-import java.util.Set;
+
 
 
 /**
@@ -27,17 +28,24 @@ public class SupplyScreen extends javax.swing.JFrame {
     DXM supply;
     Warmup_Handler warmup;
     boolean startRead = false;
+    SettingsHandler sh;
+    ConditioningHandler ch;
+    
+    
     
     public SupplyScreen(String IPAddress,String port,String SettingsFilePath, String LogFolderPath) {
         initComponents();
         this.IPAddress = IPAddress;
-        this.settingsFilePath = SettingsFilePath;
+        if(SettingsFilePath != ""){
+            this.sh = new SettingsHandler(SettingsFilePath);
+            Load_Settings();}
         this.LogFolderPath = LogFolderPath;
         this.port = Integer.valueOf(port);
         this.supply = new DXM(this.IPAddress,this.port);
         this.update_UI();
         this.warmup = new Warmup_Handler(this.supply, this.WarmupSelectionButtonGroup, this.WarmUpProgressBar,
                 this.WarmVoltageTBox,this.WarmCurrentTBox,this.FillCurrTBox,this.PreHeatTBox);
+        
     }
     
     public SupplyScreen(){
@@ -69,16 +77,12 @@ public class SupplyScreen extends javax.swing.JFrame {
         VoltageReadoutLabel = new javax.swing.JLabel();
         CurrentReadoutLabel = new javax.swing.JLabel();
         SupplySettingsPanel = new javax.swing.JPanel();
-        PreHeatLabel = new javax.swing.JLabel();
         SupplyWattageTBox = new javax.swing.JTextField();
         SupplyWattageLabel = new javax.swing.JLabel();
         SupplyMaxKVTbox = new javax.swing.JTextField();
         SupplyMaxKVLabel = new javax.swing.JLabel();
         SupplyMaxMaLabel = new javax.swing.JLabel();
         SupplyMaxMATBox = new javax.swing.JTextField();
-        FillCurrTBox = new javax.swing.JTextField();
-        PreHeatTBox = new javax.swing.JTextField();
-        FilCurrLabel = new javax.swing.JLabel();
         WarmupPanel = new javax.swing.JPanel();
         WarmupTitleLabel = new javax.swing.JLabel();
         RadioButton7min = new javax.swing.JRadioButton();
@@ -92,8 +96,55 @@ public class SupplyScreen extends javax.swing.JFrame {
         WarmCurrentTBox = new javax.swing.JTextField();
         ReconnectToSupplyButton = new javax.swing.JButton();
         ReadKVandMAButton = new javax.swing.JButton();
+        TubeConditioningPanel = new javax.swing.JPanel();
+        ConditioningSettingsPanel = new javax.swing.JPanel();
+        StartingMALabel = new javax.swing.JLabel();
+        StartingMATBox = new javax.swing.JTextField();
+        TotalStepCountTBox = new javax.swing.JTextField();
+        TimeBetweenStepsTBox = new javax.swing.JTextField();
+        TotalStepCountLabel = new javax.swing.JLabel();
+        TimeBetweenStepsLabel = new javax.swing.JLabel();
+        StartingKVTBox = new javax.swing.JTextField();
+        StartingKVLabel = new javax.swing.JLabel();
+        TargetKVTBox = new javax.swing.JTextField();
+        TargetKVLabel = new javax.swing.JLabel();
+        OnOffCycleTimeOnLabel = new javax.swing.JLabel();
+        NumberOfOnOffCyclesTBox = new javax.swing.JTextField();
+        TargetMATBox = new javax.swing.JTextField();
+        TargetMALabel = new javax.swing.JLabel();
+        OnOffCycleTimeOffTBox = new javax.swing.JTextField();
+        OnOffCycleTimeOffLabel = new javax.swing.JLabel();
+        NumberOfOnOffCyclesLabel = new javax.swing.JLabel();
+        OnOffCycleTimeOnTBox = new javax.swing.JTextField();
+        TotalArcsBeforeStopLabel = new javax.swing.JLabel();
+        TotalArcsBeforeStopTBox = new javax.swing.JTextField();
+        ArcMAStepTBox = new javax.swing.JTextField();
+        ArcKVStepTBox = new javax.swing.JTextField();
+        ArcKVStepLabel = new javax.swing.JLabel();
+        ArcMAStepLabel = new javax.swing.JLabel();
+        ArcRecoveryTimeTBox = new javax.swing.JTextField();
+        ArcRecoveryTimeLabel = new javax.swing.JLabel();
+        PreHeatLabel = new javax.swing.JLabel();
+        PreHeatTBox = new javax.swing.JTextField();
+        FilCurrLabel = new javax.swing.JLabel();
+        FillCurrTBox = new javax.swing.JTextField();
+        SaveButton = new javax.swing.JButton();
+        LaodDefaultButton = new javax.swing.JButton();
+        ConditioningControlPanel = new javax.swing.JPanel();
+        StartConditioningButton = new javax.swing.JButton();
+        StopConditioningButton = new javax.swing.JButton();
+        ConditioningProgressBar = new javax.swing.JProgressBar();
+        ProgressBarLabel = new javax.swing.JLabel();
+        TimeRemainingLabel = new javax.swing.JLabel();
+        ConditionVoltageReadTBox = new javax.swing.JTextField();
+        ConditionVoltageReadLabel = new javax.swing.JLabel();
+        ConditionCurrentReadTBox = new javax.swing.JTextField();
+        ConditionCurrentReadLabel = new javax.swing.JLabel();
+        ConditionFillamentReadTBox = new javax.swing.JTextField();
+        ConditionFillamentReadLabl = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Supply Screen");
 
         XrayOnOffPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -218,8 +269,6 @@ public class SupplyScreen extends javax.swing.JFrame {
 
         SupplySettingsPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        PreHeatLabel.setText("Filament Pre-heat: ");
-
         SupplyWattageTBox.setEditable(false);
         SupplyWattageTBox.setText("0.0");
 
@@ -235,12 +284,6 @@ public class SupplyScreen extends javax.swing.JFrame {
         SupplyMaxMATBox.setEditable(false);
         SupplyMaxMATBox.setText("0.0");
 
-        FillCurrTBox.setText("0.0");
-
-        PreHeatTBox.setText("0.0");
-
-        FilCurrLabel.setText("Filament Current Limit: ");
-
         javax.swing.GroupLayout SupplySettingsPanelLayout = new javax.swing.GroupLayout(SupplySettingsPanel);
         SupplySettingsPanel.setLayout(SupplySettingsPanelLayout);
         SupplySettingsPanelLayout.setHorizontalGroup(
@@ -248,32 +291,20 @@ public class SupplyScreen extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SupplySettingsPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(SupplySettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(FilCurrLabel, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(PreHeatLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(SupplyMaxKVLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(SupplyWattageLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(SupplyMaxMaLabel, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(SupplySettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(SupplyMaxMATBox)
+                .addGap(18, 18, 18)
+                .addGroup(SupplySettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(SupplyWattageTBox, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
                     .addComponent(SupplyMaxKVTbox)
-                    .addComponent(SupplyWattageTBox)
-                    .addComponent(PreHeatTBox)
-                    .addComponent(FillCurrTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(SupplyMaxMATBox))
                 .addContainerGap())
         );
         SupplySettingsPanelLayout.setVerticalGroup(
             SupplySettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(SupplySettingsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(SupplySettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(FillCurrTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(FilCurrLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(SupplySettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(PreHeatTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(PreHeatLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(SupplySettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(SupplyWattageTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(SupplyWattageLabel))
@@ -285,7 +316,7 @@ public class SupplyScreen extends javax.swing.JFrame {
                 .addGroup(SupplySettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(SupplyMaxMATBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(SupplyMaxMaLabel))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
         WarmupPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -383,7 +414,7 @@ public class SupplyScreen extends javax.swing.JFrame {
                     .addComponent(WarmCurrentTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(WarmKVLabel)
                     .addComponent(WarmMALabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(WarmupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(StartWarmupButton)
                     .addComponent(StopWarmupButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -418,7 +449,7 @@ public class SupplyScreen extends javax.swing.JFrame {
                     .addComponent(XrayOnOffPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ReconnectToSupplyButton)
                     .addComponent(ReadKVandMAButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 11, Short.MAX_VALUE)
                 .addGroup(ManualControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(SupplySettingsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(WarmupPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -444,6 +475,332 @@ public class SupplyScreen extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("Manual Control", ManualControlPanel);
+
+        ConditioningSettingsPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        StartingMALabel.setText("Starting mA:");
+
+        StartingMATBox.setText("0.0");
+
+        TotalStepCountTBox.setText("0.0");
+
+        TimeBetweenStepsTBox.setText("0.0");
+
+        TotalStepCountLabel.setText("Total Step Count:");
+
+        TimeBetweenStepsLabel.setText("Time Between Steps(min):");
+
+        StartingKVTBox.setText("0.0");
+
+        StartingKVLabel.setText("Starting kV:");
+
+        TargetKVTBox.setText("0.0");
+
+        TargetKVLabel.setText("Target kV:");
+
+        OnOffCycleTimeOnLabel.setText("On/Off Cycle Time On(min):");
+
+        NumberOfOnOffCyclesTBox.setText("0.0");
+
+        TargetMATBox.setText("0.0");
+
+        TargetMALabel.setText("Target mA:");
+
+        OnOffCycleTimeOffTBox.setText("0.0");
+
+        OnOffCycleTimeOffLabel.setText("On/Off Cycle Time Off(min):");
+
+        NumberOfOnOffCyclesLabel.setText("Number of On /Off Cycles:");
+
+        OnOffCycleTimeOnTBox.setText("0.0");
+
+        TotalArcsBeforeStopLabel.setText("Total Arcs Before Stop:");
+
+        TotalArcsBeforeStopTBox.setText("0.0");
+
+        ArcMAStepTBox.setText("0.0");
+
+        ArcKVStepTBox.setText("0.0");
+
+        ArcKVStepLabel.setText("Arc kv Step:");
+
+        ArcMAStepLabel.setText("Arc mA Step:");
+
+        ArcRecoveryTimeTBox.setText("0.0");
+
+        ArcRecoveryTimeLabel.setText("Arc Recovery Time(min):");
+
+        PreHeatLabel.setText("Filament Pre-heat: ");
+
+        PreHeatTBox.setText("0.0");
+
+        FilCurrLabel.setText("Filament Current Limit: ");
+
+        FillCurrTBox.setText("0.0");
+
+        SaveButton.setText("Save");
+        SaveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SaveButtonActionPerformed(evt);
+            }
+        });
+
+        LaodDefaultButton.setText("Load Default");
+        LaodDefaultButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LaodDefaultButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout ConditioningSettingsPanelLayout = new javax.swing.GroupLayout(ConditioningSettingsPanel);
+        ConditioningSettingsPanel.setLayout(ConditioningSettingsPanelLayout);
+        ConditioningSettingsPanelLayout.setHorizontalGroup(
+            ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ConditioningSettingsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(NumberOfOnOffCyclesLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(OnOffCycleTimeOffLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(OnOffCycleTimeOnLabel, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(TargetMALabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(StartingMALabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(TargetKVLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(StartingKVLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(TimeBetweenStepsLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(TotalStepCountLabel, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ConditioningSettingsPanelLayout.createSequentialGroup()
+                        .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(StartingMATBox)
+                            .addComponent(TargetKVTBox)
+                            .addComponent(StartingKVTBox)
+                            .addComponent(TimeBetweenStepsTBox)
+                            .addComponent(TotalStepCountTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(ConditioningSettingsPanelLayout.createSequentialGroup()
+                                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ArcMAStepLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(ArcRecoveryTimeLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(TotalArcsBeforeStopLabel)
+                                        .addComponent(ArcKVStepLabel, javax.swing.GroupLayout.Alignment.TRAILING)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(ArcRecoveryTimeTBox)
+                                    .addComponent(ArcMAStepTBox)
+                                    .addComponent(ArcKVStepTBox)
+                                    .addComponent(TotalArcsBeforeStopTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(ConditioningSettingsPanelLayout.createSequentialGroup()
+                                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(FilCurrLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(PreHeatLabel, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(PreHeatTBox)
+                                    .addComponent(FillCurrTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(ConditioningSettingsPanelLayout.createSequentialGroup()
+                        .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(OnOffCycleTimeOffTBox)
+                            .addComponent(OnOffCycleTimeOnTBox)
+                            .addComponent(NumberOfOnOffCyclesTBox)
+                            .addComponent(TargetMATBox, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(SaveButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(LaodDefaultButton, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addContainerGap())
+        );
+        ConditioningSettingsPanelLayout.setVerticalGroup(
+            ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ConditioningSettingsPanelLayout.createSequentialGroup()
+                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(TotalStepCountTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TotalStepCountLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(TimeBetweenStepsTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TimeBetweenStepsLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(StartingKVTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(StartingKVLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(TargetKVTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TargetKVLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(StartingMATBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(StartingMALabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(TargetMATBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TargetMALabel))
+                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(NumberOfOnOffCyclesTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(NumberOfOnOffCyclesLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(OnOffCycleTimeOnTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(OnOffCycleTimeOnLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(OnOffCycleTimeOffTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(OnOffCycleTimeOffLabel))
+                .addGap(0, 9, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ConditioningSettingsPanelLayout.createSequentialGroup()
+                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(TotalArcsBeforeStopTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TotalArcsBeforeStopLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ArcKVStepTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ArcKVStepLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ArcMAStepTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ArcMAStepLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ArcRecoveryTimeTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ArcRecoveryTimeLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(FillCurrTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(FilCurrLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(PreHeatTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PreHeatLabel))
+                .addGap(9, 9, 9)
+                .addComponent(SaveButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(LaodDefaultButton)
+                .addContainerGap())
+        );
+
+        ConditioningControlPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        StartConditioningButton.setText("Start Conditioning");
+        StartConditioningButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StartConditioningButtonActionPerformed(evt);
+            }
+        });
+
+        StopConditioningButton.setText("Stop Conditioning");
+        StopConditioningButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StopConditioningButtonActionPerformed(evt);
+            }
+        });
+
+        ProgressBarLabel.setText("Progress:");
+
+        TimeRemainingLabel.setText("0.0 min");
+
+        ConditionVoltageReadTBox.setEditable(false);
+        ConditionVoltageReadTBox.setText("0.0");
+
+        ConditionVoltageReadLabel.setText("Read Voltage:");
+
+        ConditionCurrentReadTBox.setEditable(false);
+        ConditionCurrentReadTBox.setText("0.0");
+
+        ConditionCurrentReadLabel.setText("Read Current:");
+
+        ConditionFillamentReadTBox.setEditable(false);
+        ConditionFillamentReadTBox.setText("0.0");
+
+        ConditionFillamentReadLabl.setText("Read Fillament Current:");
+
+        javax.swing.GroupLayout ConditioningControlPanelLayout = new javax.swing.GroupLayout(ConditioningControlPanel);
+        ConditioningControlPanel.setLayout(ConditioningControlPanelLayout);
+        ConditioningControlPanelLayout.setHorizontalGroup(
+            ConditioningControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ConditioningControlPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(ConditioningControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ConditioningControlPanelLayout.createSequentialGroup()
+                        .addComponent(ProgressBarLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ConditioningProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(TimeRemainingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 97, Short.MAX_VALUE))
+                    .addGroup(ConditioningControlPanelLayout.createSequentialGroup()
+                        .addComponent(StartConditioningButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(StopConditioningButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(ConditioningControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ConditionFillamentReadLabl, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ConditioningControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(ConditionVoltageReadLabel)
+                                .addComponent(ConditionCurrentReadLabel, javax.swing.GroupLayout.Alignment.TRAILING)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(ConditioningControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(ConditionFillamentReadTBox)
+                            .addComponent(ConditionCurrentReadTBox)
+                            .addComponent(ConditionVoltageReadTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
+        );
+        ConditioningControlPanelLayout.setVerticalGroup(
+            ConditioningControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ConditioningControlPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(ConditioningControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(TimeRemainingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ConditioningProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ProgressBarLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(ConditioningControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ConditioningControlPanelLayout.createSequentialGroup()
+                        .addGap(18, 20, Short.MAX_VALUE)
+                        .addGroup(ConditioningControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(StopConditioningButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(StartConditioningButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26))
+                    .addGroup(ConditioningControlPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(ConditioningControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ConditionVoltageReadTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ConditionVoltageReadLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(ConditioningControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ConditionCurrentReadTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ConditionCurrentReadLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(ConditioningControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ConditionFillamentReadTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ConditionFillamentReadLabl))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+
+        javax.swing.GroupLayout TubeConditioningPanelLayout = new javax.swing.GroupLayout(TubeConditioningPanel);
+        TubeConditioningPanel.setLayout(TubeConditioningPanelLayout);
+        TubeConditioningPanelLayout.setHorizontalGroup(
+            TubeConditioningPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TubeConditioningPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(TubeConditioningPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ConditioningSettingsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ConditioningControlPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        TubeConditioningPanelLayout.setVerticalGroup(
+            TubeConditioningPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TubeConditioningPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(ConditioningSettingsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(ConditioningControlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Tube Conditioning", TubeConditioningPanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -552,6 +909,67 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.CurrentReadoutLabel.setText(df.format(values[2]));
     }//GEN-LAST:event_ReadKVandMAButtonActionPerformed
 
+    private void StopConditioningButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopConditioningButtonActionPerformed
+        if(ch.isAlive()){
+            ch.Stop_Conditioning();
+        }
+        
+    }//GEN-LAST:event_StopConditioningButtonActionPerformed
+
+    private void StartConditioningButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartConditioningButtonActionPerformed
+        ch = new ConditioningHandler(sh.appsettings);
+        ch.Start_Conditioning();
+        
+    }//GEN-LAST:event_StartConditioningButtonActionPerformed
+
+    private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
+        sh.appsettings.FilamentCurrentLimit = this.FillCurrTBox.getText();
+        sh.appsettings.FilamentPreHeat = this.PreHeatTBox.getText();
+        sh.appsettings.WarmupKV = this.WarmVoltageTBox.getText();
+        sh.appsettings.WarmupMA = this.WarmCurrentTBox.getText();
+        sh.appsettings.TotalStepCount = this.TotalStepCountTBox.getText();
+        sh.appsettings.TimeBetweenSteps = this.TimeBetweenStepsTBox.getText();
+        sh.appsettings.StartingKV = this.StartingKVTBox.getText();
+        sh.appsettings.StartingMA = this.StartingMATBox.getText();
+        sh.appsettings.TargetKV = this.TargetKVTBox.getText();
+        sh.appsettings.TargetMA = this.TargetMATBox.getText();
+        sh.appsettings.NumberOnOffCycles = this.NumberOfOnOffCyclesTBox.getText();
+        sh.appsettings.OnCycleTime = this.OnOffCycleTimeOnTBox.getText();
+        sh.appsettings.OffCycleTime = this.OnOffCycleTimeOffTBox.getText();
+        sh.appsettings.TotalArcsBeforeStop = this.TotalArcsBeforeStopTBox.getText();
+        sh.appsettings.ArcMAStep = this.ArcMAStepTBox.getText();
+        sh.appsettings.ArcKVStep = this.ArcKVStepTBox.getText();
+        sh.appsettings.ArcRecoveryTime = this.ArcRecoveryTimeTBox.getText();
+        this.sh.SaveSettings();
+    }//GEN-LAST:event_SaveButtonActionPerformed
+
+    private void LaodDefaultButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LaodDefaultButtonActionPerformed
+        this.sh.Reset_To_Default();
+        
+        this.Load_Settings();
+    }//GEN-LAST:event_LaodDefaultButtonActionPerformed
+    
+    private void Load_Settings(){
+        this.FillCurrTBox.setText(sh.appsettings.FilamentCurrentLimit);
+        this.PreHeatTBox.setText(sh.appsettings.FilamentPreHeat);
+        this.WarmVoltageTBox.setText(sh.appsettings.WarmupKV);
+        this.WarmCurrentTBox.setText(sh.appsettings.WarmupMA);
+        this.TotalStepCountTBox.setText(sh.appsettings.TotalStepCount);
+        this.TimeBetweenStepsTBox.setText(sh.appsettings.TimeBetweenSteps);
+        this.StartingKVTBox.setText(sh.appsettings.StartingKV);
+        this.StartingMATBox.setText(sh.appsettings.StartingMA);
+        this.TargetKVTBox.setText(sh.appsettings.TargetKV);
+        this.TargetMATBox.setText(sh.appsettings.TargetMA);
+        this.NumberOfOnOffCyclesTBox.setText(sh.appsettings.NumberOnOffCycles);
+        this.OnOffCycleTimeOnTBox.setText(sh.appsettings.OnCycleTime);
+        this.OnOffCycleTimeOffTBox.setText(sh.appsettings.OffCycleTime);
+        this.TotalArcsBeforeStopTBox.setText(sh.appsettings.TotalArcsBeforeStop);
+        this.ArcMAStepTBox.setText(sh.appsettings.ArcMAStep);
+        this.ArcKVStepTBox.setText(sh.appsettings.ArcKVStep);
+        this.ArcRecoveryTimeTBox.setText(sh.appsettings.ArcRecoveryTime);
+                
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -584,24 +1002,56 @@ public class SupplyScreen extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new SupplyScreen().setVisible(true);
+                
             }
         });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel ArcKVStepLabel;
+    private javax.swing.JTextField ArcKVStepTBox;
+    private javax.swing.JLabel ArcMAStepLabel;
+    private javax.swing.JTextField ArcMAStepTBox;
+    private javax.swing.JLabel ArcRecoveryTimeLabel;
+    private javax.swing.JTextField ArcRecoveryTimeTBox;
+    private javax.swing.JLabel ConditionCurrentReadLabel;
+    private javax.swing.JTextField ConditionCurrentReadTBox;
+    private javax.swing.JLabel ConditionFillamentReadLabl;
+    private javax.swing.JTextField ConditionFillamentReadTBox;
+    private javax.swing.JLabel ConditionVoltageReadLabel;
+    private javax.swing.JTextField ConditionVoltageReadTBox;
+    private javax.swing.JPanel ConditioningControlPanel;
+    private javax.swing.JProgressBar ConditioningProgressBar;
+    private javax.swing.JPanel ConditioningSettingsPanel;
     private javax.swing.JLabel CurrentLabel;
     private javax.swing.JLabel CurrentReadoutLabel;
     private javax.swing.JTextField CurrentSetTBox;
     private javax.swing.JLabel FilCurrLabel;
     private javax.swing.JTextField FillCurrTBox;
+    private javax.swing.JButton LaodDefaultButton;
     private javax.swing.JPanel ManualControlPanel;
+    private javax.swing.JLabel NumberOfOnOffCyclesLabel;
+    private javax.swing.JTextField NumberOfOnOffCyclesTBox;
+    private javax.swing.JLabel OnOffCycleTimeOffLabel;
+    private javax.swing.JTextField OnOffCycleTimeOffTBox;
+    private javax.swing.JLabel OnOffCycleTimeOnLabel;
+    private javax.swing.JTextField OnOffCycleTimeOnTBox;
     private javax.swing.JLabel PreHeatLabel;
     private javax.swing.JTextField PreHeatTBox;
+    private javax.swing.JLabel ProgressBarLabel;
     private javax.swing.JRadioButton RadioButton15min;
     private javax.swing.JRadioButton RadioButton7min;
     private javax.swing.JButton ReadKVandMAButton;
     private javax.swing.JButton ReconnectToSupplyButton;
+    private javax.swing.JButton SaveButton;
+    private javax.swing.JButton StartConditioningButton;
     private javax.swing.JButton StartWarmupButton;
+    private javax.swing.JLabel StartingKVLabel;
+    private javax.swing.JTextField StartingKVTBox;
+    private javax.swing.JLabel StartingMALabel;
+    private javax.swing.JTextField StartingMATBox;
+    private javax.swing.JButton StopConditioningButton;
     private javax.swing.JButton StopWarmupButton;
     private javax.swing.JLabel SupplyMaxKVLabel;
     private javax.swing.JTextField SupplyMaxKVTbox;
@@ -610,7 +1060,19 @@ public class SupplyScreen extends javax.swing.JFrame {
     private javax.swing.JPanel SupplySettingsPanel;
     private javax.swing.JLabel SupplyWattageLabel;
     private javax.swing.JTextField SupplyWattageTBox;
+    private javax.swing.JLabel TargetKVLabel;
+    private javax.swing.JTextField TargetKVTBox;
+    private javax.swing.JLabel TargetMALabel;
+    private javax.swing.JTextField TargetMATBox;
+    private javax.swing.JLabel TimeBetweenStepsLabel;
+    private javax.swing.JTextField TimeBetweenStepsTBox;
+    private javax.swing.JLabel TimeRemainingLabel;
     private javax.swing.JLabel TitleLabel;
+    private javax.swing.JLabel TotalArcsBeforeStopLabel;
+    private javax.swing.JTextField TotalArcsBeforeStopTBox;
+    private javax.swing.JLabel TotalStepCountLabel;
+    private javax.swing.JTextField TotalStepCountTBox;
+    private javax.swing.JPanel TubeConditioningPanel;
     private javax.swing.JLabel VoltageLabel;
     private javax.swing.JLabel VoltageReadoutLabel;
     private javax.swing.JTextField VoltageSetTBox;

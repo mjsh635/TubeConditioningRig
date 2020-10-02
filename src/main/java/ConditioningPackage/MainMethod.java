@@ -9,6 +9,7 @@ import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
+import javax.swing.WindowConstants;
 
 /**
  *
@@ -20,7 +21,9 @@ public class MainMethod {
                   
             System.out.println("Starting Window");
             SetupFrame setup = new SetupFrame();
+            setup.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             setup.setVisible(true);
+           
             
         
         
