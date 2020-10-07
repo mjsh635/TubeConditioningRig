@@ -513,6 +513,7 @@ public class DXM {
     private String[] _Send_Command(int Command, String Argument) {
         SendCommandLock.lock();
         //System.out.println("lock");
+        
         try{
         // Send commands to the supply
         if (Argument != "") {
@@ -520,11 +521,12 @@ public class DXM {
             Argument = Argument + ",";
         }
         String reply = "";
+        Socket sock = new Socket();
         //(Socket sock = new Socket(this.address,this.port))
         try  {   // open socket, create message, send message, receive response, convert to string
-            Socket sock = new Socket();
-            sock.connect(new InetSocketAddress(this.address,this.port), 300);
-            sock.setSoTimeout(500);
+            
+            sock.connect(new InetSocketAddress(this.address,this.port), 2000);
+            sock.setSoTimeout(2000);
             
             String message = String.format("\002%1$s,%2$s\003", Command, Argument);
             byte[] byteResponse = new byte[40];
@@ -532,28 +534,39 @@ public class DXM {
             OutputStream outStream = sock.getOutputStream();
             InputStream inStream = sock.getInputStream();
             outStream.write(byteArrayMessage);
+            Thread.sleep(200);
             inStream.read(byteResponse);
 
             reply = new String(byteResponse);
         } catch (java.net.ConnectException CE) {
-            System.out.println(String.format("Timeout on Address: %s", this.address));
+            System.out.println(String.format("Connection Timeout on Address: %s", this.address));
+            CE.printStackTrace();
             this.connected = false;
+            
         } catch (SocketTimeoutException STE) {
-            System.out.println(String.format("Timeout on Address: %s", this.address));
+            System.out.println(String.format("Communication Timeout on Address: %s", this.address));
+            STE.printStackTrace();
             this.connected = false;
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
+            
+        } finally{
+            sock.close();
+            
         }
+        
         // split response into string array
         String[] splitResponse = reply.split(",");
         //return the string array
         return splitResponse;
         
         }
+        
         catch(Exception e){
-            
+            e.printStackTrace();
         }
         finally{
+            
             SendCommandLock.unlock();
             //System.out.println("unlock");
         }

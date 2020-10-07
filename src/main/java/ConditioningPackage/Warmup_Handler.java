@@ -53,6 +53,7 @@ public class Warmup_Handler extends Thread {
         this.supply.Set_Filament_Preheat(this.PreHeat);
         /////////////this.supply.Xray_On();
         int loopnum = 1;
+        this.supply.Xray_On();
         while(!this.isInterrupted() && loopnum <= stepCount){
             try{
             Thread.sleep(20000);//sleep 20 seconds
@@ -72,10 +73,6 @@ public class Warmup_Handler extends Thread {
         this.PBar.setValue((int)Math.rint(val));
         }
         
-    }
-    
-    public void Start_Warmup(){
-        this.start();
     }
     
     public void Stop_Warmup(){

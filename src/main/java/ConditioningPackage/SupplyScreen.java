@@ -53,6 +53,7 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.AROH = new AutoReadOutHandler(this.supply, this.VoltageReadoutLabel, 
                 this.CurrentReadoutLabel, this.ConditionVoltageReadTBox, 
                 this.ConditionCurrentReadTBox, this.ConditionFillamentReadTBox);
+        this.AROH.start();
     }
     
     public SupplyScreen(){
@@ -887,18 +888,14 @@ public class SupplyScreen extends javax.swing.JFrame {
             this.supply.Set_Current(current);
             this.supply.Xray_On();
         }
-        if (!AROH.isAlive()){
-            this.AROH.Start_Auto_Readout();
-        }
+        //this.AROH.StartReading = true;
+        
     }//GEN-LAST:event_XrayOnButtonActionPerformed
 
     private void XrayOffButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_XrayOffButtonActionPerformed
-        if(this.supply.Is_Emmitting()){
-            this.supply.Xray_Off();
-        }
-        if (AROH.isAlive()){
-            this.AROH.Stop_Auto_Readout();
-        }
+        this.supply.Xray_Off();
+        //this.AROH.StartReading = false;
+        
     }//GEN-LAST:event_XrayOffButtonActionPerformed
 
     private void StopWarmupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopWarmupButtonActionPerformed
@@ -908,19 +905,16 @@ public class SupplyScreen extends javax.swing.JFrame {
         }
         this.warmup = new Warmup_Handler(this.supply, this.WarmupSelectionButtonGroup, this.WarmUpProgressBar,
                 this.WarmVoltageTBox,this.WarmCurrentTBox,this.FillCurrTBox,this.PreHeatTBox);
-        if (AROH.isAlive()){
-            this.AROH.Stop_Auto_Readout();
-        }
+        this.XrayOnButton.setEnabled(true);
     }//GEN-LAST:event_StopWarmupButtonActionPerformed
 
     private void StartWarmupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartWarmupButtonActionPerformed
         this.StartWarmupButton.setEnabled(false);
         this.RadioButton7min.setActionCommand("7");
         this.RadioButton15min.setActionCommand("15");
-        this.warmup.Start_Warmup();
-        if (!AROH.isAlive()){
-            this.AROH.Start_Auto_Readout();
-        }
+        this.warmup.start();
+        this.XrayOnButton.setEnabled(false);
+        //this.AROH.StartReading = true;
     }//GEN-LAST:event_StartWarmupButtonActionPerformed
 
     private void WarmCurrentTBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WarmCurrentTBoxActionPerformed
@@ -936,17 +930,16 @@ public class SupplyScreen extends javax.swing.JFrame {
         if(ch.isAlive()){
             ch.Stop_Conditioning();
         }
-        if (AROH.isAlive()){
-            this.AROH.Stop_Auto_Readout();
-        }
+        //this.AROH.StartReading = false;
+        this.XrayOnButton.setEnabled(true);
+        
     }//GEN-LAST:event_StopConditioningButtonActionPerformed
 
     private void StartConditioningButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartConditioningButtonActionPerformed
         ch = new ConditioningHandler(sh.appsettings, supply,this.ConditioningProgressBar);
-        ch.Start_Conditioning();
-        if (!AROH.isAlive()){
-            this.AROH.Start_Auto_Readout();
-        }
+        System.out.println("Starting Conditioning");
+        ch.start();
+        this.XrayOnButton.setEnabled(false);
         
     }//GEN-LAST:event_StartConditioningButtonActionPerformed
 

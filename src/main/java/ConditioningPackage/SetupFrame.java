@@ -119,7 +119,7 @@ public class SetupFrame extends javax.swing.JFrame {
         Supply1UseCheckbox.setSelected(true);
         Supply1UseCheckbox.setText("Use this supply");
 
-        Supply1IPAddressTBox.setText("192.168.1.4");
+        Supply1IPAddressTBox.setText("192.168.2.5");
 
         Supply1IPAddressLabel.setText("Enter IP Address: ");
 

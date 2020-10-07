@@ -17,7 +17,8 @@ import javax.swing.JProgressBar;
 public class ConditioningHandler extends Thread{
     Settings vals;
     DXM HV;
-    LocalTime Time;
+    
+    LocalTime TimeEnd;
     JProgressBar pb;
     Double StepCount;
     Double KVStepSize;
@@ -65,8 +66,8 @@ public class ConditioningHandler extends Thread{
         this.TargetKV = Double.valueOf(this.vals.TargetKV);
         this.StartMA=Double.valueOf(this.vals.StartingMA);
         this.TargetMA = Double.valueOf(this.vals.TargetMA);
-        this.KVStepSize = (this.TargetKV - (this.StartKV/this.StepCount));
-        this.MAStepSize = (this.TargetMA - (this.StartMA/this.StepCount));
+        this.KVStepSize = ((this.TargetKV - this.StartKV)/this.StepCount);
+        this.MAStepSize = ((this.TargetMA - this.StartMA)/this.StepCount);
         
     }
     private void _TearDown(){
@@ -76,25 +77,33 @@ public class ConditioningHandler extends Thread{
     private void _Wait_Ramping(Double kv, Double ma){
         boolean ramped = false;
         while(!ramped){
-            if((this.HV.Read_Voltage_Out_Double() < (kv * 0.90)) && (this.HV.Read_Current_Out_Double() < (ma * 0.90))){
+            if((this.HV.Read_Voltage_Out_Double() < (kv * 0.98)) && (this.HV.Read_Current_Out_Double() < (ma * 0.98))){
+                ramped = false;
+            }
+            else{
                 ramped = true;
             }
             try{
-                Thread.sleep(300);
+                Thread.sleep(500);
             }catch(Exception e){
+                this.interrupt();
                 e.printStackTrace();
             }
-            System.out.println("Ramping");
+           
         }
+        System.out.println("Ramping Complete");
     }
     
     private Boolean _Time_Before_Check(){
-        return (this.Time.isBefore(this.Time.plusMinutes(Math.round(this.StepDwellTime))));
+        
+        return (LocalTime.now().isBefore(this.TimeEnd));
     }
     
     private void _ChangeVoltageTracker(Double kv){
+        
         this.CurrentSetKV = NextToSetKV;
         this.NextToSetKV = CurrentSetKV + kv;
+        
     }
     private void _ChangeCurrentTracker(Double ma){
         this.CurrentSetMA = NextToSetMA;
@@ -118,10 +127,14 @@ public class ConditioningHandler extends Thread{
             this.HV.Set_Voltage(this.CurrentSetKV);
             _Wait_Ramping(this.CurrentSetKV, this.CurrentSetMA);
             
+            TimeEnd = LocalTime.now().plusSeconds(Math.round(this.StepDwellTime*60));
+           
             while(_Time_Before_Check()){
             
             }
+            
             _ChangeVoltageTracker(KVStepSize);
+           
         }
         System.out.println("KV Ramping Complete");
     }
@@ -131,12 +144,15 @@ public class ConditioningHandler extends Thread{
         
         this.NextToSetKV = (this.CurrentSetKV *0.75);
         _ChangeCurrentTracker(0.0);
+        
         this.HV.Set_Voltage(this.CurrentSetKV);
         _Wait_Ramping(this.CurrentSetKV, this.CurrentSetMA);
         
         while(CurrentSetMA < TargetMA){
             this.HV.Set_Current(CurrentSetMA);
             _Wait_Ramping(this.CurrentSetKV, this.CurrentSetMA);
+            
+            TimeEnd = LocalTime.now().plusSeconds(Math.round(this.StepDwellTime*60));
             
             while(_Time_Before_Check()){
                 
@@ -150,8 +166,11 @@ public class ConditioningHandler extends Thread{
         System.out.println("Starting KV Reramp");
         
         while(CurrentSetKV < TargetKV){
+            
             this.HV.Set_Voltage(CurrentSetKV);
             _Wait_Ramping(this.CurrentSetKV, this.CurrentSetMA);
+            
+            TimeEnd = LocalTime.now().plusSeconds(Math.round(this.StepDwellTime*60));
             
             while(_Time_Before_Check()){
                 
@@ -173,10 +192,7 @@ public class ConditioningHandler extends Thread{
         System.out.println("Starting Arc Recovery");
         System.out.println("Arc Recovery Complete");
     }
-    public void Start_Conditioning(){
-        System.out.println("Starting");
-        this.start();
-    }
+    
     
     public void Stop_Conditioning(){
         System.out.println("Stoping");
@@ -190,7 +206,8 @@ public class ConditioningHandler extends Thread{
                 e.printStackTrace();
             }
             stop_attempt++;
-        }      
+        }
+        this.HV.Xray_Off();
         
     }
     

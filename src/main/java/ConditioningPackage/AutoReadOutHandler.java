@@ -17,6 +17,7 @@ public class AutoReadOutHandler extends Thread {
     JLabel volt;
     JLabel curr;
     JTextField voltTF,currTF,FillTF;
+    boolean StartReading = true;
     
     public AutoReadOutHandler(DXM supply, JLabel ManualVoltageDisplay,JLabel ManualCurrentDisplay, 
             JTextField VoltField, JTextField CurrField, JTextField FillTextField) {
@@ -27,44 +28,47 @@ public class AutoReadOutHandler extends Thread {
         currTF = CurrField;
         FillTF = FillTextField;
         
+        
     }
     
     public void run(){
+        System.out.println("Starting");
         while (true){
-            
-            try{
-                Double[] values = HV.Get_Voltage_Current_Filament();
-                volt.setText(String.valueOf(values[0]));
-                curr.setText(String.valueOf(values[1]));
-                voltTF.setText(String.valueOf(values[0]));
-                currTF.setText(String.valueOf(values[1]));
-                FillTF.setText(String.valueOf(values[2]));
+            if(StartReading){
                 
-                Thread.sleep(500);
-            }
-            catch(Exception e){
+                try{
+                Double[] values = HV.Get_Voltage_Current_Filament();
+                volt.setText(String.format("%.2f", values[0]));
+                curr.setText(String.format("%.2f",values[1]));
+                voltTF.setText(String.format("%.2f",values[0]));
+                currTF.setText(String.format("%.2f",values[1]));
+                FillTF.setText(String.format("%.2f",values[2]));
+                
+                Thread.sleep(1000);
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+                catch(Error e){
+                System.out.println("Caught");
                 e.printStackTrace();
+                
+                }
+                
+           
+            }else{
+                
+                try{
+                    
+                Thread.sleep(2000);
+                }
+                catch(Exception e){
+                
+                e.printStackTrace();
+                }
             }
         }
     }
     
-    public void Start_Auto_Readout(){
-        System.out.println("Starting Auto-Readout");
-        this.run();
-    }
     
-    public void Stop_Auto_Readout(){
-        System.out.println("Stoping");
-        int stop_attempt = 0;
-        
-        while (this.isAlive() && stop_attempt<3){
-            this.interrupt();
-            try{
-            this.join(500);
-            }catch(InterruptedException e){
-                e.printStackTrace();
-            }
-            stop_attempt++;
-        }      
-    }
 }
