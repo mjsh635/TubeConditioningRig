@@ -6,7 +6,10 @@
 package ConditioningPackage;
 
 import com.sun.jdi.request.BreakpointRequest;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Frame;
+import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 import java.util.HashSet;
 
@@ -30,6 +33,8 @@ public class SupplyScreen extends javax.swing.JFrame {
     boolean startRead = false;
     SettingsHandler sh;
     ConditioningHandler ch;
+    String SerialNumber = "";
+    AutoReadOutHandler AROH;
     
     
     
@@ -45,7 +50,9 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.update_UI();
         this.warmup = new Warmup_Handler(this.supply, this.WarmupSelectionButtonGroup, this.WarmUpProgressBar,
                 this.WarmVoltageTBox,this.WarmCurrentTBox,this.FillCurrTBox,this.PreHeatTBox);
-        
+        this.AROH = new AutoReadOutHandler(this.supply, this.VoltageReadoutLabel, 
+                this.CurrentReadoutLabel, this.ConditionVoltageReadTBox, 
+                this.ConditionCurrentReadTBox, this.ConditionFillamentReadTBox);
     }
     
     public SupplyScreen(){
@@ -95,7 +102,8 @@ public class SupplyScreen extends javax.swing.JFrame {
         WarmMALabel = new javax.swing.JLabel();
         WarmCurrentTBox = new javax.swing.JTextField();
         ReconnectToSupplyButton = new javax.swing.JButton();
-        ReadKVandMAButton = new javax.swing.JButton();
+        TubeSerialNumberTBox = new javax.swing.JTextField();
+        TubeSerialNumberLabel = new javax.swing.JLabel();
         TubeConditioningPanel = new javax.swing.JPanel();
         ConditioningSettingsPanel = new javax.swing.JPanel();
         StartingMALabel = new javax.swing.JLabel();
@@ -384,7 +392,7 @@ public class SupplyScreen extends javax.swing.JFrame {
                             .addGroup(WarmupPanelLayout.createSequentialGroup()
                                 .addComponent(WarmKVLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(WarmVoltageTBox, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)))
+                                .addComponent(WarmVoltageTBox)))
                         .addGap(18, 18, 18)
                         .addGroup(WarmupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(WarmupPanelLayout.createSequentialGroup()
@@ -414,7 +422,7 @@ public class SupplyScreen extends javax.swing.JFrame {
                     .addComponent(WarmCurrentTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(WarmKVLabel)
                     .addComponent(WarmMALabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addGroup(WarmupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(StartWarmupButton)
                     .addComponent(StopWarmupButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -432,12 +440,18 @@ public class SupplyScreen extends javax.swing.JFrame {
             }
         });
 
-        ReadKVandMAButton.setText("Read KV and MA");
-        ReadKVandMAButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ReadKVandMAButtonActionPerformed(evt);
+        TubeSerialNumberTBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TubeSerialNumberTBoxMouseClicked(evt);
             }
         });
+        TubeSerialNumberTBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TubeSerialNumberTBoxActionPerformed(evt);
+            }
+        });
+
+        TubeSerialNumberLabel.setText("Enter Tube Number:");
 
         javax.swing.GroupLayout ManualControlPanelLayout = new javax.swing.GroupLayout(ManualControlPanel);
         ManualControlPanel.setLayout(ManualControlPanelLayout);
@@ -446,10 +460,16 @@ public class SupplyScreen extends javax.swing.JFrame {
             .addGroup(ManualControlPanelLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(ManualControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(XrayOnOffPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ReconnectToSupplyButton)
-                    .addComponent(ReadKVandMAButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 11, Short.MAX_VALUE)
+                    .addGroup(ManualControlPanelLayout.createSequentialGroup()
+                        .addGroup(ManualControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(XrayOnOffPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ReconnectToSupplyButton))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(ManualControlPanelLayout.createSequentialGroup()
+                        .addComponent(TubeSerialNumberLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TubeSerialNumberTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24)))
                 .addGroup(ManualControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(SupplySettingsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(WarmupPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -468,8 +488,10 @@ public class SupplyScreen extends javax.swing.JFrame {
                         .addComponent(XrayOnOffPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ReconnectToSupplyButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ReadKVandMAButton)
+                        .addGap(35, 35, 35)
+                        .addGroup(ManualControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(TubeSerialNumberTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TubeSerialNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -731,7 +753,7 @@ public class SupplyScreen extends javax.swing.JFrame {
                         .addComponent(ConditioningProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(TimeRemainingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 97, Short.MAX_VALUE))
+                        .addGap(0, 98, Short.MAX_VALUE))
                     .addGroup(ConditioningControlPanelLayout.createSequentialGroup()
                         .addComponent(StartConditioningButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -865,14 +887,18 @@ public class SupplyScreen extends javax.swing.JFrame {
             this.supply.Set_Current(current);
             this.supply.Xray_On();
         }
-        this.startRead = true;
+        if (!AROH.isAlive()){
+            this.AROH.Start_Auto_Readout();
+        }
     }//GEN-LAST:event_XrayOnButtonActionPerformed
 
     private void XrayOffButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_XrayOffButtonActionPerformed
         if(this.supply.Is_Emmitting()){
             this.supply.Xray_Off();
         }
-        this.startRead = false;
+        if (AROH.isAlive()){
+            this.AROH.Stop_Auto_Readout();
+        }
     }//GEN-LAST:event_XrayOffButtonActionPerformed
 
     private void StopWarmupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopWarmupButtonActionPerformed
@@ -882,7 +908,9 @@ public class SupplyScreen extends javax.swing.JFrame {
         }
         this.warmup = new Warmup_Handler(this.supply, this.WarmupSelectionButtonGroup, this.WarmUpProgressBar,
                 this.WarmVoltageTBox,this.WarmCurrentTBox,this.FillCurrTBox,this.PreHeatTBox);
-        this.startRead = false;
+        if (AROH.isAlive()){
+            this.AROH.Stop_Auto_Readout();
+        }
     }//GEN-LAST:event_StopWarmupButtonActionPerformed
 
     private void StartWarmupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartWarmupButtonActionPerformed
@@ -890,7 +918,9 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.RadioButton7min.setActionCommand("7");
         this.RadioButton15min.setActionCommand("15");
         this.warmup.Start_Warmup();
-        this.startRead = true;
+        if (!AROH.isAlive()){
+            this.AROH.Start_Auto_Readout();
+        }
     }//GEN-LAST:event_StartWarmupButtonActionPerformed
 
     private void WarmCurrentTBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WarmCurrentTBoxActionPerformed
@@ -902,23 +932,21 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.update_UI();
     }//GEN-LAST:event_ReconnectToSupplyButtonActionPerformed
 
-    private void ReadKVandMAButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReadKVandMAButtonActionPerformed
-        Double[] values = this.supply.Get_Voltage_Current_Filament();
-        DecimalFormat df = new DecimalFormat("0.00");
-        this.VoltageReadoutLabel.setText(df.format(values[1]));
-        this.CurrentReadoutLabel.setText(df.format(values[2]));
-    }//GEN-LAST:event_ReadKVandMAButtonActionPerformed
-
     private void StopConditioningButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopConditioningButtonActionPerformed
         if(ch.isAlive()){
             ch.Stop_Conditioning();
         }
-        
+        if (AROH.isAlive()){
+            this.AROH.Stop_Auto_Readout();
+        }
     }//GEN-LAST:event_StopConditioningButtonActionPerformed
 
     private void StartConditioningButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartConditioningButtonActionPerformed
-        ch = new ConditioningHandler(sh.appsettings);
+        ch = new ConditioningHandler(sh.appsettings, supply,this.ConditioningProgressBar);
         ch.Start_Conditioning();
+        if (!AROH.isAlive()){
+            this.AROH.Start_Auto_Readout();
+        }
         
     }//GEN-LAST:event_StartConditioningButtonActionPerformed
 
@@ -948,6 +976,17 @@ public class SupplyScreen extends javax.swing.JFrame {
         
         this.Load_Settings();
     }//GEN-LAST:event_LaodDefaultButtonActionPerformed
+
+    private void TubeSerialNumberTBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TubeSerialNumberTBoxActionPerformed
+        this.SerialNumber = this.TubeSerialNumberTBox.getText();
+        System.out.println(this.SerialNumber);
+        this.TubeSerialNumberTBox.setBackground(Color.lightGray);
+        
+    }//GEN-LAST:event_TubeSerialNumberTBoxActionPerformed
+
+    private void TubeSerialNumberTBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TubeSerialNumberTBoxMouseClicked
+        this.TubeSerialNumberTBox.setBackground(Color.white);
+    }//GEN-LAST:event_TubeSerialNumberTBoxMouseClicked
     
     private void Load_Settings(){
         this.FillCurrTBox.setText(sh.appsettings.FilamentCurrentLimit);
@@ -1042,7 +1081,6 @@ public class SupplyScreen extends javax.swing.JFrame {
     private javax.swing.JLabel ProgressBarLabel;
     private javax.swing.JRadioButton RadioButton15min;
     private javax.swing.JRadioButton RadioButton7min;
-    private javax.swing.JButton ReadKVandMAButton;
     private javax.swing.JButton ReconnectToSupplyButton;
     private javax.swing.JButton SaveButton;
     private javax.swing.JButton StartConditioningButton;
@@ -1073,6 +1111,8 @@ public class SupplyScreen extends javax.swing.JFrame {
     private javax.swing.JLabel TotalStepCountLabel;
     private javax.swing.JTextField TotalStepCountTBox;
     private javax.swing.JPanel TubeConditioningPanel;
+    private javax.swing.JLabel TubeSerialNumberLabel;
+    private javax.swing.JTextField TubeSerialNumberTBox;
     private javax.swing.JLabel VoltageLabel;
     private javax.swing.JLabel VoltageReadoutLabel;
     private javax.swing.JTextField VoltageSetTBox;

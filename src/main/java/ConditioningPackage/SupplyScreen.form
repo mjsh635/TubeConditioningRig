@@ -57,11 +57,20 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="XrayOnOffPanel" min="-2" max="-2" attributes="0"/>
-                          <Component id="ReconnectToSupplyButton" min="-2" max="-2" attributes="0"/>
-                          <Component id="ReadKVandMAButton" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="XrayOnOffPanel" min="-2" max="-2" attributes="0"/>
+                                  <Component id="ReconnectToSupplyButton" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="TubeSerialNumberLabel" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="TubeSerialNumberTBox" min="-2" pref="221" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace type="unrelated" pref="11" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="SupplySettingsPanel" max="32767" attributes="0"/>
                           <Component id="WarmupPanel" max="32767" attributes="0"/>
@@ -84,8 +93,11 @@
                               <Component id="XrayOnOffPanel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="ReconnectToSupplyButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="ReadKVandMAButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="TubeSerialNumberTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="TubeSerialNumberLabel" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                              </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -401,7 +413,7 @@
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="WarmKVLabel" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="WarmVoltageTBox" pref="82" max="32767" attributes="0"/>
+                                          <Component id="WarmVoltageTBox" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
@@ -439,7 +451,7 @@
                               <Component id="WarmKVLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="WarmMALabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="13" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="StartWarmupButton" linkSize="5" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="StopWarmupButton" linkSize="5" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
@@ -541,13 +553,16 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ReconnectToSupplyButtonActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="ReadKVandMAButton">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Read KV and MA"/>
-              </Properties>
+            <Component class="javax.swing.JTextField" name="TubeSerialNumberTBox">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ReadKVandMAButtonActionPerformed"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="TubeSerialNumberTBoxMouseClicked"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TubeSerialNumberTBoxActionPerformed"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="TubeSerialNumberLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Enter Tube Number:"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
@@ -950,7 +965,7 @@
                                   <Component id="ConditioningProgressBar" min="-2" pref="295" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="TimeRemainingLabel" min="-2" pref="119" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="97" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="98" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="StartConditioningButton" min="-2" pref="125" max="-2" attributes="0"/>

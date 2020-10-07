@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -33,11 +35,15 @@ public class DXM {
     boolean InterlockOpen = false;
     boolean FaultPresent = false;
     boolean RemoteMode = false;
-
+    Double voltageScaleFactor;
+    Double currentScaleFactor;
+    Lock SendCommandLock = new ReentrantLock();
+    
     public DXM(String address, int port) {
         
         this.address = address;
         this.port = port;
+        
         try{
             this.modelNumber = this.Get_Model_Type();
         }
@@ -80,6 +86,7 @@ public class DXM {
             this._Set_Mode_Remote();
             this.connected = true;
             return this._Read_Model_Type();
+            
         } catch (ArrayIndexOutOfBoundsException OB) {
             System.out.println(OB);
             return "no connection";
@@ -204,32 +211,20 @@ public class DXM {
     
 
     public Double[] Get_Voltage_Current_Filament() {
+        
         try {
             String[] response = this._Send_Command(19, "");
+            
             Double voltage = Double.parseDouble(response[1]);
             Double current = Double.parseDouble(response[2]);
             Double filCurrent = Double.parseDouble(response[3]);
             Double scaledVoltage = 0.0;
             Double scaledCurrent = 0.0;
             Double scaledFilCurrent = filCurrent * 0.001221;
-            switch (this.modelNumber) {
-                case "X4087":
-                    scaledVoltage = voltage * 0.00976;
-                    scaledCurrent = current * 0.007326;
-                    break;
-                case "X3481":
-                    scaledVoltage = voltage * 0.007326007;
-                    scaledCurrent = current * 0.002442002;
-                    break;
-                case "X4911":
-                    scaledVoltage = voltage * 0.00976;
-                    scaledCurrent = current * 0.00366300;
-                    break;
-                case "X4313":
-                    scaledVoltage = voltage * 0.00732007;
-                    scaledCurrent = current * 0.00488400;
-                    break;
-            }
+            
+            scaledVoltage = voltage * this.voltageScaleFactor;
+            scaledCurrent = current * this.currentScaleFactor;
+                 
             return new Double[]{scaledVoltage, scaledCurrent, scaledFilCurrent};
         } catch (ArrayIndexOutOfBoundsException OB) {
             System.out.println(OB);
@@ -244,20 +239,8 @@ public class DXM {
             Double voltage = Double.parseDouble(response[1]);
             Double scaledVoltage = 0.0;
             // depending on the model type, apply different weights
-            switch (this.modelNumber) {
-                case "X4087":
-                    scaledVoltage = voltage * 0.00976;
-                    break;
-                case "X3481":
-                    scaledVoltage = voltage * 0.007326007;
-                    break;
-                case "X4911":
-                    scaledVoltage = voltage * 0.00976;
-                    break;
-                case "X4313":
-                    scaledVoltage = voltage * 0.00732007;
-                    break;
-            }
+            scaledVoltage = voltage * voltageScaleFactor;
+                    
             return scaledVoltage;
         } catch (ArrayIndexOutOfBoundsException OB) {
             System.out.println(OB);
@@ -271,20 +254,8 @@ public class DXM {
             Double current = Double.parseDouble(response[2]);
             Double scaledCurrent = 0.0;
             // depending on the model type, apply different weights
-            switch (this.modelNumber) {
-                case "X4087":
-                    scaledCurrent = current * 0.007326;
-                    break;
-                case "X3481":
-                    scaledCurrent = current * 0.002442002;
-                    break;
-                case "X4911":
-                    scaledCurrent = current * 0.00366300;
-                    break;
-                case "X4313":
-                    scaledCurrent = current * 0.00488400;
-                    break;
-            }
+            scaledCurrent = current * currentScaleFactor;
+                    
             return scaledCurrent;
         } catch (ArrayIndexOutOfBoundsException OB) {
             System.out.println(OB);
@@ -318,20 +289,8 @@ public class DXM {
             Double voltage = Double.parseDouble(response[1]);
             Double scaledVoltage = 0.0;
             // depending on the model type, apply different weights
-            switch (this.modelNumber) {
-                case "X4087":
-                    scaledVoltage = voltage * 0.00976;
-                    break;
-                case "X3481":
-                    scaledVoltage = voltage * 0.007326007;
-                    break;
-                case "X4911":
-                    scaledVoltage = voltage * 0.00976;
-                    break;
-                case "X4313":
-                    scaledVoltage = voltage * 0.00732007;
-                    break;
-            }
+            scaledVoltage = voltage * voltageScaleFactor;
+                    
             return scaledVoltage;
         } catch (ArrayIndexOutOfBoundsException OB) {
             System.out.println(OB);
@@ -344,21 +303,9 @@ public class DXM {
             String[] response = this._Send_Command(15, "");
             Double current = Double.parseDouble(response[1]);
             Double scaledCurrent = 0.0;
-            // depending on the model type, apply different weights
-            switch (this.modelNumber) {
-                case "X4087":
-                    scaledCurrent = current * 0.007326;
-                    break;
-                case "X3481":
-                    scaledCurrent = current * 0.002442002;
-                    break;
-                case "X4911":
-                    scaledCurrent = current * 0.00366300;
-                    break;
-                case "X4313":
-                    scaledCurrent = current * 0.00488400;
-                    break;
-            }
+            
+            scaledCurrent = current * currentScaleFactor;
+            
             return scaledCurrent;
         } catch (ArrayIndexOutOfBoundsException OB) {
             System.out.println(OB);
@@ -369,20 +316,8 @@ public class DXM {
     private void _Set_Voltage(double value) {
         try {
             int scaledValue = 0;
-            switch (this.modelNumber) {
-                case "X4087":
-                    scaledValue = (int) Math.round(Double.valueOf(value) / 0.0976);
-                    break;
-                case "X3481":
-                    scaledValue = (int) Math.round(Double.valueOf(value) / 0.007326007);
-                    break;
-                case "X4911":
-                    scaledValue = (int) Math.round(Double.valueOf(value) / 0.0976);
-                    break;
-                case "X4313":
-                    scaledValue = (int) Math.round(Double.valueOf(value) / 0.007326007);
-                    break;
-            }
+            scaledValue = (int) Math.round(Double.valueOf(value) / voltageScaleFactor);
+            
             this._Send_Command(10, String.valueOf(scaledValue));
         } catch (ArrayIndexOutOfBoundsException OB) {
             System.out.println(OB);
@@ -393,20 +328,8 @@ public class DXM {
     private void _Set_Current(double value) {
         try {
             int scaledValue = 0;
-            switch (this.modelNumber) {
-                case "X4087":
-                    scaledValue = (int) Math.round(Double.valueOf(value) / 0.007326);
-                    break;
-                case "X3481":
-                    scaledValue = (int) Math.round(Double.valueOf(value) / 0.002442002);
-                    break;
-                case "X4911":
-                    scaledValue = (int) Math.round(Double.valueOf(value) / 0.00366300);
-                    break;
-                case "X4313":
-                    scaledValue = (int) Math.round(Double.valueOf(value) / 0.00488400);
-                    break;
-            }
+            scaledValue = (int) Math.round(Double.valueOf(value) / currentScaleFactor);
+            
             this._Send_Command(11, String.valueOf(scaledValue));
         } catch (ArrayIndexOutOfBoundsException OB) {
             System.out.println(OB);
@@ -516,18 +439,63 @@ public class DXM {
             {
                 case "DXM02":
                     model = "X3481";
+                    this.voltageScaleFactor = 0.007326007;
+                    this.currentScaleFactor = 0.002442002 ;
+                    break;
+                case "X3481":
+                    model = "X3481";
+                    this.voltageScaleFactor = 0.007326007;
+                    this.currentScaleFactor = 0.002442002 ;
                     break;
                 case "DXM20":
                     model = "X413";
+                    this.voltageScaleFactor = 0.007326007;
+                    this.currentScaleFactor = 0.004884004;
+                    break;
+                case "X413":
+                    model = "X413";
+                    this.voltageScaleFactor = 0.007326007;
+                    this.currentScaleFactor = 0.004884004;
                     break;
                 case "DXM21":
                     model = "X4911";
+                    this.voltageScaleFactor = 0.0097680097;
+                    this.currentScaleFactor = 0.00366300;
+                    break;
+                case "X4911":
+                    model = "X4911";
+                    this.voltageScaleFactor = 0.0097680097;
+                    this.currentScaleFactor = 0.00366300;
                     break;
                 case "DXM33":
                     model = "X4087";
+                    this.voltageScaleFactor = 0.0097680097;
+                    this.currentScaleFactor = 0.007326;
+                    break;
+                case "X4087":
+                    model = "X4087";
+                    this.voltageScaleFactor = 0.0097680097;
+                    this.currentScaleFactor = 0.007326;
+                    break;
+                case "DXM41":
+                    model = "DXM41";
+                    this.voltageScaleFactor = 0.0183150183;
+                    this.currentScaleFactor = 0.003907203;
+                    break;
+                case "DXM35":
+                    model = "X4974";
+                    this.voltageScaleFactor = 0.014652014;
+                    this.currentScaleFactor = 0.004884004;
+                    break;
+                case "X4974":
+                    model = "X4974";
+                    this.voltageScaleFactor = 0.014652014;
+                    this.currentScaleFactor = 0.004884004;
                     break;
                 default:
                     model = response;
+                    this.voltageScaleFactor = 0.0;
+                    this.currentScaleFactor = 0.0;
             }
             this.modelNumber = model;
             return model;
@@ -543,6 +511,9 @@ public class DXM {
     }
 
     private String[] _Send_Command(int Command, String Argument) {
+        SendCommandLock.lock();
+        //System.out.println("lock");
+        try{
         // Send commands to the supply
         if (Argument != "") {
             // if the argument isnt blank, it requires a comma after
@@ -577,6 +548,16 @@ public class DXM {
         String[] splitResponse = reply.split(",");
         //return the string array
         return splitResponse;
+        
+        }
+        catch(Exception e){
+            
+        }
+        finally{
+            SendCommandLock.unlock();
+            //System.out.println("unlock");
+        }
+        throw new IndexOutOfBoundsException();
     }
 
 }
