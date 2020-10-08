@@ -25,7 +25,7 @@ public class LoggingController {
         //create file if missing
         if (Files.exists(this.folderPath)){
             System.out.println("path exists");
-            this.filePath = Paths.get((this.sFolderPath+file_name));
+            this.filePath = Paths.get((this.sFolderPath+"/"+file_name));
             if (Files.exists(this.filePath)){
                 System.out.println("file path exists");
             }
@@ -66,6 +66,7 @@ public class LoggingController {
                 }
             }
         }
+        Append_To_Log(String.format("Tube Serial Number: %s",file_name));
     }
 
     public void Append_To_Log(String text_to_Append){

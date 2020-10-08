@@ -58,6 +58,7 @@ public class ConditioningHandler extends Thread{
         this.vals = userSettings;
         this.HV = supply;
         this.pb = pb;
+        this.log = log;
         
     }
     
@@ -74,8 +75,8 @@ public class ConditioningHandler extends Thread{
         this.pb.setValue(64);
         this._OnOffCycle();
         this.pb.setValue(80);
-        this._TearDown();
         this.pb.setValue(100);
+        Stop_Conditioning();
         
         
     }
@@ -200,7 +201,7 @@ public class ConditioningHandler extends Thread{
         this.HV.Xray_On();
         _Wait_Ramping(this.CurrentSetKV, this.CurrentSetMA);
         
-        while(CurrentSetKV < TargetKV){
+        while(CurrentSetKV <= TargetKV){
             this.HV.Set_Voltage(this.CurrentSetKV);
             log.Append_To_Log(String.format("Conditioning|| Voltage set to: %s",CurrentSetKV));
             _Wait_Ramping(this.CurrentSetKV, this.CurrentSetMA);
@@ -222,15 +223,15 @@ public class ConditioningHandler extends Thread{
     private void _MAInitialRamp(){
         System.out.println("Starting Ma Ramp");
         log.Append_To_Log("Conditioning|| Starting MA Initial Ramp");
-        
-        this.NextToSetKV = (this.CurrentSetKV *0.75);
-        _ChangeCurrentTracker(0.0);
+        CurrentSetKV = TargetKV;
+        this.NextToSetKV = (CurrentSetKV *0.75);
+        _ChangeVoltageTracker(0.0);
         
         this.HV.Set_Voltage(this.CurrentSetKV);
         log.Append_To_Log(String.format("Conditioning|| Voltage set to: %s",CurrentSetKV));
         _Wait_Ramping(this.CurrentSetKV, this.CurrentSetMA);
         
-        while(CurrentSetMA < TargetMA){
+        while(CurrentSetMA <= TargetMA){
             this.HV.Set_Current(CurrentSetMA);
             log.Append_To_Log(String.format("Conditioning|| Current set to: %s",CurrentSetMA));
             _Wait_Ramping(this.CurrentSetKV, this.CurrentSetMA);
@@ -240,10 +241,11 @@ public class ConditioningHandler extends Thread{
             while(_Time_Before_Check(TimeEnd)){
                 CheckXrayStatus(false);
             }
+            
             _ChangeCurrentTracker(MAStepSize);
             log.Append_To_Log("Conditioning|| Stepping up");
         }
-        
+        _ChangeCurrentTracker(MAStepSize);
         System.out.println("MA Ramp Complete");
         log.Append_To_Log("Conditioning|| Finished MA Initial Ramp");
     }
@@ -251,7 +253,7 @@ public class ConditioningHandler extends Thread{
         System.out.println("Starting KV Reramp");
         log.Append_To_Log("Conditioning|| Starting KV Re-ramp");
         
-        while(CurrentSetKV < TargetKV){
+        while(CurrentSetKV <= TargetKV){
             
             this.HV.Set_Voltage(CurrentSetKV);
             log.Append_To_Log(String.format("Conditioning|| Voltage set to: %s",CurrentSetKV));
@@ -277,13 +279,15 @@ public class ConditioningHandler extends Thread{
         
         System.out.println("Starting On Off Cycles");
         log.Append_To_Log("Conditioning|| Starting On/Off Cycles");
-        for (int count = 0; count < this.OnOffCycleCount; count++) {
-            
+        for (int count = 1; count <= this.OnOffCycleCount; count++) {
+            log.Append_To_Log(String.format("Conditioning|| On Off cycle %s",count));
             log.Append_To_Log(String.format("Conditioning|| Turning on for: %s min",OnTime));
             this.HV.Xray_On();
             log.Append_To_Log("Conditioning|| Xray Commanded On");
-            this.HV.Set_Voltage(TargetKV);
-            this.HV.Set_Current(TargetMA);
+            CurrentSetKV = TargetKV;
+            CurrentSetMA = TargetMA;
+            this.HV.Set_Voltage(CurrentSetKV);
+            this.HV.Set_Current(CurrentSetMA);
             log.Append_To_Log(String.format("Conditioning|| Voltage set to: %s, Current set to: %s",TargetKV,TargetMA));
             _Wait_Ramping(TargetKV,TargetMA);
 
@@ -356,6 +360,7 @@ public class ConditioningHandler extends Thread{
     public void Stop_Conditioning(){
         System.out.println("Stoping");
         log.Append_To_Log("Conditioning|| Stop command called");
+        _TearDown();
         int stop_attempt = 0;
         
         while (this.isAlive() && stop_attempt<3){

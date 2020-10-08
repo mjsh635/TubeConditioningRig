@@ -641,18 +641,12 @@
                                   <Group type="103" groupAlignment="1" attributes="0">
                                       <Group type="102" attributes="0">
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="ArcMAStepLabel" alignment="1" min="-2" max="-2" attributes="0"/>
                                               <Component id="ArcRecoveryTimeLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                                              <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                                                  <Component id="TotalArcsBeforeStopLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="ArcKVStepLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                                              </Group>
+                                              <Component id="TotalArcsBeforeStopLabel" alignment="1" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                               <Component id="ArcRecoveryTimeTBox" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="ArcMAStepTBox" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="ArcKVStepTBox" alignment="0" max="32767" attributes="0"/>
                                               <Component id="TotalArcsBeforeStopTBox" min="-2" pref="47" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
@@ -668,7 +662,7 @@
                                           </Group>
                                       </Group>
                                   </Group>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="197" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -741,17 +735,7 @@
                               <Component id="TotalArcsBeforeStopTBox" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="TotalArcsBeforeStopLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="ArcKVStepTBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="ArcKVStepLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="ArcMAStepTBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="ArcMAStepLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="ArcRecoveryTimeTBox" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="ArcRecoveryTimeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -874,26 +858,6 @@
                 <Component class="javax.swing.JTextField" name="TotalArcsBeforeStopTBox">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0.0"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JTextField" name="ArcMAStepTBox">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="0.0"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JTextField" name="ArcKVStepTBox">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="0.0"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="ArcKVStepLabel">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Arc kv Step:"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="ArcMAStepLabel">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Arc mA Step:"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="ArcRecoveryTimeTBox">

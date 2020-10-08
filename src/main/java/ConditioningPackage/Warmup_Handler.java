@@ -46,7 +46,7 @@ public class Warmup_Handler extends Thread {
         this.TargetMA = Double.valueOf(this.MATBox.getText());
         this.FilCur =  Double.valueOf(this.FilCurTBox.getText());
         this.PreHeat = Double.valueOf(this.PreHeatTBox.getText());
-        log.Append_To_Log("Warmup Started: 7 minute");
+        log.Append_To_Log("Warmup|| Started: 7 minute");
         int stepCount = runTime * 3;     
         double kvStepSize = (this.TargetKV - 12.0)/stepCount;
         double maStepSize = (this.TargetMA - 0.5)/stepCount;
@@ -54,7 +54,7 @@ public class Warmup_Handler extends Thread {
         this.supply.Set_Current(0.5);
         this.supply.Set_Filament_Limit(this.FilCur);
         this.supply.Set_Filament_Preheat(this.PreHeat);
-        log.Append_To_Log(String.format("Warmup|| Setting Voltage:%s ,Current: %s,Filament Limit: %s,Pre-Heat: %s",
+        log.Append_To_Log(String.format("Warmup|| Target Voltage:%s , Target Current: %s,Filament Limit: %s,Pre-Heat: %s",
         this.TargetKV,this.TargetMA,this.FilCur,this.PreHeat));
         
         /////////////this.supply.Xray_On();

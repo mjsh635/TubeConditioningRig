@@ -130,10 +130,6 @@ public class SupplyScreen extends javax.swing.JFrame {
         OnOffCycleTimeOnTBox = new javax.swing.JTextField();
         TotalArcsBeforeStopLabel = new javax.swing.JLabel();
         TotalArcsBeforeStopTBox = new javax.swing.JTextField();
-        ArcMAStepTBox = new javax.swing.JTextField();
-        ArcKVStepTBox = new javax.swing.JTextField();
-        ArcKVStepLabel = new javax.swing.JLabel();
-        ArcMAStepLabel = new javax.swing.JLabel();
         ArcRecoveryTimeTBox = new javax.swing.JTextField();
         ArcRecoveryTimeLabel = new javax.swing.JLabel();
         PreHeatLabel = new javax.swing.JLabel();
@@ -544,14 +540,6 @@ public class SupplyScreen extends javax.swing.JFrame {
 
         TotalArcsBeforeStopTBox.setText("0.0");
 
-        ArcMAStepTBox.setText("0.0");
-
-        ArcKVStepTBox.setText("0.0");
-
-        ArcKVStepLabel.setText("Arc kv Step:");
-
-        ArcMAStepLabel.setText("Arc mA Step:");
-
         ArcRecoveryTimeTBox.setText("0.0");
 
         ArcRecoveryTimeLabel.setText("Arc Recovery Time(min):");
@@ -608,16 +596,11 @@ public class SupplyScreen extends javax.swing.JFrame {
                         .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(ConditioningSettingsPanelLayout.createSequentialGroup()
                                 .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(ArcMAStepLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(ArcRecoveryTimeLabel, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(TotalArcsBeforeStopLabel)
-                                        .addComponent(ArcKVStepLabel, javax.swing.GroupLayout.Alignment.TRAILING)))
+                                    .addComponent(TotalArcsBeforeStopLabel, javax.swing.GroupLayout.Alignment.TRAILING))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(ArcRecoveryTimeTBox)
-                                    .addComponent(ArcMAStepTBox)
-                                    .addComponent(ArcKVStepTBox)
                                     .addComponent(TotalArcsBeforeStopTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(ConditioningSettingsPanelLayout.createSequentialGroup()
                                 .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -627,7 +610,7 @@ public class SupplyScreen extends javax.swing.JFrame {
                                 .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(PreHeatTBox)
                                     .addComponent(FillCurrTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 197, Short.MAX_VALUE))
                     .addGroup(ConditioningSettingsPanelLayout.createSequentialGroup()
                         .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(OnOffCycleTimeOffTBox)
@@ -682,15 +665,7 @@ public class SupplyScreen extends javax.swing.JFrame {
                 .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TotalArcsBeforeStopTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(TotalArcsBeforeStopLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ArcKVStepTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ArcKVStepLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ArcMAStepTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ArcMAStepLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(63, 63, 63)
                 .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ArcRecoveryTimeTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ArcRecoveryTimeLabel))
@@ -880,6 +855,7 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.supply.Xray_Off();
         //this.AROH.StartReading = false;
         
+        
     }//GEN-LAST:event_XrayOffButtonActionPerformed
 
     private void StopWarmupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopWarmupButtonActionPerformed
@@ -890,6 +866,7 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.warmup = new Warmup_Handler(this.supply, this.WarmupSelectionButtonGroup, this.WarmUpProgressBar,
                 this.WarmVoltageTBox,this.WarmCurrentTBox,this.FillCurrTBox,this.PreHeatTBox, log);
         this.XrayOnButton.setEnabled(true);
+        this.StartConditioningButton.setEnabled(true);
     }//GEN-LAST:event_StopWarmupButtonActionPerformed
 
     private void StartWarmupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartWarmupButtonActionPerformed
@@ -898,6 +875,7 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.RadioButton15min.setActionCommand("15");
         this.warmup.start();
         this.XrayOnButton.setEnabled(false);
+        this.StartConditioningButton.setEnabled(false);
         this.AROH.StartReading = true;
     }//GEN-LAST:event_StartWarmupButtonActionPerformed
 
@@ -911,44 +889,22 @@ public class SupplyScreen extends javax.swing.JFrame {
         }
         //this.AROH.StartReading = false;
         this.XrayOnButton.setEnabled(true);
+        this.StartConditioningButton.setEnabled(true);
+        this.StartWarmupButton.setEnabled(true);
         
     }//GEN-LAST:event_StopConditioningButtonActionPerformed
 
     private void StartConditioningButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartConditioningButtonActionPerformed
+        SaveButtonActionPerformed(evt);
         ch = new ConditioningHandler(sh.appsettings, supply,this.ConditioningProgressBar, log);
         System.out.println("Starting Conditioning");
         ch.start();
         this.XrayOnButton.setEnabled(false);
+        this.StartConditioningButton.setEnabled(false);
+        this.StartWarmupButton.setEnabled(false);
         this.AROH.StartReading = true;
         
     }//GEN-LAST:event_StartConditioningButtonActionPerformed
-
-    private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
-        sh.appsettings.FilamentCurrentLimit = this.FillCurrTBox.getText();
-        sh.appsettings.FilamentPreHeat = this.PreHeatTBox.getText();
-        sh.appsettings.WarmupKV = this.WarmVoltageTBox.getText();
-        sh.appsettings.WarmupMA = this.WarmCurrentTBox.getText();
-        sh.appsettings.TotalStepCount = this.TotalStepCountTBox.getText();
-        sh.appsettings.TimeBetweenSteps = this.TimeBetweenStepsTBox.getText();
-        sh.appsettings.StartingKV = this.StartingKVTBox.getText();
-        sh.appsettings.StartingMA = this.StartingMATBox.getText();
-        sh.appsettings.TargetKV = this.TargetKVTBox.getText();
-        sh.appsettings.TargetMA = this.TargetMATBox.getText();
-        sh.appsettings.NumberOnOffCycles = this.NumberOfOnOffCyclesTBox.getText();
-        sh.appsettings.OnCycleTime = this.OnOffCycleTimeOnTBox.getText();
-        sh.appsettings.OffCycleTime = this.OnOffCycleTimeOffTBox.getText();
-        sh.appsettings.TotalArcsBeforeStop = this.TotalArcsBeforeStopTBox.getText();
-        sh.appsettings.ArcMAStep = this.ArcMAStepTBox.getText();
-        sh.appsettings.ArcKVStep = this.ArcKVStepTBox.getText();
-        sh.appsettings.ArcRecoveryTime = this.ArcRecoveryTimeTBox.getText();
-        this.sh.SaveSettings();
-    }//GEN-LAST:event_SaveButtonActionPerformed
-
-    private void LaodDefaultButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LaodDefaultButtonActionPerformed
-        this.sh.Reset_To_Default();
-        
-        this.Load_Settings();
-    }//GEN-LAST:event_LaodDefaultButtonActionPerformed
 
     private void TubeSerialNumberTBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TubeSerialNumberTBoxActionPerformed
         this.SerialNumber = this.TubeSerialNumberTBox.getText();
@@ -967,6 +923,34 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.supply = new DXM(this.IPAddress,this.port);
         this.update_UI();
     }//GEN-LAST:event_ReconnectToSupplyButtonActionPerformed
+
+    private void LaodDefaultButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LaodDefaultButtonActionPerformed
+        this.sh.Reset_To_Default();
+
+        this.Load_Settings();
+    }//GEN-LAST:event_LaodDefaultButtonActionPerformed
+
+    private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
+        System.out.println("Saving");
+        sh.appsettings.FilamentCurrentLimit = this.FillCurrTBox.getText();
+        sh.appsettings.FilamentPreHeat = this.PreHeatTBox.getText();
+        sh.appsettings.WarmupKV = this.WarmVoltageTBox.getText();
+        sh.appsettings.WarmupMA = this.WarmCurrentTBox.getText();
+        sh.appsettings.TotalStepCount = this.TotalStepCountTBox.getText();
+        sh.appsettings.TimeBetweenSteps = this.TimeBetweenStepsTBox.getText();
+        sh.appsettings.StartingKV = this.StartingKVTBox.getText();
+        sh.appsettings.StartingMA = this.StartingMATBox.getText();
+        sh.appsettings.TargetKV = this.TargetKVTBox.getText();
+        sh.appsettings.TargetMA = this.TargetMATBox.getText();
+        sh.appsettings.NumberOnOffCycles = this.NumberOfOnOffCyclesTBox.getText();
+        sh.appsettings.OnCycleTime = this.OnOffCycleTimeOnTBox.getText();
+        sh.appsettings.OffCycleTime = this.OnOffCycleTimeOffTBox.getText();
+        sh.appsettings.TotalArcsBeforeStop = this.TotalArcsBeforeStopTBox.getText();
+        sh.appsettings.ArcMAStep = "0";
+        sh.appsettings.ArcKVStep = "0";
+        sh.appsettings.ArcRecoveryTime = this.ArcRecoveryTimeTBox.getText();
+        this.sh.SaveSettings();
+    }//GEN-LAST:event_SaveButtonActionPerformed
     
     private void Load_Settings(){
         this.FillCurrTBox.setText(sh.appsettings.FilamentCurrentLimit);
@@ -983,8 +967,7 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.OnOffCycleTimeOnTBox.setText(sh.appsettings.OnCycleTime);
         this.OnOffCycleTimeOffTBox.setText(sh.appsettings.OffCycleTime);
         this.TotalArcsBeforeStopTBox.setText(sh.appsettings.TotalArcsBeforeStop);
-        this.ArcMAStepTBox.setText(sh.appsettings.ArcMAStep);
-        this.ArcKVStepTBox.setText(sh.appsettings.ArcKVStep);
+        
         this.ArcRecoveryTimeTBox.setText(sh.appsettings.ArcRecoveryTime);
                 
     }
@@ -1028,10 +1011,6 @@ public class SupplyScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel ArcKVStepLabel;
-    private javax.swing.JTextField ArcKVStepTBox;
-    private javax.swing.JLabel ArcMAStepLabel;
-    private javax.swing.JTextField ArcMAStepTBox;
     private javax.swing.JLabel ArcRecoveryTimeLabel;
     private javax.swing.JTextField ArcRecoveryTimeTBox;
     private javax.swing.JLabel ConditionCurrentReadLabel;

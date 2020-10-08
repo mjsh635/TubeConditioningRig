@@ -60,12 +60,12 @@ public class SetupFrame extends javax.swing.JFrame {
     String settingPathRaw;
     SettingsHandler setupSettingsHandler;
     String workingPath = System.getProperty("user.dir");
-    String LogFolderPath = workingPath+"\\LogFiles";
+    String LogFolderPath = workingPath+"/LogFiles/";
     SettingsHandler sh;
     
     public SetupFrame() {
         initComponents();
-        sh = new SettingsHandler(workingPath+"\\setupSettings.obj",true);
+        sh = new SettingsHandler(workingPath+"/setupSettings.obj",true);
         this.Supply1IPAddressTBox.setText(sh.setupSettings.Supply1IP);
         this.Supply1PortTBox.setText(sh.setupSettings.Supply1Port);
         this.Supply1UseCheckbox.setSelected(sh.setupSettings.Use1);
@@ -446,10 +446,10 @@ public class SetupFrame extends javax.swing.JFrame {
     public void SettingsFileSelection(){
             String s = workingPath;
             if (Files.isDirectory(Paths.get(s))){
-                this.SettingsFilePath = s+"\\Settings.obj";
-                this.SettingsFilePath1 = s+"\\Settings1.obj";
-                this.SettingsFilePath2 = s+"\\Settings2.obj";
-                this.SettingsFilePath3 = s+"\\Settings3.obj";
+                this.SettingsFilePath = s+"/Settings.obj";
+                this.SettingsFilePath1 = s+"/Settings1.obj";
+                this.SettingsFilePath2 = s+"/Settings2.obj";
+                this.SettingsFilePath3 = s+"/Settings3.obj";
             }
             else{
                 
