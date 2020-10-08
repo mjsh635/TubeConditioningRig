@@ -29,6 +29,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashSet;
 
 /**
  *
@@ -55,11 +56,32 @@ public class SetupFrame extends javax.swing.JFrame {
     String SettingsFilePath1 = "";
     String SettingsFilePath2 = "";
     String SettingsFilePath3 = "";
-    String LogFolderPath;
+    
     String settingPathRaw;
+    SettingsHandler setupSettingsHandler;
+    String workingPath = System.getProperty("user.dir");
+    String LogFolderPath = workingPath+"\\LogFiles";
+    SettingsHandler sh;
     
     public SetupFrame() {
         initComponents();
+        sh = new SettingsHandler(workingPath+"\\setupSettings.obj",true);
+        this.Supply1IPAddressTBox.setText(sh.setupSettings.Supply1IP);
+        this.Supply1PortTBox.setText(sh.setupSettings.Supply1Port);
+        this.Supply1UseCheckbox.setSelected(sh.setupSettings.Use1);
+        
+        this.Supply2IPAddressTBox.setText(sh.setupSettings.Supply2IP);
+        this.Supply2PortTBox.setText(sh.setupSettings.Supply2Port);
+        this.Supply2UseCheckbox1.setSelected(sh.setupSettings.Use2);
+        
+        this.Supply3IPAddressTBox.setText(sh.setupSettings.Supply3IP);
+        this.Supply3PortTBox.setText(sh.setupSettings.Supply3Port);
+        this.Supply3UseCheckbox2.setSelected(sh.setupSettings.Use3);
+        
+        this.Supply4IPAddressTBox.setText(sh.setupSettings.Supply4IP);
+        this.Supply4PortTBox.setText(sh.setupSettings.Supply4Port);
+        this.Supply4UseCheckbox4.setSelected(sh.setupSettings.Use4);
+        
     }
 
     /**
@@ -100,10 +122,6 @@ public class SetupFrame extends javax.swing.JFrame {
         Supply4PortLabel = new JLabel();
         Supply4PortTBox = new JTextField();
         ContinueButton = new JButton();
-        LogFileLocationTBox = new JTextField();
-        LogFileLocationButton = new JButton();
-        SettingFileLocationButton = new JButton();
-        SettingFileLocationTBox = new JTextField();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Setup Menu");
@@ -337,25 +355,6 @@ public class SetupFrame extends javax.swing.JFrame {
             }
         });
 
-        LogFileLocationTBox.setEditable(false);
-
-        LogFileLocationButton.setText("Select Log File Storage Location");
-        LogFileLocationButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                LogFileLocationButtonActionPerformed(evt);
-            }
-        });
-
-        SettingFileLocationButton.setText("Select Setting File Location");
-        SettingFileLocationButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                SettingFileLocationButtonActionPerformed(evt);
-            }
-        });
-
-        SettingFileLocationTBox.setEditable(false);
-        SettingFileLocationTBox.setText("Z:\\MiscWorkJunk\\JavaTubeConditioner\\Settings.obj");
-
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -374,15 +373,7 @@ public class SetupFrame extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(SupplyPanel2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(SupplyPanel4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(LogFileLocationTBox, GroupLayout.PREFERRED_SIZE, 218, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(LogFileLocationButton))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(SettingFileLocationTBox, GroupLayout.PREFERRED_SIZE, 218, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(SettingFileLocationButton)))
+                                .addComponent(SupplyPanel4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -396,15 +387,7 @@ public class SetupFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                     .addComponent(SupplyPanel2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(SupplyPanel4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(LogFileLocationTBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(LogFileLocationButton))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(SettingFileLocationTBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(SettingFileLocationButton))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(ContinueButton)
                 .addContainerGap())
         );
@@ -434,44 +417,34 @@ public class SetupFrame extends javax.swing.JFrame {
             Supply4Port = Supply4PortTBox.getText();
         }
         this.SettingsFileSelection();
-        System.out.println(this.SettingsFilePath);
-        System.out.println(this.SettingsFilePath1);
-        System.out.println(this.SettingsFilePath2);
-        System.out.println(this.SettingsFilePath3);
+        this.SetupSettingsSave();
         this.WindowMaker();
+        System.out.println(LogFolderPath);
         this.dispose();
         
     }//GEN-LAST:event_ContinueButtonActionPerformed
-
-    private void LogFileLocationButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_LogFileLocationButtonActionPerformed
-        JFileChooser folderChooser = new JFileChooser();
-        folderChooser.setFileSelectionMode(1);
-        int returnVal = folderChooser.showOpenDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION){
-            this.LogFolderPath = folderChooser.getSelectedFile().getPath();
-            
-        }
-        else{
-            this.LogFolderPath = "";
-            
-        }
-        this.LogFileLocationTBox.setText(this.LogFolderPath);
-    }//GEN-LAST:event_LogFileLocationButtonActionPerformed
-    
-    private void SettingFileLocationButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_SettingFileLocationButtonActionPerformed
-       JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(2);
-        fileChooser.setCurrentDirectory(new File("Z:\\MiscWorkJunk\\JavaTubeConditioner"));
-        int returnVal = fileChooser.showOpenDialog(this);
-        if(returnVal == JFileChooser.APPROVE_OPTION){
-            this.settingPathRaw = fileChooser.getSelectedFile().getPath();
-        }else{
-            this.settingPathRaw = "";}
-        this.SettingFileLocationTBox.setText(this.settingPathRaw);
-        SettingsFileSelection();
-    }//GEN-LAST:event_SettingFileLocationButtonActionPerformed
+        
+    private void SetupSettingsSave(){
+        this.sh.setupSettings.Supply1IP = Supply1IPAddressTBox.getText();
+        this.sh.setupSettings.Supply1Port = Supply1PortTBox.getText();
+        this.sh.setupSettings.Use1 = UseSupply1;
+        
+        this.sh.setupSettings.Supply2IP = Supply2IPAddressTBox.getText();
+        this.sh.setupSettings.Supply2Port = Supply2PortTBox.getText();
+        this.sh.setupSettings.Use2 = UseSupply2;
+        
+        this.sh.setupSettings.Supply3IP = Supply3IPAddressTBox.getText();
+        this.sh.setupSettings.Supply3Port = Supply3PortTBox.getText();
+        this.sh.setupSettings.Use3 = UseSupply3;
+        
+        this.sh.setupSettings.Supply4IP = Supply4IPAddressTBox.getText();
+        this.sh.setupSettings.Supply4Port = Supply4PortTBox.getText();
+        this.sh.setupSettings.Use4 = UseSupply4;
+        
+        this.sh.SaveSetupSettings();
+    }
     public void SettingsFileSelection(){
-            String s = this.SettingFileLocationTBox.getText();
+            String s = workingPath;
             if (Files.isDirectory(Paths.get(s))){
                 this.SettingsFilePath = s+"\\Settings.obj";
                 this.SettingsFilePath1 = s+"\\Settings1.obj";
@@ -552,10 +525,6 @@ public class SetupFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private JButton ContinueButton;
-    private JButton LogFileLocationButton;
-    private JTextField LogFileLocationTBox;
-    private JButton SettingFileLocationButton;
-    private JTextField SettingFileLocationTBox;
     private JLabel Supply1IPAddressLabel;
     private JTextField Supply1IPAddressTBox;
     private JLabel Supply1Label;

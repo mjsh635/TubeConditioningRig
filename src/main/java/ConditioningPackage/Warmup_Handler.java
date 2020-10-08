@@ -25,9 +25,11 @@ public class Warmup_Handler extends Thread {
     double TargetMA;
     double FilCur;
     double PreHeat;
+    LoggingController log;
     
     
-    public Warmup_Handler(DXM supply, ButtonGroup btn, JProgressBar progressBar, JTextField kv, JTextField ma, JTextField filCurr, JTextField pre) {
+    public Warmup_Handler(DXM supply, ButtonGroup btn, JProgressBar progressBar, 
+            JTextField kv, JTextField ma, JTextField filCurr, JTextField pre,LoggingController log) {
         this.supply = supply;
         this.btnGroup = btn;
         this.PBar = progressBar;
@@ -35,6 +37,7 @@ public class Warmup_Handler extends Thread {
         this.MATBox = ma;
         this.FilCurTBox = filCurr;
         this.PreHeatTBox =  pre;
+        this.log = log;
     }
     
     public void run(){
@@ -43,7 +46,7 @@ public class Warmup_Handler extends Thread {
         this.TargetMA = Double.valueOf(this.MATBox.getText());
         this.FilCur =  Double.valueOf(this.FilCurTBox.getText());
         this.PreHeat = Double.valueOf(this.PreHeatTBox.getText());
-        System.out.println("Starting " + runTime + " min warmup");
+        log.Append_To_Log("Warmup Started: 7 minute");
         int stepCount = runTime * 3;     
         double kvStepSize = (this.TargetKV - 12.0)/stepCount;
         double maStepSize = (this.TargetMA - 0.5)/stepCount;
@@ -51,9 +54,13 @@ public class Warmup_Handler extends Thread {
         this.supply.Set_Current(0.5);
         this.supply.Set_Filament_Limit(this.FilCur);
         this.supply.Set_Filament_Preheat(this.PreHeat);
+        log.Append_To_Log(String.format("Warmup|| Setting Voltage:%s ,Current: %s,Filament Limit: %s,Pre-Heat: %s",
+        this.TargetKV,this.TargetMA,this.FilCur,this.PreHeat));
+        
         /////////////this.supply.Xray_On();
         int loopnum = 1;
         this.supply.Xray_On();
+        log.Append_To_Log("Warmup|| Xray turned ON");
         while(!this.isInterrupted() && loopnum <= stepCount){
             try{
             Thread.sleep(20000);//sleep 20 seconds
@@ -62,11 +69,14 @@ public class Warmup_Handler extends Thread {
                 this.interrupt();
             }
             System.out.println("Step: " + loopnum);
+            log.Append_To_Log(String.format("Warmup|| Step: %s",loopnum));
             double kvSet = 12.0 + (kvStepSize* loopnum);
             double maSet = 0.5 + (maStepSize * loopnum);
             System.out.println(kvSet + " " + maSet);
             this.supply.Set_Voltage(kvSet);
             this.supply.Set_Current(maSet);
+            log.Append_To_Log(String.format("Warmup|| Setting Voltage:%s ,Current: %s",
+                    kvSet,maSet));
             
         loopnum++;
         double val = ((double)loopnum/(double)stepCount)*100;
@@ -77,6 +87,7 @@ public class Warmup_Handler extends Thread {
     
     public void Stop_Warmup(){
         //if the thread is alive, call interrupt, and wait for join, try 3 times
+        log.Append_To_Log("Warmup|| Stopping warmup");
         int stop_attempt = 0;
         while (this.isAlive() && stop_attempt<3){
             this.interrupt();
@@ -86,7 +97,8 @@ public class Warmup_Handler extends Thread {
                 e.printStackTrace();
             }
             stop_attempt++;
-        }      
+        }
+        log.Append_To_Log("Warmup|| Xrays turned Off");
         this.supply.Xray_Off();
         // shut off supply on Exit
     }}

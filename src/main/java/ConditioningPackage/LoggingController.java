@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.Hashtable;
+import javax.swing.JOptionPane;
 
 public class LoggingController {
     
@@ -73,6 +74,11 @@ public class LoggingController {
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             fw.write(timestamp+" || "+text_to_Append+"\n");
             System.out.println("Appended to Log");
+        }
+        catch(NullPointerException e){
+            JOptionPane.showMessageDialog(null, "No Tube S# Entered, dumping to Missing File");
+            LogFileCreation("MissingSerialNumber");
+            
         }
         catch(IOException e){
             e.printStackTrace();

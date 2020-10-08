@@ -27,6 +27,7 @@ public class SupplyScreen extends javax.swing.JFrame {
     String IPAddress;
     String settingsFilePath;
     String LogFolderPath;
+    LoggingController log;
     int port;
     DXM supply;
     Warmup_Handler warmup;
@@ -45,15 +46,17 @@ public class SupplyScreen extends javax.swing.JFrame {
             this.sh = new SettingsHandler(SettingsFilePath);
             Load_Settings();}
         this.LogFolderPath = LogFolderPath;
+        log = new LoggingController(this.LogFolderPath);
         this.port = Integer.valueOf(port);
         this.supply = new DXM(this.IPAddress,this.port);
         this.update_UI();
         this.warmup = new Warmup_Handler(this.supply, this.WarmupSelectionButtonGroup, this.WarmUpProgressBar,
-                this.WarmVoltageTBox,this.WarmCurrentTBox,this.FillCurrTBox,this.PreHeatTBox);
+                this.WarmVoltageTBox,this.WarmCurrentTBox,this.FillCurrTBox,this.PreHeatTBox, log);
         this.AROH = new AutoReadOutHandler(this.supply, this.VoltageReadoutLabel, 
                 this.CurrentReadoutLabel, this.ConditionVoltageReadTBox, 
                 this.ConditionCurrentReadTBox, this.ConditionFillamentReadTBox);
         this.AROH.start();
+        
     }
     
     public SupplyScreen(){
@@ -844,35 +847,13 @@ public class SupplyScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_CurrentSetTBoxActionPerformed
     
     public void update_UI(){
-        switch (this.supply.modelNumber) {
-                case "X4087":
-                    this.SupplyMaxKVTbox.setText("40.0");
-                    this.SupplyMaxMATBox.setText("30.0");
-                    this.SupplyWattageTBox.setText("1200W");
-                      
-                    break;
-                case "X3481":
-                    this.SupplyMaxKVTbox.setText("30.0");
-                    this.SupplyMaxMATBox.setText("10.0");
-                    this.SupplyWattageTBox.setText("300W");
-                    break;
-                case "X4911":
-                    this.SupplyMaxKVTbox.setText("40.0");
-                    this.SupplyMaxMATBox.setText("15.0");
-                    this.SupplyWattageTBox.setText("600W");
-                    break;
-                case "X4313":
-                    this.SupplyMaxKVTbox.setText("30.0");
-                    this.SupplyMaxMATBox.setText("20.0");
-                    this.SupplyWattageTBox.setText("600W");
-                    break;
-                default:
-                    this.SupplyMaxKVTbox.setText("0.0");
-                    this.SupplyMaxMATBox.setText("0.0");
-                    this.SupplyWattageTBox.setText("0W");
-                    break;
+       
+                    this.SupplyMaxKVTbox.setText(this.supply.MaxKV.toString());
+                    this.SupplyMaxMATBox.setText(this.supply.MaxMA.toString());
+                    this.SupplyWattageTBox.setText(this.supply.MaxWatt.toString());
+                    
                      
-    }
+    
     }
     private void XrayOnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_XrayOnButtonActionPerformed
         Double voltage = Double.valueOf(this.VoltageSetTBox.getText());
@@ -880,19 +861,22 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.supply.Set_Filament_Limit(Double.valueOf(this.FillCurrTBox.getText()));
         this.supply.Set_Filament_Preheat(Double.valueOf(this.PreHeatTBox.getText()));
         
+        log.Append_To_Log(String.format("Manual|| Voltage: %s, Current: %s",voltage,current));
         if(this.supply.Is_Emmitting()){
             this.supply.Set_Voltage(voltage);
             this.supply.Set_Current(current);
         }else{
             this.supply.Set_Voltage(voltage);
             this.supply.Set_Current(current);
+            log.Append_To_Log("Manual|| Xrays on");
             this.supply.Xray_On();
         }
-        //this.AROH.StartReading = true;
+        this.AROH.StartReading = true;
         
     }//GEN-LAST:event_XrayOnButtonActionPerformed
 
     private void XrayOffButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_XrayOffButtonActionPerformed
+        log.Append_To_Log("Manual|| Xrays off");
         this.supply.Xray_Off();
         //this.AROH.StartReading = false;
         
@@ -904,7 +888,7 @@ public class SupplyScreen extends javax.swing.JFrame {
             this.StartWarmupButton.setEnabled(true);    
         }
         this.warmup = new Warmup_Handler(this.supply, this.WarmupSelectionButtonGroup, this.WarmUpProgressBar,
-                this.WarmVoltageTBox,this.WarmCurrentTBox,this.FillCurrTBox,this.PreHeatTBox);
+                this.WarmVoltageTBox,this.WarmCurrentTBox,this.FillCurrTBox,this.PreHeatTBox, log);
         this.XrayOnButton.setEnabled(true);
     }//GEN-LAST:event_StopWarmupButtonActionPerformed
 
@@ -914,17 +898,12 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.RadioButton15min.setActionCommand("15");
         this.warmup.start();
         this.XrayOnButton.setEnabled(false);
-        //this.AROH.StartReading = true;
+        this.AROH.StartReading = true;
     }//GEN-LAST:event_StartWarmupButtonActionPerformed
 
     private void WarmCurrentTBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WarmCurrentTBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_WarmCurrentTBoxActionPerformed
-
-    private void ReconnectToSupplyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReconnectToSupplyButtonActionPerformed
-        this.supply = new DXM(this.IPAddress,this.port);
-        this.update_UI();
-    }//GEN-LAST:event_ReconnectToSupplyButtonActionPerformed
 
     private void StopConditioningButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopConditioningButtonActionPerformed
         if(ch.isAlive()){
@@ -936,10 +915,11 @@ public class SupplyScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_StopConditioningButtonActionPerformed
 
     private void StartConditioningButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartConditioningButtonActionPerformed
-        ch = new ConditioningHandler(sh.appsettings, supply,this.ConditioningProgressBar);
+        ch = new ConditioningHandler(sh.appsettings, supply,this.ConditioningProgressBar, log);
         System.out.println("Starting Conditioning");
         ch.start();
         this.XrayOnButton.setEnabled(false);
+        this.AROH.StartReading = true;
         
     }//GEN-LAST:event_StartConditioningButtonActionPerformed
 
@@ -974,12 +954,19 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.SerialNumber = this.TubeSerialNumberTBox.getText();
         System.out.println(this.SerialNumber);
         this.TubeSerialNumberTBox.setBackground(Color.lightGray);
+        log.LogFileCreation(this.SerialNumber);
+        sh.appsettings.TubeSerialNumber = this.SerialNumber;
         
     }//GEN-LAST:event_TubeSerialNumberTBoxActionPerformed
 
     private void TubeSerialNumberTBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TubeSerialNumberTBoxMouseClicked
         this.TubeSerialNumberTBox.setBackground(Color.white);
     }//GEN-LAST:event_TubeSerialNumberTBoxMouseClicked
+
+    private void ReconnectToSupplyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReconnectToSupplyButtonActionPerformed
+        this.supply = new DXM(this.IPAddress,this.port);
+        this.update_UI();
+    }//GEN-LAST:event_ReconnectToSupplyButtonActionPerformed
     
     private void Load_Settings(){
         this.FillCurrTBox.setText(sh.appsettings.FilamentCurrentLimit);

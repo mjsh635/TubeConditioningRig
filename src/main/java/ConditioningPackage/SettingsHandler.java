@@ -19,6 +19,7 @@ import java.nio.file.Paths;
  */
 public class SettingsHandler {
     Settings appsettings;
+    SetupSettings setupSettings;
     String settingsFilePath;
     File file;
     
@@ -38,11 +39,36 @@ public class SettingsHandler {
         this.loadSettings();
         
     }
+    public SettingsHandler(String Path, boolean UseSetupSettings){
+        this.settingsFilePath = Path;
+        file = new File(settingsFilePath);
+        if (!Files.exists(Paths.get(file.getPath()))){
+            try{
+                System.out.println("No file, making new");
+                this.file.createNewFile();
+                SetSetupDefaultSettings();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }    
+        }
+        this.loadSetupSettings();
+    }
     
     private void loadSettings(){
         try (FileInputStream fis = new FileInputStream(this.settingsFilePath);
                 ObjectInputStream ois = new ObjectInputStream(fis)) {
             this.appsettings = (Settings)ois.readObject();
+
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    private void loadSetupSettings(){
+        try (FileInputStream fis = new FileInputStream(this.settingsFilePath);
+                ObjectInputStream ois = new ObjectInputStream(fis)) {
+            this.setupSettings = (SetupSettings)ois.readObject();
 
         }
         catch(Exception e){
@@ -58,6 +84,20 @@ public class SettingsHandler {
         try(FileOutputStream fos = new FileOutputStream(this.file);ObjectOutputStream oos = new ObjectOutputStream(fos)){
             
             oos.writeObject(defaultSettings);
+            oos.flush();
+            
+        }catch(Exception e){
+            e.printStackTrace();
+        }  
+    }
+    public void SetSetupDefaultSettings(){
+        SetupSettings defaultSetupSettings = new SetupSettings();
+        
+        defaultSetupSettings.Defaults();
+        
+        try(FileOutputStream fos = new FileOutputStream(this.file);ObjectOutputStream oos = new ObjectOutputStream(fos)){
+            
+            oos.writeObject(defaultSetupSettings);
             oos.flush();
             
         }catch(Exception e){
@@ -80,17 +120,18 @@ public class SettingsHandler {
             e.printStackTrace();
         }
     }
-    
-    
-    
-//    public static void main(String[] args) {
-//        
-//        SettingsHandler sh = new SettingsHandler("Z:\\MiscWorkJunk\\JavaTubeConditioner\\TubeConditioningRig\\Settings.obj");
-//        //sh.SetDefaultSettings();
-//        sh.loadSettings();
-//        sh.print();
-//        sh.appsettings.ArcKVStep = "12";
-//        sh.SaveSettings();
-//        sh.print();
-//    }
+    public void SaveSetupSettings(){
+        
+        try(FileOutputStream fos = new FileOutputStream(this.file);ObjectOutputStream oos = new ObjectOutputStream(fos)){
+            
+            oos.writeObject(this.setupSettings);
+            oos.flush();
+            
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }
+    
+    
+

@@ -17,7 +17,7 @@ public class AutoReadOutHandler extends Thread {
     JLabel volt;
     JLabel curr;
     JTextField voltTF,currTF,FillTF;
-    boolean StartReading = true;
+    boolean StartReading = false;
     
     public AutoReadOutHandler(DXM supply, JLabel ManualVoltageDisplay,JLabel ManualCurrentDisplay, 
             JTextField VoltField, JTextField CurrField, JTextField FillTextField) {

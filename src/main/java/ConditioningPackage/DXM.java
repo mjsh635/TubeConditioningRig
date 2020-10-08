@@ -35,6 +35,9 @@ public class DXM {
     boolean InterlockOpen = false;
     boolean FaultPresent = false;
     boolean RemoteMode = false;
+    Double MaxKV = 0.0;
+    Double MaxMA = 0.0;
+    Double MaxWatt = 0.0;
     Double voltageScaleFactor;
     Double currentScaleFactor;
     Lock SendCommandLock = new ReentrantLock();
@@ -314,6 +317,9 @@ public class DXM {
     }
 
     private void _Set_Voltage(double value) {
+        if(value >= this.MaxKV){
+            value = this.MaxKV;
+        }
         try {
             int scaledValue = 0;
             scaledValue = (int) Math.round(Double.valueOf(value) / voltageScaleFactor);
@@ -326,6 +332,9 @@ public class DXM {
     }
 
     private void _Set_Current(double value) {
+        if(value >= this.MaxMA){
+            value = this.MaxMA;
+        }
         try {
             int scaledValue = 0;
             scaledValue = (int) Math.round(Double.valueOf(value) / currentScaleFactor);
@@ -497,12 +506,59 @@ public class DXM {
                     this.voltageScaleFactor = 0.0;
                     this.currentScaleFactor = 0.0;
             }
+            
             this.modelNumber = model;
+            _Supply_Limits();
             return model;
         } catch (ArrayIndexOutOfBoundsException OB) {
             System.out.println(OB);
             throw new Error("ERR001");
         }
+    }
+    
+    private void _Supply_Limits(){
+        switch (this.modelNumber) //if the model type is DXM based, switch to X####, else use X####
+            {
+                
+                case "X3481":
+                    this.MaxKV = 30.0;
+                    this.MaxMA = 10.0;
+                    this.MaxWatt = 300.0;
+                    break;
+                
+                case "X413":
+                    this.MaxKV = 30.0;
+                    this.MaxMA = 20.0;
+                    this.MaxWatt = 600.0;
+                    break;
+                
+                case "X4911":
+                    this.MaxKV = 40.0;
+                    this.MaxMA = 15.0;
+                    this.MaxWatt = 600.0;
+                    break;
+                
+                case "X4087":
+                    this.MaxKV = 40.0;
+                    this.MaxMA = 30.0;
+                    this.MaxWatt = 1200.0;
+                    break;
+                case "DXM41":
+                    this.MaxKV = 75.0;
+                    this.MaxMA = 16.0;
+                    this.MaxWatt = 1200.0;
+                    break;
+                case "X4974":
+                    this.MaxKV = 0.0;
+                    this.MaxMA = 0.0;
+                    this.MaxWatt = 1200.0;
+                    break;
+                    
+                default:
+                    this.MaxKV = 0.0;
+                    this.MaxMA = 0.0;
+                    this.MaxWatt = 0.0;
+            }
     }
 
     private void _Set_Mode_Remote() {
@@ -545,7 +601,7 @@ public class DXM {
             
         } catch (SocketTimeoutException STE) {
             System.out.println(String.format("Communication Timeout on Address: %s", this.address));
-            STE.printStackTrace();
+            //STE.printStackTrace();
             this.connected = false;
         } catch (Exception e) {
             e.printStackTrace();
