@@ -58,24 +58,18 @@
                       <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="XrayOnOffPanel" min="-2" max="-2" attributes="0"/>
-                                  <Component id="ReconnectToSupplyButton" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="XrayOnOffPanel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="WarmupPanel" max="32767" attributes="0"/>
                           </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="TubeSerialNumberLabel" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="TubeSerialNumberLabel" min="-2" pref="109" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="TubeSerialNumberTBox" min="-2" pref="221" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="SupplySettingsPanel" max="32767" attributes="0"/>
-                          <Component id="WarmupPanel" max="32767" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -84,24 +78,15 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="SupplySettingsPanel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="WarmupPanel" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="XrayOnOffPanel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="ReconnectToSupplyButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="TubeSerialNumberTBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="TubeSerialNumberLabel" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="XrayOnOffPanel" min="-2" max="-2" attributes="0"/>
+                          <Component id="WarmupPanel" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="TubeSerialNumberTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="TubeSerialNumberLabel" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="92" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -126,14 +111,14 @@
                                   <Component id="VoltageReadoutLabel" min="-2" pref="148" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="CurrentReadoutLabel" min="-2" pref="146" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="10" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="20" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
                                   <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="TitleLabel" max="32767" attributes="0"/>
                                       <Group type="102" attributes="0">
-                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Group type="103" groupAlignment="0" attributes="0">
                                               <Group type="102" alignment="0" attributes="0">
                                                   <Component id="kvLabel" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
@@ -141,15 +126,15 @@
                                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                                   <Component id="maLabel" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="CurrentSetTBox" max="32767" attributes="0"/>
+                                                  <Component id="CurrentSetTBox" min="-2" pref="122" max="-2" attributes="0"/>
                                               </Group>
                                               <Group type="102" alignment="0" attributes="0">
-                                                  <Component id="XrayOnButton" linkSize="3" pref="139" max="32767" attributes="0"/>
+                                                  <Component id="XrayOnButton" max="32767" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="XrayOffButton" linkSize="3" pref="146" max="32767" attributes="0"/>
+                                                  <Component id="XrayOffButton" min="-2" pref="146" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
-                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                          <EmptySpace min="0" pref="20" max="32767" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="VoltageLabel" max="32767" attributes="0"/>
@@ -294,94 +279,6 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JPanel" name="SupplySettingsPanel">
-              <Properties>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
-                    <EtchetBorder/>
-                  </Border>
-                </Property>
-              </Properties>
-
-              <Layout>
-                <DimensionLayout dim="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="SupplyMaxKVLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="SupplyWattageLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="SupplyMaxMaLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="SupplyWattageTBox" pref="50" max="32767" attributes="0"/>
-                              <Component id="SupplyMaxKVTbox" alignment="1" max="32767" attributes="0"/>
-                              <Component id="SupplyMaxMATBox" alignment="1" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                </DimensionLayout>
-                <DimensionLayout dim="1">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="SupplyWattageTBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="SupplyWattageLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="SupplyMaxKVTbox" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="SupplyMaxKVLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="SupplyMaxMATBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="SupplyMaxMaLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace pref="77" max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
-                </DimensionLayout>
-              </Layout>
-              <SubComponents>
-                <Component class="javax.swing.JTextField" name="SupplyWattageTBox">
-                  <Properties>
-                    <Property name="editable" type="boolean" value="false"/>
-                    <Property name="text" type="java.lang.String" value="0.0"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="SupplyWattageLabel">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Supply Wattage:"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JTextField" name="SupplyMaxKVTbox">
-                  <Properties>
-                    <Property name="editable" type="boolean" value="false"/>
-                    <Property name="text" type="java.lang.String" value="0.0"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="SupplyMaxKVLabel">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Supply Max kV:"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="SupplyMaxMaLabel">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Supply Max mA:"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JTextField" name="SupplyMaxMATBox">
-                  <Properties>
-                    <Property name="editable" type="boolean" value="false"/>
-                    <Property name="text" type="java.lang.String" value="0.0"/>
-                  </Properties>
-                </Component>
-              </SubComponents>
-            </Container>
             <Container class="javax.swing.JPanel" name="WarmupPanel">
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -429,6 +326,15 @@
                                       </Group>
                                   </Group>
                               </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="WarmMinKVLabel" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="WarmMinVoltageTBox" max="32767" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="WarmMinMALabel" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="WarmMinCurrentTBox" min="-2" pref="45" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -451,7 +357,16 @@
                               <Component id="WarmKVLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="WarmMALabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="13" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="WarmMinKVLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                                  <Component id="WarmMinCurrentTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="WarmMinMALabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="WarmMinVoltageTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="StartWarmupButton" linkSize="5" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="StopWarmupButton" linkSize="5" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
@@ -543,16 +458,37 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="WarmCurrentTBoxActionPerformed"/>
                   </Events>
                 </Component>
+                <Component class="javax.swing.JLabel" name="WarmMinKVLabel">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Tahoma" size="14" style="0"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Min kV"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="WarmMinVoltageTBox">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0.0"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="WarmMinMALabel">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Tahoma" size="14" style="0"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Min mA"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="WarmMinCurrentTBox">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0.0"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="WarmMinCurrentTBoxActionPerformed"/>
+                  </Events>
+                </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JButton" name="ReconnectToSupplyButton">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Reconnect To Supply"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ReconnectToSupplyButtonActionPerformed"/>
-              </Events>
-            </Component>
             <Component class="javax.swing.JTextField" name="TubeSerialNumberTBox">
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="TubeSerialNumberTBoxMouseClicked"/>
@@ -662,7 +598,15 @@
                                           </Group>
                                       </Group>
                                   </Group>
-                                  <EmptySpace min="0" pref="197" max="32767" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="PerformKVRampCheckBox" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="PerformOnOffCyclesCheckBox" alignment="1" min="-2" max="-2" attributes="0"/>
+                                          <Component id="PerformKVRerampCheckBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="PerformMARampCheckBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
                               </Group>
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -731,19 +675,33 @@
                           <EmptySpace min="0" pref="9" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="TotalArcsBeforeStopTBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="TotalArcsBeforeStopLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="ArcRecoveryTimeTBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="ArcRecoveryTimeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="FillCurrTBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="FilCurrLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="TotalArcsBeforeStopTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="TotalArcsBeforeStopLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="ArcRecoveryTimeTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="ArcRecoveryTimeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="FillCurrTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="FilCurrLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="PerformKVRampCheckBox" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="PerformMARampCheckBox" min="-2" pref="15" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="PerformKVRerampCheckBox" min="-2" pref="15" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="PerformOnOffCyclesCheckBox" min="-2" pref="15" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -906,6 +864,33 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="LaodDefaultButtonActionPerformed"/>
                   </Events>
                 </Component>
+                <Component class="javax.swing.JCheckBox" name="PerformKVRampCheckBox">
+                  <Properties>
+                    <Property name="selected" type="boolean" value="true"/>
+                    <Property name="text" type="java.lang.String" value="Perform KV Ramp (1)"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="PerformMARampCheckBox">
+                  <Properties>
+                    <Property name="selected" type="boolean" value="true"/>
+                    <Property name="text" type="java.lang.String" value="Perform MA Ramp (2)"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="PerformKVRerampCheckBox">
+                  <Properties>
+                    <Property name="selected" type="boolean" value="true"/>
+                    <Property name="text" type="java.lang.String" value="Perform KV Re-ramp (3)"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PerformKVRerampCheckBoxActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="PerformOnOffCyclesCheckBox">
+                  <Properties>
+                    <Property name="selected" type="boolean" value="true"/>
+                    <Property name="text" type="java.lang.String" value="Perform On/Off Cycles (4)"/>
+                  </Properties>
+                </Component>
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="ConditioningControlPanel">
@@ -929,7 +914,7 @@
                                   <Component id="ConditioningProgressBar" min="-2" pref="295" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="TimeRemainingLabel" min="-2" pref="119" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="98" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="117" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="StartConditioningButton" min="-2" pref="125" max="-2" attributes="0"/>
@@ -1060,6 +1045,430 @@
                 </Component>
               </SubComponents>
             </Container>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="AboutPanel">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="About">
+                <Property name="tabTitle" type="java.lang.String" value="About"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="AboutSupplyModelLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="AboutSupplyModelTBox" min="-2" pref="107" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="AboutMaxKVLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="AboutMaxKVTBox" min="-2" pref="59" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="AboutMaxMALabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="AboutMaxMATBox" min="-2" pref="59" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="AboutMaxWLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="AboutMaxWTBox" min="-2" pref="59" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="AboutIPAddressLabal" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="AboutIPAddressTBox" min="-2" pref="107" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="AboutPortLabal" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="AboutPortTBox" min="-2" pref="107" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="AboutArcLabel" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="AboutArcTBox" min="-2" pref="59" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Component id="AboutUnderVoltageLabel" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="AboutUnderVoltageTBox" min="-2" pref="59" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace min="-2" pref="114" max="-2" attributes="0"/>
+                                          <Component id="AboutFaultsLabel" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="AboutOverTempLabel" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="AboutOverTempTBox" min="-2" pref="59" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="AboutOverCurrentLabel" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="AboutOverCurrentTBox" min="-2" pref="59" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="AboutOverVoltageLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
+                                              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+                                              <Component id="AboutStatusesLabel" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" attributes="0">
+                                              <Component id="AboutOverVoltageTBox" min="-2" pref="59" max="-2" attributes="0"/>
+                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <Component id="AboutUnderCurrentLabel" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="AboutUnderCurrentTBox" min="-2" pref="59" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="AboutFaultLabel" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="AboutFaultTBox" min="-2" pref="86" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" attributes="0">
+                                              <Component id="AboutInterlockLabel" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="AboutInterlockTBox" min="-2" pref="83" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <EmptySpace min="-2" pref="174" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="AboutRemoteLocalLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="AboutRemoteLocalTBox" min="-2" pref="75" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="AboutHighVoltageLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="AboutHighVoltageTBox" min="-2" pref="92" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="-2" pref="170" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="AboutRefreshButton" min="-2" max="-2" attributes="0"/>
+                                  <Component id="ReconnectToSupplyButton" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="AboutIPAddressTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="AboutIPAddressLabal" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="AboutPortTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="AboutPortLabal" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="AboutSupplyModelTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="AboutSupplyModelLabel" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="AboutMaxKVLabel" alignment="0" max="32767" attributes="0"/>
+                              <Component id="AboutMaxKVTBox" alignment="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="AboutMaxMALabel" alignment="0" max="32767" attributes="0"/>
+                              <Component id="AboutMaxMATBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="AboutMaxWLabel" alignment="0" max="32767" attributes="0"/>
+                              <Component id="AboutMaxWTBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="AboutFaultsLabel" min="-2" pref="25" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="AboutUnderVoltageLabel" min="-2" pref="25" max="-2" attributes="0"/>
+                                  <Component id="AboutUnderVoltageTBox" min="-2" max="-2" attributes="0"/>
+                                  <Component id="AboutArcTBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="AboutArcLabel" min="-2" pref="25" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="AboutOverTempTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="AboutOverTempLabel" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                  <Component id="AboutOverCurrentTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="AboutOverCurrentLabel" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="AboutOverVoltageTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="AboutOverVoltageLabel" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                  <Component id="AboutUnderCurrentTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="AboutUnderCurrentLabel" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="AboutStatusesLabel" min="-2" pref="25" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="AboutHighVoltageTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="AboutHighVoltageLabel" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="AboutInterlockTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="AboutInterlockLabel" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="AboutFaultTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="AboutFaultLabel" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="AboutRemoteLocalTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="AboutRemoteLocalLabel" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="AboutRefreshButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="ReconnectToSupplyButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace pref="27" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JButton" name="ReconnectToSupplyButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Reconnect To Supply"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ReconnectToSupplyButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="AboutRefreshButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Refresh"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AboutRefreshButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JTextField" name="AboutIPAddressTBox">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="N/A"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="AboutIPAddressLabal">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="IP Address:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="AboutPortLabal">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Port:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="AboutPortTBox">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="N/A"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="AboutSupplyModelLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Supply Model:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="AboutSupplyModelTBox">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="N/A"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="AboutArcLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Arc:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="AboutArcTBox">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="N/A"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="AboutFaultsLabel">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="14" style="0"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Faults"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="AboutOverTempTBox">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="N/A"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="AboutOverTempLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Over Temperature:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="AboutOverVoltageTBox">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="N/A"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="AboutOverVoltageLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Over Voltage:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="AboutUnderVoltageTBox">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="N/A"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="AboutUnderVoltageLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Under Voltage:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="AboutOverCurrentTBox">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="N/A"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="AboutOverCurrentLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Over Current:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="AboutUnderCurrentTBox">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="N/A"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="AboutUnderCurrentLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Under Current:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="AboutStatusesLabel">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="14" style="0"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Statuses"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="AboutHighVoltageLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="High-Voltage On/Off:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="AboutHighVoltageTBox">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="N/A"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="AboutInterlockLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Interlock:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="AboutInterlockTBox">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="N/A"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="AboutFaultLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Fault:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="AboutFaultTBox">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="N/A"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="AboutRemoteLocalLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Remote/Local:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="AboutRemoteLocalTBox">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="N/A"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="AboutMaxKVLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Max KV:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="AboutMaxKVTBox">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="N/A"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="AboutMaxMALabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Max MA:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="AboutMaxMATBox">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="N/A"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="AboutMaxWLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Max W:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="AboutMaxWTBox">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="N/A"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
       </SubComponents>

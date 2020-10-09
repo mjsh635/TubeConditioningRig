@@ -67,14 +67,21 @@ public class ConditioningHandler extends Thread{
         log.Append_To_Log("Conditioning|| Starting Conditioning Routine");
         this._StartUp();
         this.pb.setValue(16);
+        if(this.vals.PerformKVRamp.equals("true")){
         this._KVInitialRamp();
+        }
         this.pb.setValue(32);
+        if(this.vals.PerformMARamp.equals("true")){
         this._MAInitialRamp();
+        }
         this.pb.setValue(48);
+        if(this.vals.PerformKVReramp.equals("true")){
         this._KVReramp();
+        }
         this.pb.setValue(64);
+        if(this.vals.PerformOnOffCycles.equals("true")){
         this._OnOffCycle();
-        this.pb.setValue(80);
+        }
         this.pb.setValue(100);
         Stop_Conditioning();
         

@@ -49,7 +49,7 @@ public class SupplyScreen extends javax.swing.JFrame {
         log = new LoggingController(this.LogFolderPath);
         this.port = Integer.valueOf(port);
         this.supply = new DXM(this.IPAddress,this.port);
-        this.update_UI();
+        
         this.warmup = new Warmup_Handler(this.supply, this.WarmupSelectionButtonGroup, this.WarmUpProgressBar,
                 this.WarmVoltageTBox,this.WarmCurrentTBox,this.FillCurrTBox,this.PreHeatTBox, log);
         this.AROH = new AutoReadOutHandler(this.supply, this.VoltageReadoutLabel, 
@@ -87,13 +87,6 @@ public class SupplyScreen extends javax.swing.JFrame {
         TitleLabel = new javax.swing.JLabel();
         VoltageReadoutLabel = new javax.swing.JLabel();
         CurrentReadoutLabel = new javax.swing.JLabel();
-        SupplySettingsPanel = new javax.swing.JPanel();
-        SupplyWattageTBox = new javax.swing.JTextField();
-        SupplyWattageLabel = new javax.swing.JLabel();
-        SupplyMaxKVTbox = new javax.swing.JTextField();
-        SupplyMaxKVLabel = new javax.swing.JLabel();
-        SupplyMaxMaLabel = new javax.swing.JLabel();
-        SupplyMaxMATBox = new javax.swing.JTextField();
         WarmupPanel = new javax.swing.JPanel();
         WarmupTitleLabel = new javax.swing.JLabel();
         RadioButton7min = new javax.swing.JRadioButton();
@@ -105,7 +98,10 @@ public class SupplyScreen extends javax.swing.JFrame {
         WarmVoltageTBox = new javax.swing.JTextField();
         WarmMALabel = new javax.swing.JLabel();
         WarmCurrentTBox = new javax.swing.JTextField();
-        ReconnectToSupplyButton = new javax.swing.JButton();
+        WarmMinKVLabel = new javax.swing.JLabel();
+        WarmMinVoltageTBox = new javax.swing.JTextField();
+        WarmMinMALabel = new javax.swing.JLabel();
+        WarmMinCurrentTBox = new javax.swing.JTextField();
         TubeSerialNumberTBox = new javax.swing.JTextField();
         TubeSerialNumberLabel = new javax.swing.JLabel();
         TubeConditioningPanel = new javax.swing.JPanel();
@@ -138,6 +134,10 @@ public class SupplyScreen extends javax.swing.JFrame {
         FillCurrTBox = new javax.swing.JTextField();
         SaveButton = new javax.swing.JButton();
         LaodDefaultButton = new javax.swing.JButton();
+        PerformKVRampCheckBox = new javax.swing.JCheckBox();
+        PerformMARampCheckBox = new javax.swing.JCheckBox();
+        PerformKVRerampCheckBox = new javax.swing.JCheckBox();
+        PerformOnOffCyclesCheckBox = new javax.swing.JCheckBox();
         ConditioningControlPanel = new javax.swing.JPanel();
         StartConditioningButton = new javax.swing.JButton();
         StopConditioningButton = new javax.swing.JButton();
@@ -150,6 +150,43 @@ public class SupplyScreen extends javax.swing.JFrame {
         ConditionCurrentReadLabel = new javax.swing.JLabel();
         ConditionFillamentReadTBox = new javax.swing.JTextField();
         ConditionFillamentReadLabl = new javax.swing.JLabel();
+        AboutPanel = new javax.swing.JPanel();
+        ReconnectToSupplyButton = new javax.swing.JButton();
+        AboutRefreshButton = new javax.swing.JButton();
+        AboutIPAddressTBox = new javax.swing.JTextField();
+        AboutIPAddressLabal = new javax.swing.JLabel();
+        AboutPortLabal = new javax.swing.JLabel();
+        AboutPortTBox = new javax.swing.JTextField();
+        AboutSupplyModelLabel = new javax.swing.JLabel();
+        AboutSupplyModelTBox = new javax.swing.JTextField();
+        AboutArcLabel = new javax.swing.JLabel();
+        AboutArcTBox = new javax.swing.JTextField();
+        AboutFaultsLabel = new javax.swing.JLabel();
+        AboutOverTempTBox = new javax.swing.JTextField();
+        AboutOverTempLabel = new javax.swing.JLabel();
+        AboutOverVoltageTBox = new javax.swing.JTextField();
+        AboutOverVoltageLabel = new javax.swing.JLabel();
+        AboutUnderVoltageTBox = new javax.swing.JTextField();
+        AboutUnderVoltageLabel = new javax.swing.JLabel();
+        AboutOverCurrentTBox = new javax.swing.JTextField();
+        AboutOverCurrentLabel = new javax.swing.JLabel();
+        AboutUnderCurrentTBox = new javax.swing.JTextField();
+        AboutUnderCurrentLabel = new javax.swing.JLabel();
+        AboutStatusesLabel = new javax.swing.JLabel();
+        AboutHighVoltageLabel = new javax.swing.JLabel();
+        AboutHighVoltageTBox = new javax.swing.JTextField();
+        AboutInterlockLabel = new javax.swing.JLabel();
+        AboutInterlockTBox = new javax.swing.JTextField();
+        AboutFaultLabel = new javax.swing.JLabel();
+        AboutFaultTBox = new javax.swing.JTextField();
+        AboutRemoteLocalLabel = new javax.swing.JLabel();
+        AboutRemoteLocalTBox = new javax.swing.JTextField();
+        AboutMaxKVLabel = new javax.swing.JLabel();
+        AboutMaxKVTBox = new javax.swing.JTextField();
+        AboutMaxMALabel = new javax.swing.JLabel();
+        AboutMaxMATBox = new javax.swing.JTextField();
+        AboutMaxWLabel = new javax.swing.JLabel();
+        AboutMaxWTBox = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Supply Screen");
@@ -218,13 +255,13 @@ public class SupplyScreen extends javax.swing.JFrame {
                         .addComponent(VoltageReadoutLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(CurrentReadoutLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 10, Short.MAX_VALUE))
+                        .addGap(0, 20, Short.MAX_VALUE))
                     .addGroup(XrayOnOffPanelLayout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addGroup(XrayOnOffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(TitleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(XrayOnOffPanelLayout.createSequentialGroup()
-                                .addGroup(XrayOnOffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(XrayOnOffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(XrayOnOffPanelLayout.createSequentialGroup()
                                         .addComponent(kvLabel)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -232,12 +269,12 @@ public class SupplyScreen extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(maLabel)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(CurrentSetTBox))
+                                        .addComponent(CurrentSetTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(XrayOnOffPanelLayout.createSequentialGroup()
-                                        .addComponent(XrayOnButton, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                                        .addComponent(XrayOnButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(XrayOffButton, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)))
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                        .addComponent(XrayOffButton, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 20, Short.MAX_VALUE))
                             .addGroup(XrayOnOffPanelLayout.createSequentialGroup()
                                 .addComponent(VoltageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -245,9 +282,6 @@ public class SupplyScreen extends javax.swing.JFrame {
                                 .addGap(2, 2, 2)))))
                 .addContainerGap())
         );
-
-        XrayOnOffPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {XrayOffButton, XrayOnButton});
-
         XrayOnOffPanelLayout.setVerticalGroup(
             XrayOnOffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(XrayOnOffPanelLayout.createSequentialGroup()
@@ -274,58 +308,6 @@ public class SupplyScreen extends javax.swing.JFrame {
         );
 
         XrayOnOffPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {XrayOffButton, XrayOnButton});
-
-        SupplySettingsPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        SupplyWattageTBox.setEditable(false);
-        SupplyWattageTBox.setText("0.0");
-
-        SupplyWattageLabel.setText("Supply Wattage:");
-
-        SupplyMaxKVTbox.setEditable(false);
-        SupplyMaxKVTbox.setText("0.0");
-
-        SupplyMaxKVLabel.setText("Supply Max kV:");
-
-        SupplyMaxMaLabel.setText("Supply Max mA:");
-
-        SupplyMaxMATBox.setEditable(false);
-        SupplyMaxMATBox.setText("0.0");
-
-        javax.swing.GroupLayout SupplySettingsPanelLayout = new javax.swing.GroupLayout(SupplySettingsPanel);
-        SupplySettingsPanel.setLayout(SupplySettingsPanelLayout);
-        SupplySettingsPanelLayout.setHorizontalGroup(
-            SupplySettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SupplySettingsPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(SupplySettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(SupplyMaxKVLabel, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(SupplyWattageLabel, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(SupplyMaxMaLabel, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(18, 18, 18)
-                .addGroup(SupplySettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(SupplyWattageTBox, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                    .addComponent(SupplyMaxKVTbox)
-                    .addComponent(SupplyMaxMATBox))
-                .addContainerGap())
-        );
-        SupplySettingsPanelLayout.setVerticalGroup(
-            SupplySettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(SupplySettingsPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(SupplySettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(SupplyWattageTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(SupplyWattageLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(SupplySettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(SupplyMaxKVTbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(SupplyMaxKVLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(SupplySettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(SupplyMaxMATBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(SupplyMaxMaLabel))
-                .addContainerGap(77, Short.MAX_VALUE))
-        );
 
         WarmupPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -371,6 +353,21 @@ public class SupplyScreen extends javax.swing.JFrame {
             }
         });
 
+        WarmMinKVLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        WarmMinKVLabel.setText("Min kV");
+
+        WarmMinVoltageTBox.setText("0.0");
+
+        WarmMinMALabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        WarmMinMALabel.setText("Min mA");
+
+        WarmMinCurrentTBox.setText("0.0");
+        WarmMinCurrentTBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                WarmMinCurrentTBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout WarmupPanelLayout = new javax.swing.GroupLayout(WarmupPanel);
         WarmupPanel.setLayout(WarmupPanelLayout);
         WarmupPanelLayout.setHorizontalGroup(
@@ -401,7 +398,15 @@ public class SupplyScreen extends javax.swing.JFrame {
                             .addGroup(WarmupPanelLayout.createSequentialGroup()
                                 .addComponent(WarmMALabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(WarmCurrentTBox)))))
+                                .addComponent(WarmCurrentTBox))))
+                    .addGroup(WarmupPanelLayout.createSequentialGroup()
+                        .addComponent(WarmMinKVLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(WarmMinVoltageTBox)
+                        .addGap(18, 18, 18)
+                        .addComponent(WarmMinMALabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(WarmMinCurrentTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -422,7 +427,14 @@ public class SupplyScreen extends javax.swing.JFrame {
                     .addComponent(WarmCurrentTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(WarmKVLabel)
                     .addComponent(WarmMALabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(WarmupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(WarmMinKVLabel)
+                    .addGroup(WarmupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(WarmMinCurrentTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(WarmMinMALabel)
+                        .addComponent(WarmMinVoltageTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(WarmupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(StartWarmupButton)
                     .addComponent(StopWarmupButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -432,13 +444,6 @@ public class SupplyScreen extends javax.swing.JFrame {
         );
 
         WarmupPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {StartWarmupButton, StopWarmupButton});
-
-        ReconnectToSupplyButton.setText("Reconnect To Supply");
-        ReconnectToSupplyButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ReconnectToSupplyButtonActionPerformed(evt);
-            }
-        });
 
         TubeSerialNumberTBox.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -461,39 +466,28 @@ public class SupplyScreen extends javax.swing.JFrame {
                 .addGap(21, 21, 21)
                 .addGroup(ManualControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ManualControlPanelLayout.createSequentialGroup()
-                        .addGroup(ManualControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(XrayOnOffPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ReconnectToSupplyButton))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(XrayOnOffPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(WarmupPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(ManualControlPanelLayout.createSequentialGroup()
-                        .addComponent(TubeSerialNumberLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(TubeSerialNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(TubeSerialNumberTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24)))
-                .addGroup(ManualControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(SupplySettingsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(WarmupPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(6, 6, 6))
+                        .addComponent(TubeSerialNumberTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(20, 20, 20))
         );
         ManualControlPanelLayout.setVerticalGroup(
             ManualControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ManualControlPanelLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(ManualControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ManualControlPanelLayout.createSequentialGroup()
-                        .addComponent(SupplySettingsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(WarmupPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(ManualControlPanelLayout.createSequentialGroup()
-                        .addComponent(XrayOnOffPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ReconnectToSupplyButton)
-                        .addGap(35, 35, 35)
-                        .addGroup(ManualControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(TubeSerialNumberTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(TubeSerialNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addComponent(XrayOnOffPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(WarmupPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ManualControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(TubeSerialNumberTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TubeSerialNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(92, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Manual Control", ManualControlPanel);
@@ -566,6 +560,23 @@ public class SupplyScreen extends javax.swing.JFrame {
             }
         });
 
+        PerformKVRampCheckBox.setSelected(true);
+        PerformKVRampCheckBox.setText("Perform KV Ramp (1)");
+
+        PerformMARampCheckBox.setSelected(true);
+        PerformMARampCheckBox.setText("Perform MA Ramp (2)");
+
+        PerformKVRerampCheckBox.setSelected(true);
+        PerformKVRerampCheckBox.setText("Perform KV Re-ramp (3)");
+        PerformKVRerampCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PerformKVRerampCheckBoxActionPerformed(evt);
+            }
+        });
+
+        PerformOnOffCyclesCheckBox.setSelected(true);
+        PerformOnOffCyclesCheckBox.setText("Perform On/Off Cycles (4)");
+
         javax.swing.GroupLayout ConditioningSettingsPanelLayout = new javax.swing.GroupLayout(ConditioningSettingsPanel);
         ConditioningSettingsPanel.setLayout(ConditioningSettingsPanelLayout);
         ConditioningSettingsPanelLayout.setHorizontalGroup(
@@ -610,7 +621,13 @@ public class SupplyScreen extends javax.swing.JFrame {
                                 .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(PreHeatTBox)
                                     .addComponent(FillCurrTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 197, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(PerformKVRampCheckBox)
+                            .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(PerformOnOffCyclesCheckBox, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(PerformKVRerampCheckBox)
+                                .addComponent(PerformMARampCheckBox))))
                     .addGroup(ConditioningSettingsPanelLayout.createSequentialGroup()
                         .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(OnOffCycleTimeOffTBox)
@@ -662,17 +679,28 @@ public class SupplyScreen extends javax.swing.JFrame {
                     .addComponent(OnOffCycleTimeOffLabel))
                 .addGap(0, 9, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ConditioningSettingsPanelLayout.createSequentialGroup()
-                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TotalArcsBeforeStopTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TotalArcsBeforeStopLabel))
-                .addGap(63, 63, 63)
-                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ArcRecoveryTimeTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ArcRecoveryTimeLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(FillCurrTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(FilCurrLabel))
+                .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(ConditioningSettingsPanelLayout.createSequentialGroup()
+                        .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(TotalArcsBeforeStopTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TotalArcsBeforeStopLabel))
+                        .addGap(63, 63, 63)
+                        .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ArcRecoveryTimeTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ArcRecoveryTimeLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(FillCurrTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(FilCurrLabel)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, ConditioningSettingsPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(PerformKVRampCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(PerformMARampCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(PerformKVRerampCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(PerformOnOffCyclesCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(ConditioningSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(PreHeatTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -732,7 +760,7 @@ public class SupplyScreen extends javax.swing.JFrame {
                         .addComponent(ConditioningProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(TimeRemainingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 98, Short.MAX_VALUE))
+                        .addGap(0, 117, Short.MAX_VALUE))
                     .addGroup(ConditioningControlPanelLayout.createSequentialGroup()
                         .addComponent(StartConditioningButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -803,6 +831,271 @@ public class SupplyScreen extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Tube Conditioning", TubeConditioningPanel);
 
+        ReconnectToSupplyButton.setText("Reconnect To Supply");
+        ReconnectToSupplyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ReconnectToSupplyButtonActionPerformed(evt);
+            }
+        });
+
+        AboutRefreshButton.setText("Refresh");
+        AboutRefreshButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AboutRefreshButtonActionPerformed(evt);
+            }
+        });
+
+        AboutIPAddressTBox.setEditable(false);
+        AboutIPAddressTBox.setText("N/A");
+
+        AboutIPAddressLabal.setText("IP Address:");
+
+        AboutPortLabal.setText("Port:");
+
+        AboutPortTBox.setEditable(false);
+        AboutPortTBox.setText("N/A");
+
+        AboutSupplyModelLabel.setText("Supply Model:");
+
+        AboutSupplyModelTBox.setEditable(false);
+        AboutSupplyModelTBox.setText("N/A");
+
+        AboutArcLabel.setText("Arc:");
+
+        AboutArcTBox.setEditable(false);
+        AboutArcTBox.setText("N/A");
+
+        AboutFaultsLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        AboutFaultsLabel.setText("Faults");
+
+        AboutOverTempTBox.setEditable(false);
+        AboutOverTempTBox.setText("N/A");
+
+        AboutOverTempLabel.setText("Over Temperature:");
+
+        AboutOverVoltageTBox.setEditable(false);
+        AboutOverVoltageTBox.setText("N/A");
+
+        AboutOverVoltageLabel.setText("Over Voltage:");
+
+        AboutUnderVoltageTBox.setEditable(false);
+        AboutUnderVoltageTBox.setText("N/A");
+
+        AboutUnderVoltageLabel.setText("Under Voltage:");
+
+        AboutOverCurrentTBox.setEditable(false);
+        AboutOverCurrentTBox.setText("N/A");
+
+        AboutOverCurrentLabel.setText("Over Current:");
+
+        AboutUnderCurrentTBox.setEditable(false);
+        AboutUnderCurrentTBox.setText("N/A");
+
+        AboutUnderCurrentLabel.setText("Under Current:");
+
+        AboutStatusesLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        AboutStatusesLabel.setText("Statuses");
+
+        AboutHighVoltageLabel.setText("High-Voltage On/Off:");
+
+        AboutHighVoltageTBox.setEditable(false);
+        AboutHighVoltageTBox.setText("N/A");
+
+        AboutInterlockLabel.setText("Interlock:");
+
+        AboutInterlockTBox.setEditable(false);
+        AboutInterlockTBox.setText("N/A");
+
+        AboutFaultLabel.setText("Fault:");
+
+        AboutFaultTBox.setEditable(false);
+        AboutFaultTBox.setText("N/A");
+
+        AboutRemoteLocalLabel.setText("Remote/Local:");
+
+        AboutRemoteLocalTBox.setEditable(false);
+        AboutRemoteLocalTBox.setText("N/A");
+
+        AboutMaxKVLabel.setText("Max KV:");
+
+        AboutMaxKVTBox.setEditable(false);
+        AboutMaxKVTBox.setText("N/A");
+
+        AboutMaxMALabel.setText("Max MA:");
+
+        AboutMaxMATBox.setEditable(false);
+        AboutMaxMATBox.setText("N/A");
+
+        AboutMaxWLabel.setText("Max W:");
+
+        AboutMaxWTBox.setEditable(false);
+        AboutMaxWTBox.setText("N/A");
+
+        javax.swing.GroupLayout AboutPanelLayout = new javax.swing.GroupLayout(AboutPanel);
+        AboutPanel.setLayout(AboutPanelLayout);
+        AboutPanelLayout.setHorizontalGroup(
+            AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AboutPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, AboutPanelLayout.createSequentialGroup()
+                        .addComponent(AboutSupplyModelLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(AboutSupplyModelTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(AboutMaxKVLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(AboutMaxKVTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(AboutMaxMALabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(AboutMaxMATBox, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(AboutMaxWLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(AboutMaxWTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(AboutPanelLayout.createSequentialGroup()
+                        .addGroup(AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(AboutPanelLayout.createSequentialGroup()
+                                    .addComponent(AboutIPAddressLabal)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(AboutIPAddressTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(AboutPanelLayout.createSequentialGroup()
+                                    .addComponent(AboutPortLabal)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(AboutPortTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(AboutPanelLayout.createSequentialGroup()
+                                    .addComponent(AboutArcLabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(AboutArcTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(AboutUnderVoltageLabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(AboutUnderVoltageTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(AboutPanelLayout.createSequentialGroup()
+                                    .addGap(114, 114, 114)
+                                    .addComponent(AboutFaultsLabel))
+                                .addGroup(AboutPanelLayout.createSequentialGroup()
+                                    .addComponent(AboutOverTempLabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(AboutOverTempTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(AboutOverCurrentLabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(AboutOverCurrentTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(AboutPanelLayout.createSequentialGroup()
+                                .addComponent(AboutOverVoltageLabel)
+                                .addGap(32, 32, 32)
+                                .addGroup(AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(AboutPanelLayout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(AboutStatusesLabel))
+                                    .addGroup(AboutPanelLayout.createSequentialGroup()
+                                        .addComponent(AboutOverVoltageTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(AboutUnderCurrentLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(AboutUnderCurrentTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AboutPanelLayout.createSequentialGroup()
+                                .addGroup(AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(AboutPanelLayout.createSequentialGroup()
+                                        .addComponent(AboutFaultLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(AboutFaultTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(AboutPanelLayout.createSequentialGroup()
+                                        .addComponent(AboutInterlockLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(AboutInterlockTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(174, 174, 174))
+                            .addGroup(AboutPanelLayout.createSequentialGroup()
+                                .addComponent(AboutRemoteLocalLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(AboutRemoteLocalTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(AboutPanelLayout.createSequentialGroup()
+                                .addComponent(AboutHighVoltageLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(AboutHighVoltageTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(170, 170, 170)
+                        .addGroup(AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(AboutRefreshButton)
+                            .addComponent(ReconnectToSupplyButton))
+                        .addContainerGap())))
+        );
+        AboutPanelLayout.setVerticalGroup(
+            AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AboutPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(AboutIPAddressTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(AboutIPAddressLabal, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(AboutPortTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(AboutPortLabal, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(AboutSupplyModelTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AboutSupplyModelLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(AboutMaxKVLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(AboutMaxKVTBox))
+                    .addGroup(AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(AboutMaxMALabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(AboutMaxMATBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(AboutMaxWLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(AboutMaxWTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(AboutPanelLayout.createSequentialGroup()
+                        .addComponent(AboutFaultsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(AboutUnderVoltageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AboutUnderVoltageTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AboutArcTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AboutArcLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(AboutOverTempTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AboutOverTempLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AboutOverCurrentTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AboutOverCurrentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(AboutOverVoltageTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AboutOverVoltageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AboutUnderCurrentTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AboutUnderCurrentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(AboutStatusesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(AboutHighVoltageTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AboutHighVoltageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(AboutInterlockTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AboutInterlockLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(AboutFaultTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AboutFaultLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(AboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(AboutRemoteLocalTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AboutRemoteLocalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(AboutPanelLayout.createSequentialGroup()
+                        .addComponent(AboutRefreshButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ReconnectToSupplyButton)))
+                .addContainerGap(27, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("About", AboutPanel);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -821,15 +1114,56 @@ public class SupplyScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_CurrentSetTBoxActionPerformed
     
-    public void update_UI(){
-       
-                    this.SupplyMaxKVTbox.setText(this.supply.MaxKV.toString());
-                    this.SupplyMaxMATBox.setText(this.supply.MaxMA.toString());
-                    this.SupplyWattageTBox.setText(this.supply.MaxWatt.toString());
-                    
-                     
-    
+    private void update_About_Page(){
+        // update all the text fields on the About page
+        this.supply.updates();
+        AboutIPAddressTBox.setText(this.IPAddress);
+        AboutPortTBox.setText(String.valueOf(this.port));
+        AboutSupplyModelTBox.setText(this.supply.modelNumber);
+        AboutArcTBox.setText(String.valueOf(this.supply.ArcPresent));
+        AboutOverTempTBox.setText(String.valueOf(this.supply.OverTemperature));
+        AboutOverVoltageTBox.setText(String.valueOf(this.supply.OverVoltage));
+        AboutUnderVoltageTBox.setText(String.valueOf(this.supply.UnderVoltage));
+        AboutOverCurrentTBox.setText(String.valueOf(this.supply.OverCurrent));
+        AboutUnderCurrentTBox.setText(String.valueOf(this.supply.UnderCurrent));
+        AboutMaxKVTBox.setText(String.valueOf(this.supply.MaxKV));
+        AboutMaxMATBox.setText(String.valueOf(this.supply.MaxMA));
+        AboutMaxWTBox.setText(String.valueOf(this.supply.MaxWatt));
+        
+        if(this.supply.HighVoltageState){
+            AboutHighVoltageTBox.setText("ON");
+            AboutHighVoltageTBox.setBackground(Color.yellow);
+        }else{
+            AboutHighVoltageTBox.setText("OFF");
+            AboutHighVoltageTBox.setBackground(Color.green);
+        }
+        
+        if(this.supply.InterlockOpen){
+            AboutInterlockTBox.setText("OPEN");
+            AboutInterlockTBox.setBackground(Color.red);
+        }else{
+            AboutInterlockTBox.setText("CLOSED");
+            AboutInterlockTBox.setBackground(Color.green);
+        }
+        
+        if(this.supply.FaultPresent){
+            AboutFaultTBox.setText("PRESENT");
+            AboutFaultTBox.setBackground(Color.red);
+        }else{
+            AboutFaultTBox.setText("NONE");
+            AboutFaultTBox.setBackground(Color.white);
+        }
+        
+        if(this.supply.RemoteMode){
+            AboutRemoteLocalTBox.setText("REMOTE");
+        }
+        else{
+            AboutRemoteLocalTBox.setText("LOCAL");
+        }
+        
     }
+    
+    
     private void XrayOnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_XrayOnButtonActionPerformed
         Double voltage = Double.valueOf(this.VoltageSetTBox.getText());
         Double current = Double.valueOf(this.CurrentSetTBox.getText());
@@ -870,6 +1204,7 @@ public class SupplyScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_StopWarmupButtonActionPerformed
 
     private void StartWarmupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartWarmupButtonActionPerformed
+        SaveButtonActionPerformed(evt);
         this.StartWarmupButton.setEnabled(false);
         this.RadioButton7min.setActionCommand("7");
         this.RadioButton15min.setActionCommand("15");
@@ -921,7 +1256,7 @@ public class SupplyScreen extends javax.swing.JFrame {
 
     private void ReconnectToSupplyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReconnectToSupplyButtonActionPerformed
         this.supply = new DXM(this.IPAddress,this.port);
-        this.update_UI();
+        
     }//GEN-LAST:event_ReconnectToSupplyButtonActionPerformed
 
     private void LaodDefaultButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LaodDefaultButtonActionPerformed
@@ -935,10 +1270,13 @@ public class SupplyScreen extends javax.swing.JFrame {
         sh.appsettings.FilamentCurrentLimit = this.FillCurrTBox.getText();
         sh.appsettings.FilamentPreHeat = this.PreHeatTBox.getText();
         sh.appsettings.WarmupKV = this.WarmVoltageTBox.getText();
+        sh.appsettings.WarmupMinKV = this.WarmMinVoltageTBox.getText();
         sh.appsettings.WarmupMA = this.WarmCurrentTBox.getText();
+        sh.appsettings.warmupMinMA = this.WarmMinCurrentTBox.getText();
         sh.appsettings.TotalStepCount = this.TotalStepCountTBox.getText();
         sh.appsettings.TimeBetweenSteps = this.TimeBetweenStepsTBox.getText();
         sh.appsettings.StartingKV = this.StartingKVTBox.getText();
+        
         sh.appsettings.StartingMA = this.StartingMATBox.getText();
         sh.appsettings.TargetKV = this.TargetKVTBox.getText();
         sh.appsettings.TargetMA = this.TargetMATBox.getText();
@@ -949,13 +1287,32 @@ public class SupplyScreen extends javax.swing.JFrame {
         sh.appsettings.ArcMAStep = "0";
         sh.appsettings.ArcKVStep = "0";
         sh.appsettings.ArcRecoveryTime = this.ArcRecoveryTimeTBox.getText();
+        
+        sh.appsettings.PerformKVRamp = String.valueOf(this.PerformKVRampCheckBox.isSelected());
+        sh.appsettings.PerformMARamp = String.valueOf(this.PerformMARampCheckBox.isSelected());
+        sh.appsettings.PerformKVReramp = String.valueOf(this.PerformKVRerampCheckBox.isSelected());
+        sh.appsettings.PerformOnOffCycles = String.valueOf(this.PerformOnOffCyclesCheckBox.isSelected());
         this.sh.SaveSettings();
     }//GEN-LAST:event_SaveButtonActionPerformed
+
+    private void AboutRefreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AboutRefreshButtonActionPerformed
+        update_About_Page();
+    }//GEN-LAST:event_AboutRefreshButtonActionPerformed
+
+    private void WarmMinCurrentTBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WarmMinCurrentTBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_WarmMinCurrentTBoxActionPerformed
+
+    private void PerformKVRerampCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PerformKVRerampCheckBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PerformKVRerampCheckBoxActionPerformed
     
     private void Load_Settings(){
         this.FillCurrTBox.setText(sh.appsettings.FilamentCurrentLimit);
         this.PreHeatTBox.setText(sh.appsettings.FilamentPreHeat);
         this.WarmVoltageTBox.setText(sh.appsettings.WarmupKV);
+        this.WarmMinVoltageTBox.setText(sh.appsettings.WarmupMinKV);
+        this.WarmMinCurrentTBox.setText(sh.appsettings.warmupMinMA);
         this.WarmCurrentTBox.setText(sh.appsettings.WarmupMA);
         this.TotalStepCountTBox.setText(sh.appsettings.TotalStepCount);
         this.TimeBetweenStepsTBox.setText(sh.appsettings.TimeBetweenSteps);
@@ -969,6 +1326,10 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.TotalArcsBeforeStopTBox.setText(sh.appsettings.TotalArcsBeforeStop);
         
         this.ArcRecoveryTimeTBox.setText(sh.appsettings.ArcRecoveryTime);
+        this.PerformKVRampCheckBox.setSelected(sh.appsettings.PerformKVRamp.equals("true"));
+        this.PerformMARampCheckBox.setSelected(sh.appsettings.PerformMARamp.equals("true"));
+        this.PerformKVRerampCheckBox.setSelected(sh.appsettings.PerformKVReramp.equals("true"));
+        this.PerformOnOffCyclesCheckBox.setSelected(sh.appsettings.PerformOnOffCycles.equals("true"));
                 
     }
     
@@ -1011,6 +1372,42 @@ public class SupplyScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel AboutArcLabel;
+    private javax.swing.JTextField AboutArcTBox;
+    private javax.swing.JLabel AboutFaultLabel;
+    private javax.swing.JTextField AboutFaultTBox;
+    private javax.swing.JLabel AboutFaultsLabel;
+    private javax.swing.JLabel AboutHighVoltageLabel;
+    private javax.swing.JTextField AboutHighVoltageTBox;
+    private javax.swing.JLabel AboutIPAddressLabal;
+    private javax.swing.JTextField AboutIPAddressTBox;
+    private javax.swing.JLabel AboutInterlockLabel;
+    private javax.swing.JTextField AboutInterlockTBox;
+    private javax.swing.JLabel AboutMaxKVLabel;
+    private javax.swing.JTextField AboutMaxKVTBox;
+    private javax.swing.JLabel AboutMaxMALabel;
+    private javax.swing.JTextField AboutMaxMATBox;
+    private javax.swing.JLabel AboutMaxWLabel;
+    private javax.swing.JTextField AboutMaxWTBox;
+    private javax.swing.JLabel AboutOverCurrentLabel;
+    private javax.swing.JTextField AboutOverCurrentTBox;
+    private javax.swing.JLabel AboutOverTempLabel;
+    private javax.swing.JTextField AboutOverTempTBox;
+    private javax.swing.JLabel AboutOverVoltageLabel;
+    private javax.swing.JTextField AboutOverVoltageTBox;
+    private javax.swing.JPanel AboutPanel;
+    private javax.swing.JLabel AboutPortLabal;
+    private javax.swing.JTextField AboutPortTBox;
+    private javax.swing.JButton AboutRefreshButton;
+    private javax.swing.JLabel AboutRemoteLocalLabel;
+    private javax.swing.JTextField AboutRemoteLocalTBox;
+    private javax.swing.JLabel AboutStatusesLabel;
+    private javax.swing.JLabel AboutSupplyModelLabel;
+    private javax.swing.JTextField AboutSupplyModelTBox;
+    private javax.swing.JLabel AboutUnderCurrentLabel;
+    private javax.swing.JTextField AboutUnderCurrentTBox;
+    private javax.swing.JLabel AboutUnderVoltageLabel;
+    private javax.swing.JTextField AboutUnderVoltageTBox;
     private javax.swing.JLabel ArcRecoveryTimeLabel;
     private javax.swing.JTextField ArcRecoveryTimeTBox;
     private javax.swing.JLabel ConditionCurrentReadLabel;
@@ -1035,6 +1432,10 @@ public class SupplyScreen extends javax.swing.JFrame {
     private javax.swing.JTextField OnOffCycleTimeOffTBox;
     private javax.swing.JLabel OnOffCycleTimeOnLabel;
     private javax.swing.JTextField OnOffCycleTimeOnTBox;
+    private javax.swing.JCheckBox PerformKVRampCheckBox;
+    private javax.swing.JCheckBox PerformKVRerampCheckBox;
+    private javax.swing.JCheckBox PerformMARampCheckBox;
+    private javax.swing.JCheckBox PerformOnOffCyclesCheckBox;
     private javax.swing.JLabel PreHeatLabel;
     private javax.swing.JTextField PreHeatTBox;
     private javax.swing.JLabel ProgressBarLabel;
@@ -1050,13 +1451,6 @@ public class SupplyScreen extends javax.swing.JFrame {
     private javax.swing.JTextField StartingMATBox;
     private javax.swing.JButton StopConditioningButton;
     private javax.swing.JButton StopWarmupButton;
-    private javax.swing.JLabel SupplyMaxKVLabel;
-    private javax.swing.JTextField SupplyMaxKVTbox;
-    private javax.swing.JTextField SupplyMaxMATBox;
-    private javax.swing.JLabel SupplyMaxMaLabel;
-    private javax.swing.JPanel SupplySettingsPanel;
-    private javax.swing.JLabel SupplyWattageLabel;
-    private javax.swing.JTextField SupplyWattageTBox;
     private javax.swing.JLabel TargetKVLabel;
     private javax.swing.JTextField TargetKVTBox;
     private javax.swing.JLabel TargetMALabel;
@@ -1078,6 +1472,10 @@ public class SupplyScreen extends javax.swing.JFrame {
     private javax.swing.JTextField WarmCurrentTBox;
     private javax.swing.JLabel WarmKVLabel;
     private javax.swing.JLabel WarmMALabel;
+    private javax.swing.JTextField WarmMinCurrentTBox;
+    private javax.swing.JLabel WarmMinKVLabel;
+    private javax.swing.JLabel WarmMinMALabel;
+    private javax.swing.JTextField WarmMinVoltageTBox;
     private javax.swing.JProgressBar WarmUpProgressBar;
     private javax.swing.JTextField WarmVoltageTBox;
     private javax.swing.JPanel WarmupPanel;

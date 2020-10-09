@@ -33,8 +33,14 @@ public class Settings implements Serializable {
     String SettingsFileLocation;
     String WarmupTime;
     String WarmupKV;
+    String WarmupMinKV;
+    String warmupMinMA;
     String WarmupMA;
     String TubeSerialNumber;
+    String PerformKVRamp;
+    String PerformMARamp;
+    String PerformKVReramp;
+    String PerformOnOffCycles;
     
     
     public void SetDefault(){
@@ -56,6 +62,12 @@ public class Settings implements Serializable {
         this.WarmupTime = "7";
         this.WarmupKV = "20";
         this.WarmupMA = "3";
+        this.WarmupMinKV = "12";
+        this.warmupMinMA = "0.5";
         this.TubeSerialNumber = "";
+        this.PerformKVRamp = "true";
+        this.PerformMARamp = "true";
+        this.PerformKVReramp = "true";
+        this.PerformOnOffCycles = "true";
     }
 }

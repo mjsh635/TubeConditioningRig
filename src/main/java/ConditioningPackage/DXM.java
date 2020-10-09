@@ -51,7 +51,7 @@ public class DXM {
             this.modelNumber = this.Get_Model_Type();
         }
         catch(Error e){
-            if (e.getMessage()== "ERR001"){
+            if (e.getMessage().equals("ERR001")){
                 System.out.println("Could not connect to Supply");
             }
         }
@@ -81,6 +81,11 @@ public class DXM {
         }catch(Exception e){
             return false;
         }
+    }
+    
+    public void updates(){
+        _Update_Fault_States();
+        _Update_Status_Signals();
     }
     
     public String Get_Model_Type() {
@@ -375,10 +380,10 @@ public class DXM {
          */
         try {
             String[] response = this._Send_Command(22, "");
-            this.HighVoltageState = (response[2] == "1");
-            this.InterlockOpen = (response[3] == "1");
-            this.FaultPresent = (response[4] == "1");
-            this.RemoteMode = (response[5] == "1");
+            this.HighVoltageState = (response[1].equals("1"));
+            this.InterlockOpen = (response[2].equals("1"));
+            this.FaultPresent = (response[3].equals("1"));
+            this.RemoteMode = (response[4].equals("1"));
             this.connected = true;
         } catch (ArrayIndexOutOfBoundsException OB) {
             System.out.println(OB);
@@ -397,12 +402,12 @@ public class DXM {
         ARG6 = Under Current*/
         try {
             String[] response = this._Send_Command(68, "");
-            this.ArcPresent = (response[2] == "1");
-            this.OverTemperature = (response[3] == "1");
-            this.OverVoltage = (response[4] == "1");
-            this.UnderVoltage = (response[5] == "1");
-            this.OverCurrent = (response[6] == "1");
-            this.UnderCurrent = (response[7] == "1");
+            this.ArcPresent = (response[1].equals("1"));
+            this.OverTemperature = (response[2].equals("1"));
+            this.OverVoltage = (response[3].equals("1"));
+            this.UnderVoltage = (response[4].equals("1"));
+            this.OverCurrent = (response[5].equals("1"));
+            this.UnderCurrent = (response[6].equals("1"));
         } catch (ArrayIndexOutOfBoundsException OB) {
             System.out.println(OB);
             throw new Error("ERR001");
@@ -413,7 +418,7 @@ public class DXM {
         // command the supply to turn on xrays, returns true if command received successful
         try {
             String[] response = this._Send_Command(98, "1");
-            if (response[1] == "$") {
+            if (response[1].equals("$")) {
                 return true;
             } else {
                 return false;
@@ -428,7 +433,7 @@ public class DXM {
         // command the supply to turn off xrays, returns true if command received successful
         try {
             String[] response = this._Send_Command(98, "0");
-            if (response[1] == "$") {
+            if (response[1].equals("$")) {
                 return true;
             } else {
                 return false;
