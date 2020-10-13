@@ -193,7 +193,7 @@ public class SupplyScreen extends javax.swing.JFrame {
 
         XrayOnOffPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        XrayOnButton.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        XrayOnButton.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         XrayOnButton.setText("XRAY ON");
         XrayOnButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -201,7 +201,7 @@ public class SupplyScreen extends javax.swing.JFrame {
             }
         });
 
-        XrayOffButton.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        XrayOffButton.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         XrayOffButton.setText("XRAY OFF");
         XrayOffButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -428,12 +428,12 @@ public class SupplyScreen extends javax.swing.JFrame {
                     .addComponent(WarmKVLabel)
                     .addComponent(WarmMALabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(WarmupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(WarmMinKVLabel)
+                .addGroup(WarmupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(WarmupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(WarmMinCurrentTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(WarmMinMALabel)
-                        .addComponent(WarmMinVoltageTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(WarmMinVoltageTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(WarmMinKVLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(WarmupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(StartWarmupButton)
@@ -471,10 +471,10 @@ public class SupplyScreen extends javax.swing.JFrame {
                         .addComponent(WarmupPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(ManualControlPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(TubeSerialNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(TubeSerialNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(TubeSerialNumberTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(20, 20, 20))
+                .addContainerGap(89, Short.MAX_VALUE))
         );
         ManualControlPanelLayout.setVerticalGroup(
             ManualControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -487,7 +487,7 @@ public class SupplyScreen extends javax.swing.JFrame {
                 .addGroup(ManualControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TubeSerialNumberTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(TubeSerialNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addContainerGap(125, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Manual Control", ManualControlPanel);
@@ -760,7 +760,7 @@ public class SupplyScreen extends javax.swing.JFrame {
                         .addComponent(ConditioningProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(TimeRemainingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 117, Short.MAX_VALUE))
+                        .addGap(0, 189, Short.MAX_VALUE))
                     .addGroup(ConditioningControlPanelLayout.createSequentialGroup()
                         .addComponent(StartConditioningButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -1091,7 +1091,7 @@ public class SupplyScreen extends javax.swing.JFrame {
                         .addComponent(AboutRefreshButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ReconnectToSupplyButton)))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("About", AboutPanel);

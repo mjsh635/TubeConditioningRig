@@ -330,28 +330,53 @@ public class ConditioningHandler extends Thread{
         // return kv to pre-arc value
         // exit
         
+        this.HV.Reset_Faults();
+        log.Append_To_Log("Arc Recovery|| Reseting faults");
         if(ConcurrentArcCount <= MaxArcsBeforeStop){
             if(KVInsteadOfMA){
             //Arc recover should reduce KV to previous set
                 if ((this.PreviousSetKV - (KVStepSize*ConcurrentArcCount)) >= StartKV){
-                    this.HV.Set_Voltage((this.PreviousSetKV - (KVStepSize*ConcurrentArcCount)));
+                    double reducedKVSet = this.PreviousSetKV - (KVStepSize*ConcurrentArcCount);
+                    this.HV.Set_Voltage(reducedKVSet);
+                    log.Append_To_Log(String.format("Arc Recovery|| kV reduced to: %s", reducedKVSet));
+                    this.HV.Xray_On();
+                    log.Append_To_Log("Arc Recovery|| Xray Commanded On");
                 }else{
                     this.HV.Set_Voltage(StartKV);
+                    log.Append_To_Log(String.format("Arc Recovery|| kV reduced to: %s", StartKV));
+                    this.HV.Xray_On();
+                    log.Append_To_Log("Arc Recovery|| Xray Commanded On");
                 }
                 
             }else{
             //Arc recover should reduce MA to previous set
                 if ((this.PreviousSetMA - (MAStepSize*ConcurrentArcCount)) >= StartMA){
-                    this.HV.Set_Current(this.PreviousSetMA - (MAStepSize*ConcurrentArcCount));
+                    double reducedMASet = this.PreviousSetMA -(MAStepSize*ConcurrentArcCount);
+                    this.HV.Set_Current(reducedMASet);
+                    log.Append_To_Log(String.format("Arc Recovery|| mA reduced to: %s", reducedMASet));
+                    this.HV.Xray_On();
+                    log.Append_To_Log("Arc Recovery|| Xray Commanded On");
                 }else{
                     this.HV.Set_Current(StartMA);
+                    log.Append_To_Log(String.format("Arc Recovery|| mA reduced to: %s", StartMA));
+                    this.HV.Xray_On();
+                    log.Append_To_Log("Arc Recovery|| Xray Commanded On");
                 }
             }
             
             ConcurrentArcCount ++;
             ArcTimeEnd = LocalTime.now().plusSeconds(Math.round(this.ArcRecoveryDwellTime*60));
             while(_Time_Before_Check(ArcTimeEnd)){
-            CheckXrayStatus(KVInsteadOfMA);
+                try{
+                    Thread.sleep(5000);
+                }
+                catch(InterruptedException ie){
+                    this.Stop_Conditioning();
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+                CheckXrayStatus(KVInsteadOfMA);
         }
         }else{
             JOptionPane.showMessageDialog(null, "Too Many Concurrent Arcs. Stopping");

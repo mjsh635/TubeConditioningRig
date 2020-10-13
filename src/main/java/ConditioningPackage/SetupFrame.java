@@ -9,13 +9,10 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,12 +22,9 @@ import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.EtchedBorder;
-import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashSet;
-import javax.swing.JOptionPane;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -66,6 +60,8 @@ public class SetupFrame extends javax.swing.JFrame {
     
     public SetupFrame() {
         initComponents();
+        
+       
         sh = new SettingsHandler(workingPath+"/setupSettings.obj",true);
         this.Supply1IPAddressTBox.setText(sh.setupSettings.Supply1IP);
         this.Supply1PortTBox.setText(sh.setupSettings.Supply1Port);
@@ -482,7 +478,7 @@ public class SetupFrame extends javax.swing.JFrame {
         tabbedPane.setTabPlacement(JTabbedPane.LEFT);
         
         mainWindow.add(tabbedPane);
-        mainWindow.setSize(800,600);
+        mainWindow.setSize(900,600);
         mainWindow.setTitle("Supply Window");
         mainWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainWindow.setVisible(true);

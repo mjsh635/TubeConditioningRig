@@ -601,7 +601,7 @@ public class DXM {
             reply = new String(byteResponse);
         } catch (java.net.ConnectException CE) {
             System.out.println(String.format("Connection Timeout on Address: %s", this.address));
-            CE.printStackTrace();
+//            CE.printStackTrace();
             this.connected = false;
             
         } catch (SocketTimeoutException STE) {
