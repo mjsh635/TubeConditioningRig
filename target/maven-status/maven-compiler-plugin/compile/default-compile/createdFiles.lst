@@ -1,9 +1,12 @@
+ConditioningPackage\PopOutHandler$1.class
 ConditioningPackage\SupplyScreen$16.class
 ConditioningPackage\SupplyScreen$9.class
 ConditioningPackage\SupplyScreen$4.class
+ConditioningPackage\PopOutHandler.class
 ConditioningPackage\AutoReadOutHandler.class
 ConditioningPackage\SetupFrame$1.class
 ConditioningPackage\SupplyScreen$11.class
+ConditioningPackage\SupplyProgrammer.class
 ConditioningPackage\SettingsHandler.class
 ConditioningPackage\LoggingController.class
 ConditioningPackage\MainMethod.class
@@ -28,4 +31,5 @@ ConditioningPackage\SetupFrame$2.class
 ConditioningPackage\SupplyScreen$6.class
 ConditioningPackage\SupplyScreen$8.class
 ConditioningPackage\SupplyScreen.class
+ConditioningPackage\SupplyScreen$18.class
 ConditioningPackage\SupplyScreen$13.class

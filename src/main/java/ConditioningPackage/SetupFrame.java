@@ -35,6 +35,7 @@ public class SetupFrame extends javax.swing.JFrame {
     /**
      * Creates new form SetupFrame
      */
+    
     Boolean UseSupply1 = false;
     String Supply1Address;
     String Supply1Port;
@@ -61,7 +62,7 @@ public class SetupFrame extends javax.swing.JFrame {
     public SetupFrame() {
         initComponents();
         
-       
+        VersionNumberLabel.setText("1.01.00");
         sh = new SettingsHandler(workingPath+"/setupSettings.obj",true);
         this.Supply1IPAddressTBox.setText(sh.setupSettings.Supply1IP);
         this.Supply1PortTBox.setText(sh.setupSettings.Supply1Port);
@@ -119,6 +120,8 @@ public class SetupFrame extends javax.swing.JFrame {
         Supply4PortLabel = new JLabel();
         Supply4PortTBox = new JTextField();
         ContinueButton = new JButton();
+        Versionlabel = new JLabel();
+        VersionNumberLabel = new JLabel();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Setup Menu");
@@ -160,7 +163,7 @@ public class SetupFrame extends javax.swing.JFrame {
                                 .addComponent(Supply1PortLabel)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(Supply1PortTBox, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 76, Short.MAX_VALUE)))
+                        .addGap(0, 77, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         SupplyPanelLayout.setVerticalGroup(SupplyPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -215,7 +218,7 @@ public class SetupFrame extends javax.swing.JFrame {
                                 .addComponent(Supply2PortLabel)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(Supply2PortTBox, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 76, Short.MAX_VALUE)))
+                        .addGap(0, 77, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         SupplyPanel1Layout.setVerticalGroup(SupplyPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -270,7 +273,7 @@ public class SetupFrame extends javax.swing.JFrame {
                                 .addComponent(Supply3PortLabel)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(Supply3PortTBox, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 76, Short.MAX_VALUE)))
+                        .addGap(0, 77, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         SupplyPanel2Layout.setVerticalGroup(SupplyPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -325,7 +328,7 @@ public class SetupFrame extends javax.swing.JFrame {
                                 .addComponent(Supply4PortLabel)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(Supply4PortTBox, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 76, Short.MAX_VALUE)))
+                        .addGap(0, 77, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         SupplyPanel4Layout.setVerticalGroup(SupplyPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -352,14 +355,21 @@ public class SetupFrame extends javax.swing.JFrame {
             }
         });
 
+        Versionlabel.setText("Version:");
+
+        VersionNumberLabel.setText("00.00.00");
+
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(Versionlabel)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(VersionNumberLabel, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(ContinueButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -385,7 +395,11 @@ public class SetupFrame extends javax.swing.JFrame {
                     .addComponent(SupplyPanel2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(SupplyPanel4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ContinueButton)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(ContinueButton, GroupLayout.Alignment.TRAILING)
+                    .addGroup(GroupLayout.Alignment.TRAILING, layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(Versionlabel)
+                        .addComponent(VersionNumberLabel)))
                 .addContainerGap())
         );
 
@@ -463,18 +477,20 @@ public class SetupFrame extends javax.swing.JFrame {
         System.out.println("In WindowMaker");
         JFrame mainWindow = new JFrame();
         JTabbedPane tabbedPane = new JTabbedPane();
+        
         if(UseSupply1){
-         tabbedPane.add("Supply1",new SupplyScreen(Supply1Address, Supply1Port,this.SettingsFilePath,this.LogFolderPath).getContentPane());
+         tabbedPane.add("Supply1",new SupplyScreen("Supply1",Supply1Address, Supply1Port,this.SettingsFilePath,this.LogFolderPath).getContentPane());
         }
         if(UseSupply2){
-         tabbedPane.add("Supply2",new SupplyScreen(Supply2Address, Supply2Port,this.SettingsFilePath1,this.LogFolderPath).getContentPane());
+         tabbedPane.add("Supply2",new SupplyScreen("Supply2",Supply2Address, Supply2Port,this.SettingsFilePath1,this.LogFolderPath).getContentPane());
         }
         if(UseSupply3){
-         tabbedPane.add("Supply3",new SupplyScreen(Supply3Address, Supply3Port,this.SettingsFilePath2,this.LogFolderPath).getContentPane());
+         tabbedPane.add("Supply3",new SupplyScreen("Supply3",Supply3Address, Supply3Port,this.SettingsFilePath2,this.LogFolderPath).getContentPane());
         }
         if(UseSupply4){
-         tabbedPane.add("Supply4",new SupplyScreen(Supply4Address, Supply4Port,this.SettingsFilePath3,this.LogFolderPath).getContentPane());
+         tabbedPane.add("Supply4",new SupplyScreen("Supply4",Supply4Address, Supply4Port,this.SettingsFilePath3,this.LogFolderPath).getContentPane());
         }
+        
         tabbedPane.setTabPlacement(JTabbedPane.LEFT);
         
         mainWindow.add(tabbedPane);
@@ -550,5 +566,7 @@ public class SetupFrame extends javax.swing.JFrame {
     private JPanel SupplyPanel1;
     private JPanel SupplyPanel2;
     private JPanel SupplyPanel4;
+    private JLabel VersionNumberLabel;
+    private JLabel Versionlabel;
     // End of variables declaration//GEN-END:variables
 }

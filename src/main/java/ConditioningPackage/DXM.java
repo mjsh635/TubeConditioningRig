@@ -47,14 +47,9 @@ public class DXM {
         this.address = address;
         this.port = port;
         
-        try{
-            this.modelNumber = this.Get_Model_Type();
-        }
-        catch(Error e){
-            if (e.getMessage().equals("ERR001")){
-                System.out.println("Could not connect to Supply");
-            }
-        }
+        
+         this.modelNumber = this.Get_Model_Type();
+        
     }
 
     public void set_IP_Address(String new_address) {
@@ -65,22 +60,17 @@ public class DXM {
         return this.address;
     }
 
-    public Boolean Set_Voltage(double voltage){
-        try{
+    public void Set_Voltage(double voltage){
+        
             this._Set_Voltage(voltage);
-            return true;
-        }catch(Exception e){
-            return false;
-        }
+            
+        
     }
     
-    public Boolean Set_Current(double current){
-        try{
+    public void Set_Current(double current){
+        
             this._Set_Current(current);
-            return true;
-        }catch(Exception e){
-            return false;
-        }
+            
     }
     
     public void updates(){
@@ -90,26 +80,19 @@ public class DXM {
     
     public String Get_Model_Type() {
         // sets the supply to remote mode, and returns the supply type in X#### format
-        try {
+        
             this._Set_Mode_Remote();
             this.connected = true;
             return this._Read_Model_Type();
-            
-        } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            return "no connection";
-        }
+        
     }
     
     
     public boolean Get_Interlock_Status() {
-        try {
+       
             this._Update_Status_Signals();
             return this.InterlockOpen;
-        } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
-        }
+        
     }
 
     public void Reset_Faults() {
@@ -117,24 +100,20 @@ public class DXM {
             this._Send_Command(31, "");
             this._Update_Status_Signals();
         } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
+            System.out.println("bad response from Supply");
         }
     }
 
     public boolean Is_Emmitting() {
-        try {
+        
             this._Update_Fault_States();
             this._Update_Status_Signals();
             return this.HighVoltageState;
 
-        } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
-        }
     }
 
     public ArrayList<String> Are_There_Any_Faults() {
-        try {
+        
             this._Update_Fault_States();
             ArrayList<String> Faults = new ArrayList<String>();
             if (this.ArcPresent) {
@@ -156,51 +135,35 @@ public class DXM {
                 Faults.add("Under Current");
             }
             return Faults;
-        } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
-        }
+        
     }
 
     public String Read_Voltage_Out_String() {
-        try {
+       
             return this._Get_Voltage().toString();
-        } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
-        }
+        
 
     }
 
     public Double Read_Voltage_Out_Double() {
-        try {
+        
             return this._Get_Voltage();
-        } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
-        }
+        
     }
 
     public String Read_Current_Out_String() {
-        try {
+        
             return this._Get_Current().toString();
 
-        } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
-        }
     }
 
     public Double Read_Current_Out_Double() {
-        try {
+        
             return this._Get_Current();
-        } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
-        }
+        
     }
     public String[] Get_About_Information(){
-        try{
+        
             this._Read_Model_Type();
             Double setVoltage = this._Get_Set_Voltage();
             Double setCurrent = this._Get_Set_Current();
@@ -208,21 +171,19 @@ public class DXM {
             Double setPreHeat =  this._Get_Set_Preheat();
             return new String[]{String.valueOf(setVoltage),String.valueOf(setCurrent),String.valueOf(setFilLim),String.valueOf(setPreHeat)};
             
-        }catch (ArrayIndexOutOfBoundsException OB){
-            System.out.println(OB);
-            throw new Error("ERR001");
-        }catch (Error e){
-            System.out.print(e);
-            throw new Error("ERR001");
-        }
+      
     }
     
 
     public Double[] Get_Voltage_Current_Filament() {
-        
+        String[] response = new String[10];
         try {
-            String[] response = this._Send_Command(19, "");
-            
+            response = this._Send_Command(19, "");
+           } catch (ArrayIndexOutOfBoundsException OB) {
+            System.out.println("bad response from Supply");
+            response = new String[]{"E","0.0","0.0","0.0"};
+           }
+        finally{
             Double voltage = Double.parseDouble(response[1]);
             Double current = Double.parseDouble(response[2]);
             Double filCurrent = Double.parseDouble(response[3]);
@@ -234,90 +195,102 @@ public class DXM {
             scaledCurrent = current * this.currentScaleFactor;
                  
             return new Double[]{scaledVoltage, scaledCurrent, scaledFilCurrent};
-        } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
         }
+        
+           
     }
 
     private Double _Get_Voltage() {
         // send command, and then parse response to a double.
+        String[] response = new String[10];
         try {
-            String[] response = this._Send_Command(19, "");
+            response = this._Send_Command(19, "");
+        } catch (ArrayIndexOutOfBoundsException OB) {
+            System.out.println("bad response from Supply");
+            response = new String[]{"E","0.0"};
+        }finally{
             Double voltage = Double.parseDouble(response[1]);
             Double scaledVoltage = 0.0;
             // depending on the model type, apply different weights
             scaledVoltage = voltage * voltageScaleFactor;
                     
             return scaledVoltage;
-        } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
         }
     }
 
     private Double _Get_Current() {
+        String[] response = new String[10];
         try {
-            String[] response = this._Send_Command(19, "");
+            response = this._Send_Command(19, "");
+            } catch (ArrayIndexOutOfBoundsException OB) {
+            System.out.println("bad response from Supply");
+            response = new String[]{"E","0.0","0.0","0.0"};
+        }finally{
+
             Double current = Double.parseDouble(response[2]);
             Double scaledCurrent = 0.0;
             // depending on the model type, apply different weights
             scaledCurrent = current * currentScaleFactor;
                     
             return scaledCurrent;
-        } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
         }
     }
 
     private Double _Get_Set_Preheat() {
+        String[] response = new String[10];
         try {
-            String[] response = this._Send_Command(17, "");
-            return (Double.valueOf(response[1]) * 0.0006105);
+            response = this._Send_Command(17, "");
         } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
+            System.out.println("bad response from Supply");
+            response = new String[]{"E","0.0","0.0","0.0"};
+        }finally{
+            return (Double.valueOf(response[1]) * 0.0006105);
         }
     }
 
     private Double _Get_Set_Filament_Limit() {
+        String[] response = new String[10];
         try {
-            String[] response = this._Send_Command(16, "");
-            return (Double.valueOf(response[1]) * 0.001221);
+            response = this._Send_Command(16, "");
         } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
+            System.out.println("bad response from Supply");
+            response = new String[]{"E","0.0","0.0","0.0"};
+        }finally{
+            return (Double.valueOf(response[1]) * 0.001221);
         }
     }
 
     private Double _Get_Set_Voltage() {
+        String[] response = new String[10];
         try {
-            String[] response = this._Send_Command(14, "");
+            response = this._Send_Command(14, "");
+        } catch (ArrayIndexOutOfBoundsException OB) {
+            System.out.println("bad response from Supply");
+            response = new String[]{"E","0.0","0.0","0.0"};
+        }finally{
             Double voltage = Double.parseDouble(response[1]);
             Double scaledVoltage = 0.0;
             // depending on the model type, apply different weights
             scaledVoltage = voltage * voltageScaleFactor;
                     
             return scaledVoltage;
-        } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
         }
     }
 
     private Double _Get_Set_Current() {
+        String[] response = new String[10];
         try {
-            String[] response = this._Send_Command(15, "");
+            response = this._Send_Command(15, "");
+        } catch (ArrayIndexOutOfBoundsException OB) {
+            System.out.println("bad response from Supply");
+            response = new String[]{"E","0.0","0.0","0.0"};
+        }finally{
             Double current = Double.parseDouble(response[1]);
             Double scaledCurrent = 0.0;
             
             scaledCurrent = current * currentScaleFactor;
             
             return scaledCurrent;
-        } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
         }
     }
 
@@ -331,8 +304,7 @@ public class DXM {
             
             this._Send_Command(10, String.valueOf(scaledValue));
         } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
+            System.out.println("bad response from Supply");
         }
     }
 
@@ -346,8 +318,7 @@ public class DXM {
             
             this._Send_Command(11, String.valueOf(scaledValue));
         } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
+           System.out.println("bad response from Supply");
         }
     }
 
@@ -356,8 +327,7 @@ public class DXM {
             int scaledValue = (int) Math.round(Double.valueOf(value) / 0.001221);
             this._Send_Command(12, String.valueOf(scaledValue));
         } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
+            System.out.println("bad response from Supply");
         }
     }
 
@@ -366,8 +336,7 @@ public class DXM {
             int scaledValue = (int) Math.round(Double.valueOf(value) / 0.0006105);
             this._Send_Command(13, String.valueOf(scaledValue));
         } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
+            System.out.println("bad response from Supply");
         }
     }
 
@@ -386,8 +355,7 @@ public class DXM {
             this.RemoteMode = (response[4].equals("1"));
             this.connected = true;
         } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
+            System.out.println("bad response from Supply");
         }
 
     }
@@ -409,47 +377,60 @@ public class DXM {
             this.OverCurrent = (response[5].equals("1"));
             this.UnderCurrent = (response[6].equals("1"));
         } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
+            System.out.println("bad response from Supply");
         }
     }
 
     public boolean Xray_On() {
+        String[] response = new String[10];
         // command the supply to turn on xrays, returns true if command received successful
         try {
-            String[] response = this._Send_Command(98, "1");
+            response = this._Send_Command(98, "1");
+        } catch (ArrayIndexOutOfBoundsException OB) {
+            System.out.println("bad response from Supply");
+            response = new String[]{"E","0.0","0.0","0.0"};
+        }finally{
             if (response[1].equals("$")) {
                 return true;
             } else {
                 return false;
             }
-        } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
         }
+       
     }
 
     public boolean Xray_Off() {
+        String[] response = new String[10];
         // command the supply to turn off xrays, returns true if command received successful
         try {
-            String[] response = this._Send_Command(98, "0");
+            response = this._Send_Command(98, "0");
+        } catch (ArrayIndexOutOfBoundsException OB) {
+            System.out.println("bad response from Supply");
+            response = new String[]{"E","0.0","0.0","0.0"};
+        }finally{
             if (response[1].equals("$")) {
                 return true;
             } else {
                 return false;
             }
-        } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
         }
     }
 
     private String _Read_Model_Type() {
+        String[] response = new String[]{"","","","","",""};
         // call send command, and return the 1st index (this contains the model number)
         try {
-            String response = this._Send_Command(26, "")[1];
+            response = this._Send_Command(26, "");
+            
+        } catch (ArrayIndexOutOfBoundsException OB) {
+            
+            System.out.println("bad response from Supply");
+            response = new String[]{"E","BadResponse","0.0","0.0"};
+        } 
+        finally{
+            
             String model;
-            switch (response) //if the model type is DXM based, switch to X####, else use X####
+            switch (response[1]) //if the model type is DXM based, switch to X####, else use X####
             {
                 case "DXM02":
                     model = "X3481";
@@ -507,7 +488,7 @@ public class DXM {
                     this.currentScaleFactor = 0.004884004;
                     break;
                 default:
-                    model = response;
+                    model = response[1];
                     this.voltageScaleFactor = 0.0;
                     this.currentScaleFactor = 0.0;
             }
@@ -515,9 +496,6 @@ public class DXM {
             this.modelNumber = model;
             _Supply_Limits();
             return model;
-        } catch (ArrayIndexOutOfBoundsException OB) {
-            System.out.println(OB);
-            throw new Error("ERR001");
         }
     }
     
@@ -568,7 +546,11 @@ public class DXM {
 
     private void _Set_Mode_Remote() {
         // set the supply to remote mode
-        this._Send_Command(99, "1");
+        try{
+            this._Send_Command(99, "1");
+        }catch (ArrayIndexOutOfBoundsException OB) {
+            System.out.println("bad response from Supply");
+        }
     }
 
     private String[] _Send_Command(int Command, String Argument) {
@@ -604,12 +586,16 @@ public class DXM {
 //            CE.printStackTrace();
             this.connected = false;
             
+            
         } catch (SocketTimeoutException STE) {
             System.out.println(String.format("Communication Timeout on Address: %s", this.address));
             //STE.printStackTrace();
             this.connected = false;
+            
         } catch (Exception e) {
+            System.out.println("DXM Send Command Unknown Internal Exception caught:");
             e.printStackTrace();
+            
             
         } finally{
             sock.close();
@@ -617,6 +603,10 @@ public class DXM {
         }
         
         // split response into string array
+        if(reply.equals("")){
+            throw new Exception("E");
+        }
+        
         String[] splitResponse = reply.split(",");
         //return the string array
         return splitResponse;
@@ -624,14 +614,20 @@ public class DXM {
         }
         
         catch(Exception e){
+            
+            if(!e.getMessage().equals("E")){
+            System.out.println("DXM Send Command Unknown External Exception caught:");
             e.printStackTrace();
+            }
+            throw new ArrayIndexOutOfBoundsException();
+           
         }
         finally{
             
             SendCommandLock.unlock();
             //System.out.println("unlock");
         }
-        throw new IndexOutOfBoundsException();
+        
     }
 
 }

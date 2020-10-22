@@ -140,7 +140,6 @@ public class ConditioningHandler extends Thread{
             try{
                 Thread.sleep(500);
             }catch(Exception e){
-                this.interrupt();
                 e.printStackTrace();
             }
            
@@ -170,7 +169,7 @@ public class ConditioningHandler extends Thread{
         try {
             if(!this.HV.Is_Emmitting()){
                 if(this.HV.ArcPresent){
-                    log.Append_To_Log(String.format("Conditioning|| Arc Detected: %s kv, %s ma", CurrentSetKV, CurrentSetMA));
+                    log.Append_To_Log(String.format("Conditioning|| Arc Detected: %s kv, %s ma", this.HV.Read_Voltage_Out_String(), this.HV.Read_Current_Out_String()));
                     ArcCount++;
                     _Arc_Recovery(kvArc);
                     ConcurrentArcCount = 0;
@@ -197,8 +196,11 @@ public class ConditioningHandler extends Thread{
     private void _KVInitialRamp(){
         log.Append_To_Log("Conditioning|| Starting KV Initial Ramp");
         System.out.println("Starting KV Initial Ramp");
+         
         this.CurrentSetKV = this.StartKV;
+        this.PreviousSetKV = this.StartKV;
         this.CurrentSetMA = this.StartMA;
+        this.PreviousSetMA = this.StartMA;
         this.NextToSetKV = CurrentSetKV + this.KVStepSize;
         this.NextToSetMA = CurrentSetMA + this.MAStepSize;
         
@@ -393,17 +395,20 @@ public class ConditioningHandler extends Thread{
         System.out.println("Stoping");
         log.Append_To_Log("Conditioning|| Stop command called");
         _TearDown();
-        int stop_attempt = 0;
+        this.interrupt();
         
-        while (this.isAlive() && stop_attempt<3){
-            this.interrupt();
-            try{
-            this.join(500);
-            }catch(InterruptedException e){
-                e.printStackTrace();
-            }
-            stop_attempt++;
-        }
+//        int stop_attempt = 0;
+        
+//        while (this.isAlive() && stop_attempt<3){
+//            this.interrupt();
+//            try{
+//            this.join(500);
+//            }catch(InterruptedException e){
+//                
+//                e.printStackTrace();
+//            }
+//            stop_attempt++;
+//        }
         this.HV.Xray_Off();
         
     }

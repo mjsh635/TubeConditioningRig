@@ -17,6 +17,7 @@ public class AutoReadOutHandler extends Thread {
     JLabel volt;
     JLabel curr;
     JTextField voltTF,currTF,FillTF;
+    
     boolean StartReading = false;
     
     public AutoReadOutHandler(DXM supply, JLabel ManualVoltageDisplay,JLabel ManualCurrentDisplay, 
@@ -34,6 +35,7 @@ public class AutoReadOutHandler extends Thread {
     public void run(){
         System.out.println("Starting");
         while (true){
+            
             if(StartReading){
                 
                 try{

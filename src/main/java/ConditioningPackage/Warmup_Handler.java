@@ -26,10 +26,11 @@ public class Warmup_Handler extends Thread {
     double FilCur;
     double PreHeat;
     LoggingController log;
+    boolean KeepOn;
     
     
     public Warmup_Handler(DXM supply, ButtonGroup btn, JProgressBar progressBar, 
-            JTextField kv, JTextField ma, JTextField filCurr, JTextField pre,LoggingController log) {
+            JTextField kv, JTextField ma, JTextField filCurr, JTextField pre,LoggingController log, boolean XrayStayOnAfterComplete) {
         this.supply = supply;
         this.btnGroup = btn;
         this.PBar = progressBar;
@@ -38,6 +39,7 @@ public class Warmup_Handler extends Thread {
         this.FilCurTBox = filCurr;
         this.PreHeatTBox =  pre;
         this.log = log;
+        this.KeepOn = XrayStayOnAfterComplete;
     }
     
     public void run(){
@@ -81,6 +83,9 @@ public class Warmup_Handler extends Thread {
         loopnum++;
         double val = ((double)loopnum/(double)stepCount)*100;
         this.PBar.setValue((int)Math.rint(val));
+        }
+        if(!KeepOn){
+            this.supply.Xray_Off();
         }
         
     }

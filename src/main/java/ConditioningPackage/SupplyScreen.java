@@ -12,6 +12,11 @@ import java.awt.Frame;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 import java.util.HashSet;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 
 
@@ -27,6 +32,7 @@ public class SupplyScreen extends javax.swing.JFrame {
     String IPAddress;
     String settingsFilePath;
     String LogFolderPath;
+    String Name;
     LoggingController log;
     int port;
     DXM supply;
@@ -36,11 +42,13 @@ public class SupplyScreen extends javax.swing.JFrame {
     ConditioningHandler ch;
     String SerialNumber = "";
     AutoReadOutHandler AROH;
+    PopOutHandler xrayOnOffPop;
     
     
     
-    public SupplyScreen(String IPAddress,String port,String SettingsFilePath, String LogFolderPath) {
+    public SupplyScreen(String Name,String IPAddress,String port,String SettingsFilePath, String LogFolderPath) {
         initComponents();
+        this.Name = Name;
         this.IPAddress = IPAddress;
         if(SettingsFilePath != ""){
             this.sh = new SettingsHandler(SettingsFilePath);
@@ -51,13 +59,21 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.supply = new DXM(this.IPAddress,this.port);
         
         this.warmup = new Warmup_Handler(this.supply, this.WarmupSelectionButtonGroup, this.WarmUpProgressBar,
-                this.WarmVoltageTBox,this.WarmCurrentTBox,this.FillCurrTBox,this.PreHeatTBox, log);
+                this.WarmVoltageTBox,this.WarmCurrentTBox,this.FillCurrTBox,this.PreHeatTBox, log,this.WarmupXrayStayOnCheckBox.isSelected());
         this.AROH = new AutoReadOutHandler(this.supply, this.VoltageReadoutLabel, 
                 this.CurrentReadoutLabel, this.ConditionVoltageReadTBox, 
                 this.ConditionCurrentReadTBox, this.ConditionFillamentReadTBox);
         this.AROH.start();
+        if(!this.supply.connected){
+            this.XrayOnButton.setEnabled(false);
+            this.StartWarmupButton.setEnabled(false);
+            this.StartConditioningButton.setEnabled(false);
+            this.StopConditioningButton.setEnabled(false);
+        }
         
+        xrayOnOffPop = new PopOutHandler(Name,XrayOnOffPanel,ManualControlPanel);
     }
+   
     
     public SupplyScreen(){
         initComponents();
@@ -87,6 +103,7 @@ public class SupplyScreen extends javax.swing.JFrame {
         TitleLabel = new javax.swing.JLabel();
         VoltageReadoutLabel = new javax.swing.JLabel();
         CurrentReadoutLabel = new javax.swing.JLabel();
+        XrayOnOffPanelPopButton = new javax.swing.JButton();
         WarmupPanel = new javax.swing.JPanel();
         WarmupTitleLabel = new javax.swing.JLabel();
         RadioButton7min = new javax.swing.JRadioButton();
@@ -102,6 +119,7 @@ public class SupplyScreen extends javax.swing.JFrame {
         WarmMinVoltageTBox = new javax.swing.JTextField();
         WarmMinMALabel = new javax.swing.JLabel();
         WarmMinCurrentTBox = new javax.swing.JTextField();
+        WarmupXrayStayOnCheckBox = new javax.swing.JCheckBox();
         TubeSerialNumberTBox = new javax.swing.JTextField();
         TubeSerialNumberLabel = new javax.swing.JLabel();
         TubeConditioningPanel = new javax.swing.JPanel();
@@ -192,6 +210,7 @@ public class SupplyScreen extends javax.swing.JFrame {
         setTitle("Supply Screen");
 
         XrayOnOffPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        XrayOnOffPanel.setPreferredSize(new java.awt.Dimension(344, 300));
 
         XrayOnButton.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         XrayOnButton.setText("XRAY ON");
@@ -244,70 +263,85 @@ public class SupplyScreen extends javax.swing.JFrame {
         CurrentReadoutLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         CurrentReadoutLabel.setText("0.0");
 
+        XrayOnOffPanelPopButton.setToolTipText("POP");
+        XrayOnOffPanelPopButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                XrayOnOffPanelPopButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout XrayOnOffPanelLayout = new javax.swing.GroupLayout(XrayOnOffPanel);
         XrayOnOffPanel.setLayout(XrayOnOffPanelLayout);
         XrayOnOffPanelLayout.setHorizontalGroup(
             XrayOnOffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(XrayOnOffPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(VoltageReadoutLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(CurrentReadoutLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31))
+            .addGroup(XrayOnOffPanelLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
                 .addGroup(XrayOnOffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(XrayOnOffPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(VoltageReadoutLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(CurrentReadoutLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 20, Short.MAX_VALUE))
-                    .addGroup(XrayOnOffPanelLayout.createSequentialGroup()
-                        .addGap(12, 12, 12)
                         .addGroup(XrayOnOffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TitleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(XrayOnOffPanelLayout.createSequentialGroup()
-                                .addGroup(XrayOnOffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(XrayOnOffPanelLayout.createSequentialGroup()
-                                        .addComponent(kvLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(VoltageSetTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(maLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(CurrentSetTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(XrayOnOffPanelLayout.createSequentialGroup()
-                                        .addComponent(XrayOnButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(XrayOffButton, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 20, Short.MAX_VALUE))
-                            .addGroup(XrayOnOffPanelLayout.createSequentialGroup()
-                                .addComponent(VoltageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(kvLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(CurrentLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(2, 2, 2)))))
-                .addContainerGap())
+                                .addComponent(VoltageSetTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(maLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(CurrentSetTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(XrayOnOffPanelLayout.createSequentialGroup()
+                                .addComponent(XrayOnButton, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(XrayOffButton, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(32, 32, 32))
+                    .addGroup(XrayOnOffPanelLayout.createSequentialGroup()
+                        .addGroup(XrayOnOffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, XrayOnOffPanelLayout.createSequentialGroup()
+                                .addComponent(VoltageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(CurrentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(XrayOnOffPanelLayout.createSequentialGroup()
+                                .addGap(60, 60, 60)
+                                .addComponent(TitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(32, 32, 32)
+                                .addComponent(XrayOnOffPanelPopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(10, 10, 10))))
         );
         XrayOnOffPanelLayout.setVerticalGroup(
             XrayOnOffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(XrayOnOffPanelLayout.createSequentialGroup()
-                .addComponent(TitleLabel)
-                .addGap(18, 18, 18)
+                .addGroup(XrayOnOffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(XrayOnOffPanelLayout.createSequentialGroup()
+                        .addComponent(TitleLabel)
+                        .addGap(19, 19, 19))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, XrayOnOffPanelLayout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(XrayOnOffPanelPopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(11, 11, 11)))
                 .addGroup(XrayOnOffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(VoltageLabel)
                     .addComponent(CurrentLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(XrayOnOffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CurrentReadoutLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(VoltageReadoutLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(VoltageReadoutLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(XrayOnOffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(XrayOnButton)
-                    .addComponent(XrayOffButton, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(XrayOnOffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(XrayOffButton, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                    .addComponent(XrayOnButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(XrayOnOffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(VoltageSetTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(CurrentSetTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(kvLabel)
                     .addComponent(maLabel))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(23, 23, 23))
         );
-
-        XrayOnOffPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {XrayOffButton, XrayOnButton});
 
         WarmupPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -368,6 +402,8 @@ public class SupplyScreen extends javax.swing.JFrame {
             }
         });
 
+        WarmupXrayStayOnCheckBox.setText("Keep X-ray on after Warmup");
+
         javax.swing.GroupLayout WarmupPanelLayout = new javax.swing.GroupLayout(WarmupPanel);
         WarmupPanel.setLayout(WarmupPanelLayout);
         WarmupPanelLayout.setHorizontalGroup(
@@ -375,6 +411,9 @@ public class SupplyScreen extends javax.swing.JFrame {
             .addGroup(WarmupPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(WarmupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(WarmupPanelLayout.createSequentialGroup()
+                        .addComponent(WarmupXrayStayOnCheckBox)
+                        .addGap(57, 57, 57))
                     .addComponent(WarmupTitleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(WarmUpProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(WarmupPanelLayout.createSequentialGroup()
@@ -434,7 +473,9 @@ public class SupplyScreen extends javax.swing.JFrame {
                         .addComponent(WarmMinMALabel)
                         .addComponent(WarmMinVoltageTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(WarmMinKVLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(17, 17, 17)
+                .addComponent(WarmupXrayStayOnCheckBox)
+                .addGap(18, 18, 18)
                 .addGroup(WarmupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(StartWarmupButton)
                     .addComponent(StopWarmupButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -463,31 +504,30 @@ public class SupplyScreen extends javax.swing.JFrame {
         ManualControlPanelLayout.setHorizontalGroup(
             ManualControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ManualControlPanelLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addContainerGap()
                 .addGroup(ManualControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ManualControlPanelLayout.createSequentialGroup()
-                        .addComponent(XrayOnOffPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(WarmupPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(WarmupPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(XrayOnOffPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(ManualControlPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(TubeSerialNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(TubeSerialNumberTBox, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(89, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         ManualControlPanelLayout.setVerticalGroup(
             ManualControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ManualControlPanelLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addContainerGap()
                 .addGroup(ManualControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(XrayOnOffPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(WarmupPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(ManualControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TubeSerialNumberTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TubeSerialNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(125, Short.MAX_VALUE))
+                    .addComponent(WarmupPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(XrayOnOffPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(40, 40, 40)
+                .addGroup(ManualControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(TubeSerialNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TubeSerialNumberTBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Manual Control", ManualControlPanel);
@@ -760,7 +800,7 @@ public class SupplyScreen extends javax.swing.JFrame {
                         .addComponent(ConditioningProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(TimeRemainingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 189, Short.MAX_VALUE))
+                        .addGap(0, 114, Short.MAX_VALUE))
                     .addGroup(ConditioningControlPanelLayout.createSequentialGroup()
                         .addComponent(StartConditioningButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -1091,7 +1131,7 @@ public class SupplyScreen extends javax.swing.JFrame {
                         .addComponent(AboutRefreshButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ReconnectToSupplyButton)))
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("About", AboutPanel);
@@ -1109,10 +1149,6 @@ public class SupplyScreen extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void CurrentSetTBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CurrentSetTBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CurrentSetTBoxActionPerformed
     
     private void update_About_Page(){
         // update all the text fields on the About page
@@ -1164,60 +1200,6 @@ public class SupplyScreen extends javax.swing.JFrame {
     }
     
     
-    private void XrayOnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_XrayOnButtonActionPerformed
-        Double voltage = Double.valueOf(this.VoltageSetTBox.getText());
-        Double current = Double.valueOf(this.CurrentSetTBox.getText());
-        this.supply.Set_Filament_Limit(Double.valueOf(this.FillCurrTBox.getText()));
-        this.supply.Set_Filament_Preheat(Double.valueOf(this.PreHeatTBox.getText()));
-        
-        log.Append_To_Log(String.format("Manual|| Voltage: %s, Current: %s",voltage,current));
-        if(this.supply.Is_Emmitting()){
-            this.supply.Set_Voltage(voltage);
-            this.supply.Set_Current(current);
-        }else{
-            this.supply.Set_Voltage(voltage);
-            this.supply.Set_Current(current);
-            log.Append_To_Log("Manual|| Xrays on");
-            this.supply.Xray_On();
-        }
-        this.AROH.StartReading = true;
-        
-    }//GEN-LAST:event_XrayOnButtonActionPerformed
-
-    private void XrayOffButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_XrayOffButtonActionPerformed
-        log.Append_To_Log("Manual|| Xrays off");
-        this.supply.Xray_Off();
-        //this.AROH.StartReading = false;
-        
-        
-    }//GEN-LAST:event_XrayOffButtonActionPerformed
-
-    private void StopWarmupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopWarmupButtonActionPerformed
-        this.warmup.Stop_Warmup();
-        if(!this.warmup.isAlive()){
-            this.StartWarmupButton.setEnabled(true);    
-        }
-        this.warmup = new Warmup_Handler(this.supply, this.WarmupSelectionButtonGroup, this.WarmUpProgressBar,
-                this.WarmVoltageTBox,this.WarmCurrentTBox,this.FillCurrTBox,this.PreHeatTBox, log);
-        this.XrayOnButton.setEnabled(true);
-        this.StartConditioningButton.setEnabled(true);
-    }//GEN-LAST:event_StopWarmupButtonActionPerformed
-
-    private void StartWarmupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartWarmupButtonActionPerformed
-        SaveButtonActionPerformed(evt);
-        this.StartWarmupButton.setEnabled(false);
-        this.RadioButton7min.setActionCommand("7");
-        this.RadioButton15min.setActionCommand("15");
-        this.warmup.start();
-        this.XrayOnButton.setEnabled(false);
-        this.StartConditioningButton.setEnabled(false);
-        this.AROH.StartReading = true;
-    }//GEN-LAST:event_StartWarmupButtonActionPerformed
-
-    private void WarmCurrentTBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WarmCurrentTBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_WarmCurrentTBoxActionPerformed
-
     private void StopConditioningButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopConditioningButtonActionPerformed
         if(ch.isAlive()){
             ch.Stop_Conditioning();
@@ -1241,21 +1223,29 @@ public class SupplyScreen extends javax.swing.JFrame {
         
     }//GEN-LAST:event_StartConditioningButtonActionPerformed
 
-    private void TubeSerialNumberTBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TubeSerialNumberTBoxActionPerformed
-        this.SerialNumber = this.TubeSerialNumberTBox.getText();
-        System.out.println(this.SerialNumber);
-        this.TubeSerialNumberTBox.setBackground(Color.lightGray);
-        log.LogFileCreation(this.SerialNumber);
-        sh.appsettings.TubeSerialNumber = this.SerialNumber;
-        
-    }//GEN-LAST:event_TubeSerialNumberTBoxActionPerformed
-
-    private void TubeSerialNumberTBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TubeSerialNumberTBoxMouseClicked
-        this.TubeSerialNumberTBox.setBackground(Color.white);
-    }//GEN-LAST:event_TubeSerialNumberTBoxMouseClicked
-
     private void ReconnectToSupplyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReconnectToSupplyButtonActionPerformed
         this.supply = new DXM(this.IPAddress,this.port);
+        
+        this.warmup = new Warmup_Handler(this.supply, this.WarmupSelectionButtonGroup, this.WarmUpProgressBar,
+                this.WarmVoltageTBox,this.WarmCurrentTBox,this.FillCurrTBox,this.PreHeatTBox, log,this.WarmupXrayStayOnCheckBox.isSelected());
+        this.AROH = new AutoReadOutHandler(this.supply, this.VoltageReadoutLabel, 
+                this.CurrentReadoutLabel, this.ConditionVoltageReadTBox, 
+                this.ConditionCurrentReadTBox, this.ConditionFillamentReadTBox);
+        this.AROH.start();
+        
+        if(this.supply.connected){
+        JOptionPane.showMessageDialog(null, "Supply Connected, re-enabling buttons");
+        
+        this.XrayOnButton.setEnabled(true);
+            
+        this.StartWarmupButton.setEnabled(true);
+            
+        this.StartConditioningButton.setEnabled(true);
+         this.StopConditioningButton.setEnabled(true);
+        
+        }else{
+        JOptionPane.showMessageDialog(null, "Supply Not Found");
+        }
         
     }//GEN-LAST:event_ReconnectToSupplyButtonActionPerformed
 
@@ -1299,13 +1289,91 @@ public class SupplyScreen extends javax.swing.JFrame {
         update_About_Page();
     }//GEN-LAST:event_AboutRefreshButtonActionPerformed
 
+    private void PerformKVRerampCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PerformKVRerampCheckBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PerformKVRerampCheckBoxActionPerformed
+
+    private void TubeSerialNumberTBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TubeSerialNumberTBoxActionPerformed
+        this.SerialNumber = this.TubeSerialNumberTBox.getText();
+        System.out.println(this.SerialNumber);
+        this.TubeSerialNumberTBox.setBackground(Color.lightGray);
+        log.LogFileCreation(this.SerialNumber);
+        sh.appsettings.TubeSerialNumber = this.SerialNumber;
+
+    }//GEN-LAST:event_TubeSerialNumberTBoxActionPerformed
+
+    private void TubeSerialNumberTBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TubeSerialNumberTBoxMouseClicked
+        this.TubeSerialNumberTBox.setBackground(Color.white);
+    }//GEN-LAST:event_TubeSerialNumberTBoxMouseClicked
+
     private void WarmMinCurrentTBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WarmMinCurrentTBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_WarmMinCurrentTBoxActionPerformed
 
-    private void PerformKVRerampCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PerformKVRerampCheckBoxActionPerformed
+    private void WarmCurrentTBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WarmCurrentTBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_PerformKVRerampCheckBoxActionPerformed
+    }//GEN-LAST:event_WarmCurrentTBoxActionPerformed
+
+    private void StopWarmupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopWarmupButtonActionPerformed
+        this.warmup.Stop_Warmup();
+        if(!this.warmup.isAlive()){
+            this.StartWarmupButton.setEnabled(true);
+        }
+        this.warmup = new Warmup_Handler(this.supply, this.WarmupSelectionButtonGroup, this.WarmUpProgressBar,
+            this.WarmVoltageTBox,this.WarmCurrentTBox,this.FillCurrTBox,this.PreHeatTBox, log,this.WarmupXrayStayOnCheckBox.isSelected());
+        this.XrayOnButton.setEnabled(true);
+        this.StartConditioningButton.setEnabled(true);
+    }//GEN-LAST:event_StopWarmupButtonActionPerformed
+
+    private void StartWarmupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartWarmupButtonActionPerformed
+        SaveButtonActionPerformed(evt);
+        this.StartWarmupButton.setEnabled(false);
+        this.RadioButton7min.setActionCommand("7");
+        this.RadioButton15min.setActionCommand("15");
+        this.warmup.start();
+        this.XrayOnButton.setEnabled(false);
+        this.StartConditioningButton.setEnabled(false);
+        this.AROH.StartReading = true;
+    }//GEN-LAST:event_StartWarmupButtonActionPerformed
+
+    private void XrayOnOffPanelPopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_XrayOnOffPanelPopButtonActionPerformed
+        if(!xrayOnOffPop.isPOP){
+            xrayOnOffPop.POP();
+        }else
+        XrayOnOffPanel.setLocation(xrayOnOffPop.UNPOP());
+
+    }//GEN-LAST:event_XrayOnOffPanelPopButtonActionPerformed
+
+    private void CurrentSetTBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CurrentSetTBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CurrentSetTBoxActionPerformed
+
+    private void XrayOffButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_XrayOffButtonActionPerformed
+        log.Append_To_Log("Manual|| Xrays off");
+        this.supply.Xray_Off();
+        //this.AROH.StartReading = false;
+
+    }//GEN-LAST:event_XrayOffButtonActionPerformed
+
+    private void XrayOnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_XrayOnButtonActionPerformed
+        Double voltage = Double.valueOf(this.VoltageSetTBox.getText());
+        Double current = Double.valueOf(this.CurrentSetTBox.getText());
+        this.supply.Set_Filament_Limit(Double.valueOf(this.FillCurrTBox.getText()));
+        this.supply.Set_Filament_Preheat(Double.valueOf(this.PreHeatTBox.getText()));
+
+        log.Append_To_Log(String.format("Manual|| Voltage: %s, Current: %s",voltage,current));
+        if(this.supply.Is_Emmitting()){
+            this.supply.Set_Voltage(voltage);
+            this.supply.Set_Current(current);
+        }else{
+            this.supply.Set_Voltage(voltage);
+            this.supply.Set_Current(current);
+            log.Append_To_Log("Manual|| Xrays on");
+            this.supply.Xray_On();
+        }
+        this.AROH.StartReading = true;
+
+    }//GEN-LAST:event_XrayOnButtonActionPerformed
     
     private void Load_Settings(){
         this.FillCurrTBox.setText(sh.appsettings.FilamentCurrentLimit);
@@ -1481,9 +1549,11 @@ public class SupplyScreen extends javax.swing.JFrame {
     private javax.swing.JPanel WarmupPanel;
     private javax.swing.ButtonGroup WarmupSelectionButtonGroup;
     private javax.swing.JLabel WarmupTitleLabel;
+    private javax.swing.JCheckBox WarmupXrayStayOnCheckBox;
     private javax.swing.JButton XrayOffButton;
     private javax.swing.JButton XrayOnButton;
     private javax.swing.JPanel XrayOnOffPanel;
+    private javax.swing.JButton XrayOnOffPanelPopButton;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel kvLabel;
     private javax.swing.JLabel maLabel;

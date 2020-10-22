@@ -74,7 +74,7 @@ public class LoggingController {
         try(FileWriter fw = new FileWriter(this.filePath.toString(),true)){
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             fw.write(timestamp+" || "+text_to_Append+"\n");
-            System.out.println("Appended to Log");
+            System.out.println(String.format("Appended to Log (message: %s)", text_to_Append));
         }
         catch(NullPointerException e){
             JOptionPane.showMessageDialog(null, "No Tube S# Entered, dumping to Missing File");
