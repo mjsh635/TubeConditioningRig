@@ -33,7 +33,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jTabbedPane1" alignment="0" max="32767" attributes="0"/>
+          <Component id="jTabbedPane1" alignment="1" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -68,7 +68,7 @@
                               <Component id="TubeSerialNumberTBox" min="-2" pref="221" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="21" max="32767" attributes="0"/>
+                      <EmptySpace pref="24" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -85,7 +85,7 @@
                           <Component id="TubeSerialNumberLabel" alignment="0" min="-2" pref="20" max="-2" attributes="0"/>
                           <Component id="TubeSerialNumberTBox" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="56" max="32767" attributes="0"/>
+                      <EmptySpace pref="66" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -464,6 +464,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0.0"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="WarmVoltageTBoxActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="WarmMALabel">
                   <Properties>
@@ -493,6 +496,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0.0"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="WarmMinVoltageTBoxActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="WarmMinMALabel">
                   <Properties>
@@ -556,7 +562,7 @@
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="ConditioningSettingsPanel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="ConditioningControlPanel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
@@ -601,38 +607,42 @@
                                       <Component id="TimeBetweenStepsTBox" alignment="0" max="32767" attributes="0"/>
                                       <Component id="TotalStepCountTBox" alignment="0" min="-2" pref="47" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="ArcRecoveryTimeLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                                              <Component id="TotalArcsBeforeStopLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="ArcRecoveryTimeTBox" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="TotalArcsBeforeStopTBox" min="-2" pref="47" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                      <Group type="102" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="FilCurrLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                                              <Component id="PreHeatLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="PreHeatTBox" max="32767" attributes="0"/>
-                                              <Component id="FillCurrTBox" min="-2" pref="47" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                  </Group>
-                                  <EmptySpace max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="PerformKVRampCheckBox" min="-2" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="PerformOnOffCyclesCheckBox" alignment="1" min="-2" max="-2" attributes="0"/>
-                                          <Component id="PerformKVRerampCheckBox" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="PerformMARampCheckBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                      <Component id="FilCurrLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="PreHeatLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                                                  <Component id="ArcRecoveryTimeLabel" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Component id="ArcRecoveryTimeTBox" max="32767" attributes="0"/>
+                                                  <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Component id="PreHeatTBox" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="FillCurrTBox" alignment="0" min="-2" pref="47" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="1" attributes="0">
+                                              <Component id="TotalArcsBeforeStopLabel" min="-2" max="-2" attributes="0"/>
+                                              <Component id="ConcurrentArcsBeforeStopLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="TotalArcsBeforeStopTBox1" min="-2" pref="47" max="-2" attributes="0"/>
+                                              <Component id="ConcurrentArcsBeforeStopTBox" min="-2" pref="47" max="-2" attributes="0"/>
+                                          </Group>
                                       </Group>
                                   </Group>
                               </Group>
@@ -644,10 +654,27 @@
                                       <Component id="TargetMATBox" alignment="0" min="-2" pref="47" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="NumberOfConditioningCyclesLabel" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="NumberOfConditioningCyclesTBox" min="-2" pref="46" max="-2" attributes="0"/>
+                                  <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="SaveButton" alignment="1" min="-2" max="-2" attributes="0"/>
-                                      <Component id="LaodDefaultButton" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="PerformKVRampCheckBox" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="PerformOnOffCyclesCheckBox" alignment="1" min="-2" max="-2" attributes="0"/>
+                                          <Component id="PerformKVRerampCheckBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="PerformMARampCheckBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="LaodDefaultButton" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -656,60 +683,76 @@
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="TotalStepCountTBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="TotalStepCountLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="TimeBetweenStepsTBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="TimeBetweenStepsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="StartingKVTBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="StartingKVLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="TargetKVTBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="TargetKVLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="StartingMATBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="StartingMALabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="TargetMATBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="TargetMALabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="NumberOfOnOffCyclesTBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="NumberOfOnOffCyclesLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="OnOffCycleTimeOnTBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="OnOffCycleTimeOnLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="OnOffCycleTimeOffTBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="OnOffCycleTimeOffLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="0" pref="9" max="32767" attributes="0"/>
-                      </Group>
                       <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Group type="102" attributes="0">
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="PerformKVRampCheckBox" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="PerformMARampCheckBox" min="-2" pref="15" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="PerformKVRerampCheckBox" min="-2" pref="15" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="PerformOnOffCyclesCheckBox" min="-2" pref="15" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="158" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="TotalArcsBeforeStopTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="TotalStepCountTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="TotalStepCountLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="TimeBetweenStepsTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="TimeBetweenStepsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="StartingKVTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="StartingKVLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="TargetKVTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="TargetKVLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="StartingMATBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="StartingMALabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="TargetMATBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="TargetMALabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="NumberOfOnOffCyclesTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="NumberOfOnOffCyclesLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="OnOffCycleTimeOnTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="OnOffCycleTimeOnLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="OnOffCycleTimeOffTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="OnOffCycleTimeOffLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="LaodDefaultButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="ConcurrentArcsBeforeStopTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="ConcurrentArcsBeforeStopLabel" alignment="3" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="TotalArcsBeforeStopTBox1" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="TotalArcsBeforeStopLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="ArcRecoveryTimeTBox" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="ArcRecoveryTimeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -719,28 +762,19 @@
                                       <Component id="FillCurrTBox" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="FilCurrLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="PerformKVRampCheckBox" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="PerformMARampCheckBox" min="-2" pref="15" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="PerformKVRerampCheckBox" min="-2" pref="15" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="PerformOnOffCyclesCheckBox" min="-2" pref="15" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="PreHeatTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="PreHeatLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="NumberOfConditioningCyclesTBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="NumberOfConditioningCyclesLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="PreHeatTBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="PreHeatLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                          <Component id="SaveButton" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="LaodDefaultButton" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -755,16 +789,28 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0.0"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="StartingMATBoxMouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="StartingMATBoxActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="TotalStepCountTBox">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0.0"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="TotalStepCountTBoxMouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TotalStepCountTBoxActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="TimeBetweenStepsTBox">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0.0"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="TimeBetweenStepsTBoxMouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TimeBetweenStepsTBoxActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="TotalStepCountLabel">
                   <Properties>
@@ -780,6 +826,10 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0.0"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="StartingKVTBoxMouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="StartingKVTBoxActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="StartingKVLabel">
                   <Properties>
@@ -790,6 +840,10 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0.0"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="TargetKVTBoxMouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TargetKVTBoxActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="TargetKVLabel">
                   <Properties>
@@ -805,11 +859,19 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0.0"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="NumberOfOnOffCyclesTBoxMouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NumberOfOnOffCyclesTBoxActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="TargetMATBox">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0.0"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="TargetMATBoxMouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TargetMATBoxActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="TargetMALabel">
                   <Properties>
@@ -820,6 +882,10 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0.0"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="OnOffCycleTimeOffTBoxMouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="OnOffCycleTimeOffTBoxActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="OnOffCycleTimeOffLabel">
                   <Properties>
@@ -835,21 +901,33 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0.0"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="OnOffCycleTimeOnTBoxMouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="OnOffCycleTimeOnTBoxActionPerformed"/>
+                  </Events>
                 </Component>
-                <Component class="javax.swing.JLabel" name="TotalArcsBeforeStopLabel">
+                <Component class="javax.swing.JLabel" name="ConcurrentArcsBeforeStopLabel">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Total Arcs Before Stop:"/>
+                    <Property name="text" type="java.lang.String" value="Concurrent Arcs Before Stop:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TotalArcsBeforeStopTBox">
+                <Component class="javax.swing.JTextField" name="ConcurrentArcsBeforeStopTBox">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0.0"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="ConcurrentArcsBeforeStopTBoxMouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ConcurrentArcsBeforeStopTBoxActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="ArcRecoveryTimeTBox">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0.0"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="ArcRecoveryTimeTBoxMouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ArcRecoveryTimeTBoxActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="ArcRecoveryTimeLabel">
                   <Properties>
@@ -865,6 +943,10 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0.0"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="PreHeatTBoxMouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PreHeatTBoxActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="FilCurrLabel">
                   <Properties>
@@ -875,13 +957,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0.0"/>
                   </Properties>
-                </Component>
-                <Component class="javax.swing.JButton" name="SaveButton">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Save"/>
-                  </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SaveButtonActionPerformed"/>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="FillCurrTBoxMouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="FillCurrTBoxActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="LaodDefaultButton">
@@ -897,12 +975,18 @@
                     <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" value="Perform KV Ramp (1)"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PerformKVRampCheckBoxActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="PerformMARampCheckBox">
                   <Properties>
                     <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" value="Perform MA Ramp (2)"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PerformMARampCheckBoxActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="PerformKVRerampCheckBox">
                   <Properties>
@@ -918,6 +1002,37 @@
                     <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" value="Perform On/Off Cycles (4)"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PerformOnOffCyclesCheckBoxActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="TotalArcsBeforeStopLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Total Arcs Before Stop:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="TotalArcsBeforeStopTBox1">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0.0"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="TotalArcsBeforeStopTBox1MouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TotalArcsBeforeStopTBox1ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="NumberOfConditioningCyclesLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Number of Conditioning Cycles:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="NumberOfConditioningCyclesTBox">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0.0"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="NumberOfConditioningCyclesTBoxMouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NumberOfConditioningCyclesTBoxActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -942,7 +1057,7 @@
                                   <Component id="ConditioningProgressBar" min="-2" pref="295" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="TimeRemainingLabel" min="-2" pref="119" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="114" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="StartConditioningButton" min="-2" pref="125" max="-2" attributes="0"/>
@@ -1283,7 +1398,7 @@
                               <Component id="ReconnectToSupplyButton" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="27" max="32767" attributes="0"/>
+                      <EmptySpace pref="37" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

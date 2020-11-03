@@ -25,7 +25,7 @@ public class Settings implements Serializable {
     String NumberOnOffCycles;
     String OnCycleTime;
     String OffCycleTime;
-    String TotalArcsBeforeStop;
+    String ConcurrentArcsBeforeStop;
     String ArcKVStep;
     String ArcMAStep;
     String ArcRecoveryTime;
@@ -41,7 +41,8 @@ public class Settings implements Serializable {
     String PerformMARamp;
     String PerformKVReramp;
     String PerformOnOffCycles;
-    
+    String TotalArcsBeforeStop;
+    String NumberOfConditioningCycles;
     
     public void SetDefault(){
         this.FilamentCurrentLimit = "0.75";
@@ -55,7 +56,7 @@ public class Settings implements Serializable {
         this.NumberOnOffCycles = "3";
         this.OnCycleTime = "60";
         this.OffCycleTime = "60";
-        this.TotalArcsBeforeStop = "3";
+        this.ConcurrentArcsBeforeStop = "3";
         this.ArcKVStep = "1";
         this.ArcMAStep = "1";
         this.ArcRecoveryTime = "1";
@@ -69,5 +70,7 @@ public class Settings implements Serializable {
         this.PerformMARamp = "true";
         this.PerformKVReramp = "true";
         this.PerformOnOffCycles = "true";
+        this.TotalArcsBeforeStop = "20";
+        this.NumberOfConditioningCycles = "1";
     }
 }

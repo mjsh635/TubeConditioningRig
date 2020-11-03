@@ -1,0 +1,203 @@
+2020-10-28 11:02:40.442 || Tube Serial Number: 20044Cr32
+2020-10-28 11:05:07.6 || Tube Serial Number: 20044Cr32
+2020-10-28 11:05:30.862 || ###########################################################################################
+2020-10-28 11:05:30.863 || Conditioning|| Starting Conditioning Routine
+2020-10-28 11:05:30.864 || Conditioning|| Setting up
+2020-10-28 11:05:31.426 || Conditioning|| Voltage: 12.0 --> 25.0, with 0.8666666666666667 Steps
+2020-10-28 11:05:31.426 || Conditioning|| Current: 0.5 --> 5.0, with 0.3 Steps
+2020-10-28 11:05:31.429 || Conditioning|| Filament Limit: 3.0, PreHeat: 0.8
+2020-10-28 11:05:31.43 || Conditioning|| Total Steps: 15.0, Dwelling for: 1.0 mins
+2020-10-28 11:05:31.431 || Conditioning|| Number of On/Off Cycles: 3, 2.0 min ON, 2.0 min OFF
+2020-10-28 11:05:31.434 || Conditioning|| Number of Conditioning Cycles: 3
+2020-10-28 11:05:31.44 || Conditioning|| Starting Conditioning cycle: 1
+2020-10-28 11:05:31.441 || Conditioning|| Starting KV Initial Ramp
+2020-10-28 11:05:31.869 || Conditioning|| Voltage set to: 12.0, Current set to: 0.5
+2020-10-28 11:05:32.083 || Conditioning|| Ramping up: 12.0 kv, 0.5 ma
+2020-10-28 11:05:40.59 || Conditioning|| Ramping Complete
+2020-10-28 11:05:40.792 || Conditioning|| Voltage set to: 12.0
+2020-10-28 11:05:40.794 || Conditioning|| Ramping up: 12.0 kv, 0.5 ma
+2020-10-28 11:05:41.748 || Conditioning|| Ramping Complete
+2020-10-28 11:06:41.756 || Conditioning|| Stepping up
+2020-10-28 11:06:41.973 || Conditioning|| Voltage set to: 12.866666666666667
+2020-10-28 11:06:41.974 || Conditioning|| Ramping up: 12.866666666666667 kv, 0.5 ma
+2020-10-28 11:06:42.9 || Conditioning|| Ramping Complete
+2020-10-28 11:07:42.981 || Conditioning|| Stepping up
+2020-10-28 11:07:43.198 || Conditioning|| Voltage set to: 13.733333333333334
+2020-10-28 11:07:43.199 || Conditioning|| Ramping up: 13.733333333333334 kv, 0.5 ma
+2020-10-28 11:07:44.132 || Conditioning|| Ramping Complete
+2020-10-28 11:08:05.907 || Conditioning|| Starting Arc Recovery attempt: 0
+2020-10-28 11:08:06.541 || Arc Recovery|| Reseting faults
+2020-10-28 11:08:06.754 || Arc Recovery|| kV reduced to: 12.866666666666667
+2020-10-28 11:08:06.958 || Arc Recovery|| Xray Commanded On
+2020-10-28 11:08:12.387 || Conditioning|| Starting Arc Recovery attempt: 1
+2020-10-28 11:08:13.013 || Arc Recovery|| Reseting faults
+2020-10-28 11:08:13.235 || Arc Recovery|| kV reduced to: 12.0
+2020-10-28 11:08:13.452 || Arc Recovery|| Xray Commanded On
+2020-10-28 11:09:17.986 || Conditioning|| Arc Recovered
+2020-10-28 11:10:23.324 || Conditioning|| Arc Recovered
+2020-10-28 11:10:24.331 || Conditioning|| Stepping up
+2020-10-28 11:10:24.549 || Conditioning|| Voltage set to: 14.600000000000001
+2020-10-28 11:10:24.553 || Conditioning|| Ramping up: 14.600000000000001 kv, 0.5 ma
+2020-10-28 11:10:25.274 || Conditioning|| Ramping Complete
+2020-10-28 11:10:25.691 || Conditioning|| Starting Arc Recovery attempt: 0
+2020-10-28 11:10:26.107 || Arc Recovery|| Reseting faults
+2020-10-28 11:10:26.538 || Arc Recovery|| kV reduced to: 13.733333333333334
+2020-10-28 11:10:27.746 || Arc Recovery|| Xray Commanded On
+2020-10-28 11:10:33.171 || Conditioning|| Starting Arc Recovery attempt: 1
+2020-10-28 11:10:33.586 || Arc Recovery|| Reseting faults
+2020-10-28 11:10:34.006 || Arc Recovery|| kV reduced to: 12.866666666666667
+2020-10-28 11:10:34.222 || Arc Recovery|| Xray Commanded On
+2020-10-28 11:18:07.327 || Conditioning|| Arc Recovered
+2020-10-28 11:19:12.755 || Conditioning|| Arc Recovered
+2020-10-28 11:19:13.768 || Conditioning|| Stepping up
+2020-10-28 11:19:13.978 || Conditioning|| Voltage set to: 15.466666666666669
+2020-10-28 11:19:13.978 || Conditioning|| Ramping up: 15.466666666666669 kv, 0.5 ma
+2020-10-28 11:19:14.703 || Conditioning|| Ramping Complete
+2020-10-28 11:20:15.67 || Conditioning|| Stepping up
+2020-10-28 11:20:15.878 || Conditioning|| Voltage set to: 16.333333333333336
+2020-10-28 11:20:15.878 || Conditioning|| Ramping up: 16.333333333333336 kv, 0.5 ma
+2020-10-28 11:20:16.595 || Conditioning|| Ramping Complete
+2020-10-28 11:21:17.912 || Conditioning|| Stepping up
+2020-10-28 11:21:18.113 || Conditioning|| Voltage set to: 17.200000000000003
+2020-10-28 11:21:18.113 || Conditioning|| Ramping up: 17.200000000000003 kv, 0.5 ma
+2020-10-28 11:21:18.83 || Conditioning|| Ramping Complete
+2020-10-28 11:22:18.962 || Conditioning|| Stepping up
+2020-10-28 11:22:19.171 || Conditioning|| Voltage set to: 18.06666666666667
+2020-10-28 11:22:19.172 || Conditioning|| Ramping up: 18.06666666666667 kv, 0.5 ma
+2020-10-28 11:22:20.096 || Conditioning|| Ramping Complete
+2020-10-28 11:23:21.439 || Conditioning|| Stepping up
+2020-10-28 11:23:21.642 || Conditioning|| Voltage set to: 18.933333333333337
+2020-10-28 11:23:21.643 || Conditioning|| Ramping up: 18.933333333333337 kv, 0.5 ma
+2020-10-28 11:23:22.567 || Conditioning|| Ramping Complete
+2020-10-28 11:24:22.643 || Conditioning|| Stepping up
+2020-10-28 11:24:22.858 || Conditioning|| Voltage set to: 19.800000000000004
+2020-10-28 11:24:22.86 || Conditioning|| Ramping up: 19.800000000000004 kv, 0.5 ma
+2020-10-28 11:24:23.8 || Conditioning|| Ramping Complete
+2020-10-28 11:25:44.59 || Conditioning|| Stepping up
+2020-10-28 11:25:44.79 || Conditioning|| Voltage set to: 20.66666666666667
+2020-10-28 11:25:44.79 || Conditioning|| Ramping up: 20.66666666666667 kv, 0.5 ma
+2020-10-28 11:25:45.513 || Conditioning|| Ramping Complete
+2020-10-28 11:26:46.814 || Conditioning|| Stepping up
+2020-10-28 11:26:47.015 || Conditioning|| Voltage set to: 21.53333333333334
+2020-10-28 11:26:47.015 || Conditioning|| Ramping up: 21.53333333333334 kv, 0.5 ma
+2020-10-28 11:26:47.732 || Conditioning|| Ramping Complete
+2020-10-28 11:27:12.364 || Conditioning|| Starting Arc Recovery attempt: 0
+2020-10-28 11:27:12.991 || Arc Recovery|| Reseting faults
+2020-10-28 11:27:13.202 || Arc Recovery|| kV reduced to: 20.66666666666667
+2020-10-28 11:27:13.408 || Arc Recovery|| Xray Commanded On
+2020-10-28 11:27:38.45 || Conditioning|| Starting Arc Recovery attempt: 1
+2020-10-28 11:27:39.075 || Arc Recovery|| Reseting faults
+2020-10-28 11:27:39.275 || Arc Recovery|| kV reduced to: 19.800000000000004
+2020-10-28 11:27:39.489 || Arc Recovery|| Xray Commanded On
+2020-10-28 11:27:44.922 || Conditioning|| Starting Arc Recovery attempt: 2
+2020-10-28 11:27:45.573 || Arc Recovery|| Reseting faults
+2020-10-28 11:27:45.788 || Arc Recovery|| kV reduced to: 18.933333333333337
+2020-10-28 11:27:46.005 || Arc Recovery|| Xray Commanded On
+2020-10-28 11:27:51.426 || Conditioning|| Arc Detected: 20.66666666666667 kv, 0.5 ma
+2020-10-28 11:27:51.428 || Conditioning|| Starting Arc Recovery attempt: 3
+2020-10-28 11:27:52.062 || Arc Recovery|| Reseting faults
+2020-10-28 11:27:52.268 || Arc Recovery|| kV reduced to: 18.06666666666667
+2020-10-28 11:27:52.478 || Arc Recovery|| Xray Commanded On
+2020-10-28 11:28:04.334 || Conditioning|| Starting Arc Recovery attempt: 4
+2020-10-28 11:28:04.96 || Arc Recovery|| Reseting faults
+2020-10-28 11:30:35.654 || Conditioning|| Too many concurrent arcs, stopping : 4 Arcs
+2020-10-28 11:30:35.655 || Conditioning|| Stop command called
+2020-10-28 11:30:35.656 || Conditioning|| Xrays commanded off
+2020-10-28 11:30:35.868 || Conditioning|| Conditioning complete
+2020-10-28 11:30:35.869 || Conditioning|| Start Time: 11:05:30.886128400
+2020-10-28 11:30:35.87 || Conditioning|| End Time: 11:30:35.868398300
+2020-10-28 11:30:35.87 || Conditioning|| Tube Serial Number: 20044Cr32
+2020-10-28 11:30:35.872 || Conditioning|| Supply Model Used: X3481
+2020-10-28 11:30:35.873 || Conditioning|| Max KV reached: 20.66666666666667
+2020-10-28 11:30:35.874 || Conditioning|| Max MA reached: 0.0
+2020-10-28 11:30:35.874 || Conditioning|| Total Arcs Detected: 9
+2020-10-28 11:30:35.875 || ###########################################################################################
+2020-10-28 11:30:35.885 || Conditioning|| Arc Recovered
+2020-10-28 11:30:39.125 || Conditioning|| Stop command called
+2020-10-28 11:30:39.126 || Conditioning|| Xrays commanded off
+2020-10-28 11:30:39.334 || Conditioning|| Conditioning complete
+2020-10-28 11:30:39.335 || Conditioning|| Start Time: 11:05:30.886128400
+2020-10-28 11:30:39.336 || Conditioning|| End Time: 11:30:39.334761500
+2020-10-28 11:30:39.337 || Conditioning|| Tube Serial Number: 20044Cr32
+2020-10-28 11:30:39.338 || Conditioning|| Supply Model Used: X3481
+2020-10-28 11:30:39.338 || Conditioning|| Max KV reached: 20.66666666666667
+2020-10-28 11:30:39.34 || Conditioning|| Max MA reached: 0.0
+2020-10-28 11:30:39.341 || Conditioning|| Total Arcs Detected: 9
+2020-10-28 11:30:39.342 || ###########################################################################################
+2020-10-28 11:30:39.343 || Conditioning|| Stop command called
+2020-10-28 11:30:39.344 || Conditioning|| Xrays commanded off
+2020-10-28 11:30:39.774 || Conditioning|| Conditioning complete
+2020-10-28 11:30:39.775 || Conditioning|| Start Time: 11:05:30.886128400
+2020-10-28 11:30:39.776 || Conditioning|| End Time: 11:30:39.774531300
+2020-10-28 11:30:39.777 || Conditioning|| Tube Serial Number: 20044Cr32
+2020-10-28 11:30:39.777 || Conditioning|| Supply Model Used: X3481
+2020-10-28 11:30:39.778 || Conditioning|| Max KV reached: 20.66666666666667
+2020-10-28 11:30:39.778 || Conditioning|| Max MA reached: 0.0
+2020-10-28 11:30:39.779 || Conditioning|| Total Arcs Detected: 9
+2020-10-28 11:30:39.779 || ###########################################################################################
+2020-10-28 11:30:40.741 || Conditioning|| Arc Detected: 20.66666666666667 kv, 0.5 ma
+2020-10-28 11:30:40.741 || Conditioning|| Starting Arc Recovery attempt: 0
+2020-10-28 11:30:41.175 || Arc Recovery|| Reseting faults
+2020-10-28 11:30:41.593 || Arc Recovery|| kV reduced to: 20.66666666666667
+2020-10-28 11:30:41.801 || Arc Recovery|| Xray Commanded On
+2020-10-28 11:31:00.147 || Conditioning|| Starting Arc Recovery attempt: 1
+2020-10-28 11:31:00.784 || Arc Recovery|| Reseting faults
+2020-10-28 11:31:00.992 || Arc Recovery|| kV reduced to: 19.800000000000004
+2020-10-28 11:31:01.206 || Arc Recovery|| Xray Commanded On
+2020-10-28 11:31:06.654 || Conditioning|| Arc Detected: 20.66666666666667 kv, 0.5 ma
+2020-10-28 11:31:06.655 || Conditioning|| Starting Arc Recovery attempt: 2
+2020-10-28 11:31:07.272 || Manual|| Xrays off
+2020-10-28 11:31:07.312 || Arc Recovery|| Reseting faults
+2020-10-28 11:31:07.745 || Arc Recovery|| kV reduced to: 18.933333333333337
+2020-10-28 11:31:07.96 || Arc Recovery|| Xray Commanded On
+2020-10-28 11:31:09.707 || Conditioning|| Stop command called
+2020-10-28 11:31:09.708 || Conditioning|| Xrays commanded off
+2020-10-28 11:31:09.92 || Conditioning|| Conditioning complete
+2020-10-28 11:31:09.92 || Conditioning|| Start Time: 11:05:30.886128400
+2020-10-28 11:31:09.923 || Conditioning|| End Time: 11:31:09.920754800
+2020-10-28 11:31:09.923 || Conditioning|| Tube Serial Number: 20044Cr32
+2020-10-28 11:31:09.924 || Conditioning|| Supply Model Used: X3481
+2020-10-28 11:31:09.924 || Conditioning|| Max KV reached: 20.66666666666667
+2020-10-28 11:31:09.925 || Conditioning|| Max MA reached: 0.0
+2020-10-28 11:31:09.925 || Conditioning|| Total Arcs Detected: 12
+2020-10-28 11:31:09.927 || ###########################################################################################
+2020-10-28 11:31:09.928 || Conditioning|| Stop command called
+2020-10-28 11:31:09.928 || Conditioning|| Xrays commanded off
+2020-10-28 11:31:10.342 || Conditioning|| Conditioning complete
+2020-10-28 11:31:10.343 || Conditioning|| Start Time: 11:05:30.886128400
+2020-10-28 11:31:10.343 || Conditioning|| End Time: 11:31:10.342183700
+2020-10-28 11:31:10.345 || Conditioning|| Tube Serial Number: 20044Cr32
+2020-10-28 11:31:10.346 || Conditioning|| Supply Model Used: X3481
+2020-10-28 11:31:10.346 || Conditioning|| Max KV reached: 20.66666666666667
+2020-10-28 11:31:10.347 || Conditioning|| Max MA reached: 0.0
+2020-10-28 11:31:10.348 || Conditioning|| Total Arcs Detected: 12
+2020-10-28 11:31:10.349 || ###########################################################################################
+2020-10-28 11:31:34.299 || Manual|| Voltage: 21.0, Current: 0.5
+2020-10-28 11:31:35.353 || Manual|| Xrays on
+2020-10-28 11:31:49.71 || Conditioning|| Starting Arc Recovery attempt: 3
+2020-10-28 11:31:50.342 || Arc Recovery|| Reseting faults
+2020-10-28 11:31:50.557 || Arc Recovery|| kV reduced to: 18.06666666666667
+2020-10-28 11:31:50.771 || Arc Recovery|| Xray Commanded On
+2020-10-28 11:31:56.194 || Conditioning|| Starting Arc Recovery attempt: 4
+2020-10-28 11:31:56.838 || Arc Recovery|| Reseting faults
+2020-10-28 11:31:58.537 || Conditioning|| Too many concurrent arcs, stopping : 4 Arcs
+2020-10-28 11:31:58.538 || Conditioning|| Stop command called
+2020-10-28 11:31:58.539 || Conditioning|| Xrays commanded off
+2020-10-28 11:31:58.759 || Conditioning|| Conditioning complete
+2020-10-28 11:31:58.76 || Conditioning|| Start Time: 11:05:30.886128400
+2020-10-28 11:31:58.761 || Conditioning|| End Time: 11:31:58.759191600
+2020-10-28 11:31:58.762 || Conditioning|| Tube Serial Number: 20044Cr32
+2020-10-28 11:31:58.762 || Conditioning|| Supply Model Used: X3481
+2020-10-28 11:31:58.762 || Conditioning|| Max KV reached: 20.66666666666667
+2020-10-28 11:31:58.764 || Conditioning|| Max MA reached: 0.0
+2020-10-28 11:31:58.765 || Conditioning|| Total Arcs Detected: 14
+2020-10-28 11:31:58.765 || ###########################################################################################
+2020-10-28 11:31:58.982 || Conditioning|| Arc Recovered
+2020-10-28 11:32:05.484 || Conditioning|| Arc Detected: 20.66666666666667 kv, 0.5 ma
+2020-10-28 11:32:05.486 || Conditioning|| Starting Arc Recovery attempt: 0
+2020-10-28 11:32:06.118 || Arc Recovery|| Reseting faults
+2020-10-28 11:32:06.336 || Manual|| Voltage: 21.0, Current: 0.5
+2020-10-28 11:32:06.753 || Arc Recovery|| kV reduced to: 20.66666666666667
+2020-10-28 11:32:07.603 || Manual|| Xrays on
+2020-10-28 11:32:07.81 || Arc Recovery|| Xray Commanded On
+2020-10-28 11:32:08.657 || Manual|| Xrays off
