@@ -173,7 +173,9 @@ public class DXM {
             
       
     }
-    
+    public Double[] Get_Set_Voltage_Current(){
+        return new Double[]{_Get_Set_Voltage(),_Get_Set_Current()};
+    }
 
     public Double[] Get_Voltage_Current_Filament() {
         String[] response = new String[10];
