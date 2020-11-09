@@ -60,6 +60,9 @@ public class SetupFrame extends javax.swing.JFrame {
     SettingsHandler sh;
     
     public SetupFrame() {
+        /*
+        this constructor creates a JFrame to configure the data shown on the main application
+        */
         initComponents();
         
         VersionNumberLabel.setText("2.01.00");
@@ -407,6 +410,7 @@ public class SetupFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ContinueButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_ContinueButtonActionPerformed
+        
         if (Supply1UseCheckbox.isSelected()){
             UseSupply1 = true;
             Supply1Address = Supply1IPAddressTBox.getText();
@@ -436,6 +440,9 @@ public class SetupFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_ContinueButtonActionPerformed
         
     private void SetupSettingsSave(){
+        /*
+        save the settings from the text boxes to their appropriate serialized variabels
+        */
         this.sh.setupSettings.Supply1IP = Supply1IPAddressTBox.getText();
         this.sh.setupSettings.Supply1Port = Supply1PortTBox.getText();
         this.sh.setupSettings.Use1 = UseSupply1;
@@ -455,6 +462,9 @@ public class SetupFrame extends javax.swing.JFrame {
         this.sh.SaveSetupSettings();
     }
     public void SettingsFileSelection(){
+        /*
+        no longer needed as settings file is found automatically or generated
+        */
             String s = workingPath;
             if (Files.isDirectory(Paths.get(s))){
                 this.SettingsFilePath = s+"/Settings.obj";
@@ -474,6 +484,9 @@ public class SetupFrame extends javax.swing.JFrame {
         
     }
     public void WindowMaker(){
+        /*
+        creates the main application window with connections to the supplies chosen
+        */
         System.out.println("In WindowMaker");
         JFrame mainWindow = new JFrame();
         JTabbedPane tabbedPane = new JTabbedPane();
