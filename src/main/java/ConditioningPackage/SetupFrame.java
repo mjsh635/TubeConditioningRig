@@ -62,7 +62,7 @@ public class SetupFrame extends javax.swing.JFrame {
     public SetupFrame() {
         initComponents();
         
-        VersionNumberLabel.setText("2.00.00");
+        VersionNumberLabel.setText("2.01.00");
         sh = new SettingsHandler(workingPath+"/setupSettings.obj",true);
         this.Supply1IPAddressTBox.setText(sh.setupSettings.Supply1IP);
         this.Supply1PortTBox.setText(sh.setupSettings.Supply1Port);
