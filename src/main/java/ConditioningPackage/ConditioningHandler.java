@@ -10,6 +10,7 @@ import java.awt.List;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import javax.swing.JProgressBar;
@@ -20,6 +21,7 @@ import javax.swing.plaf.synth.SynthGraphicsUtils;
  * @author mjsh6
  */
 public class ConditioningHandler extends Thread{
+    
     Settings vals;
     DXM HV;
     LoggingController log;
@@ -27,7 +29,7 @@ public class ConditioningHandler extends Thread{
     LocalTime TimeEnd;
     LocalTime ArcTimeEnd;
     JProgressBar pb;
-    Double StepCount;
+    Double StepCount; 
     Double KVStepSize;
     Double MAStepSize;
     Double StepDwellTime;
@@ -41,7 +43,7 @@ public class ConditioningHandler extends Thread{
     Double PreviousSetMA;
     Double NextToSetKV;
     Double NextToSetMA;
-    Double OnTime;
+    Double OnTime; 
     Double OffTime;
     Double ArcKVStep;
     Double ArcMAStep;
@@ -61,12 +63,17 @@ public class ConditioningHandler extends Thread{
     int ConcurrentArcCount = 0;
     int NumberOfConditioningCycles = 1;
     int OnOffCycleCount;
+    JLabel TimeRemaining;
+    LocalTime EstimatedEndTime;
+    Double TotalTime;
     
-    public ConditioningHandler(Settings userSettings, DXM supply, JProgressBar pb, LoggingController log) {
+    
+    public ConditioningHandler(Settings userSettings, DXM supply, JProgressBar pb, LoggingController log, JLabel timeRemainingLabel) {
         this.vals = userSettings;
         this.HV = supply;
         this.pb = pb;
         this.log = log;
+        this.TimeRemaining = timeRemainingLabel;
         
     }
     
@@ -101,7 +108,9 @@ public class ConditioningHandler extends Thread{
         Stop_Conditioning();
         
         
+       
     }
+    
     private void _StartUp(){
         log.Append_To_Log("Conditioning|| Setting up");
         ConditioningStartTime = LocalTime.now();
@@ -132,7 +141,15 @@ public class ConditioningHandler extends Thread{
         log.Append_To_Log(String.format("Conditioning|| Total Steps: %s, Dwelling for: %s mins", StepCount,StepDwellTime));
         log.Append_To_Log(String.format("Conditioning|| Number of On/Off Cycles: %s, %s min ON, %s min OFF", OnOffCycleCount,OnTime,OffTime));
         log.Append_To_Log(String.format("Conditioning|| Number of Conditioning Cycles: %s", NumberOfConditioningCycles));
+        TotalTime = (((3*(StepCount*StepDwellTime))+ (OnOffCycleCount*(OnTime+OffTime)))*1.05);
+        _setTimeRemaining(TotalTime);
+        
     }
+    
+    private void _setTimeRemaining(Double value){
+        TimeRemaining.setText(String.format("%s min", String.valueOf(value)));
+    }
+    
     private void _TearDown(){
         log.Append_To_Log("Conditioning|| Xrays commanded off");
         this.HV.Xray_Off();
@@ -159,8 +176,11 @@ public class ConditioningHandler extends Thread{
         
         log.Append_To_Log(String.format("Conditioning|| Total Arcs Detected: %s",ArcCount));
         log.Append_To_Log("###########################################################################################");
+        _setTimeRemaining(0.0);
     }
+    
     private void _Wait_Ramping(Double kv, Double ma){
+        
         boolean ramped = false;
         log.Append_To_Log(String.format("Conditioning|| Ramping up: %s kv, %s ma",kv,ma));
         while(!ramped){
@@ -270,6 +290,8 @@ public class ConditioningHandler extends Thread{
                 } 
             }
             Thread.sleep(1000);
+            TotalTime -= 0.01666667;
+            _setTimeRemaining(TotalTime);
             
         }catch(InterruptedException ie){
             this.interrupt();
@@ -417,6 +439,9 @@ public class ConditioningHandler extends Thread{
     }
     
     private void _Arc_Recovery(boolean KVInsteadOfMA){
+        TotalTime += ArcRecoveryDwellTime;
+        _setTimeRemaining(TotalTime);
+        
         System.out.println("Starting Arc Recovery");
         log.Append_To_Log(String.format("Conditioning|| Starting Arc Recovery attempt: %s",ConcurrentArcCount));
         

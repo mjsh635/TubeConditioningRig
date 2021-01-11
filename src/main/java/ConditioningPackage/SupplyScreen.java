@@ -1407,7 +1407,7 @@ public class SupplyScreen extends javax.swing.JFrame {
 
     private void StartConditioningButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartConditioningButtonActionPerformed
         SaveAll(evt);
-        ch = new ConditioningHandler(sh.appsettings, supply,this.ConditioningProgressBar, log);
+        ch = new ConditioningHandler(sh.appsettings, supply,this.ConditioningProgressBar, log, this.TimeRemainingLabel);
         System.out.println("Starting Conditioning");
         ch.start();
         this.XrayOnButton.setEnabled(false);
