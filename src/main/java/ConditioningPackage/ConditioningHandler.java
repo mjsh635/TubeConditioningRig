@@ -150,7 +150,7 @@ public class ConditioningHandler extends Thread{
     }
     
     private void _setTimeRemaining(Double value){
-        TimeRemaining.setText(String.format("%s min", String.valueOf(value)));
+        TimeRemaining.setText(String.format("%.2s min", String.valueOf(value)));
     }
     
     private void _TearDown(){
