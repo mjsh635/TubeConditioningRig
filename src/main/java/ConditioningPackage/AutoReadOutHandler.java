@@ -22,6 +22,7 @@ public class AutoReadOutHandler extends Thread {
     
     public AutoReadOutHandler(DXM supply, JLabel ManualVoltageDisplay,JLabel ManualCurrentDisplay, 
             JTextField VoltField, JTextField CurrField, JTextField FillTextField) {
+        
         HV = supply;
         volt = ManualVoltageDisplay;
         curr = ManualCurrentDisplay;
@@ -31,13 +32,17 @@ public class AutoReadOutHandler extends Thread {
         
         
     }
+ 
     
     public void run(){
+        /*
+        Code will be executed when called
+        */
         System.out.println("Starting");
         while (true){
             
             if(StartReading){
-                
+                // try and read values from the supply every time interval.
                 try{
                 Double[] values = HV.Get_Voltage_Current_Filament();
                 volt.setText(String.format("%.2f", values[0]));
@@ -59,7 +64,7 @@ public class AutoReadOutHandler extends Thread {
                 
            
             }else{
-                
+                // Do nothing for time interval
                 try{
                     
                 Thread.sleep(2000);
