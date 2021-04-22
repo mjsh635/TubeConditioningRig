@@ -1428,7 +1428,7 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.AROH.start();
         
         if(this.supply.connected){
-        JOptionPane.showMessageDialog(null, "Supply Connected, re-enabling buttons");
+        JOptionPane.showMessageDialog(null, String.format("%s Connected, re-enabling buttons", this.Name));
         
         this.XrayOnButton.setEnabled(true);
             
@@ -1438,7 +1438,7 @@ public class SupplyScreen extends javax.swing.JFrame {
          this.StopConditioningButton.setEnabled(true);
         
         }else{
-        JOptionPane.showMessageDialog(null, "Supply Not Found");
+        JOptionPane.showMessageDialog(null, String.format("%s Not Found",this.Name));
         }
         
     }//GEN-LAST:event_ReconnectToSupplyButtonActionPerformed

@@ -89,19 +89,19 @@ public class ConditioningHandler extends Thread{
             System.out.println(String.format("Conditioning|| Starting Conditioning cycle: %s", i));
             log.Append_To_Log(String.format("Conditioning|| Starting Conditioning cycle: %s", i));
             this.pb.setValue(16);
-            if(this.vals.PerformKVRamp.equals("true")){
+            if(this.vals.PerformKVRamp.equals("true")&& !Killsig){
             this._KVInitialRamp();
             }
             this.pb.setValue(32);
-            if(this.vals.PerformMARamp.equals("true")){
+            if(this.vals.PerformMARamp.equals("true")&& !Killsig){
             this._MAInitialRamp();
             }
             this.pb.setValue(48);
-            if(this.vals.PerformKVReramp.equals("true")){
+            if(this.vals.PerformKVReramp.equals("true")&& !Killsig){
             this._KVReramp();
             }
             this.pb.setValue(64);
-            if(this.vals.PerformOnOffCycles.equals("true")){
+            if(this.vals.PerformOnOffCycles.equals("true")&& !Killsig){
             this._OnOffCycle();
             }
             this.pb.setValue(100);
@@ -186,7 +186,7 @@ public class ConditioningHandler extends Thread{
         
         boolean ramped = false;
         log.Append_To_Log(String.format("Conditioning|| Ramping up: %s kv, %s ma",kv,ma));
-        while(!ramped){
+        while(!ramped && !Killsig){
             if((this.HV.Read_Voltage_Out_Double() < (kv * 0.98)) && (this.HV.Read_Current_Out_Double() < (ma * 0.98))){
                 ramped = false;
             }
@@ -229,8 +229,8 @@ public class ConditioningHandler extends Thread{
     
     private void CheckXrayStatus(boolean kvArc){
         try {
-            if(!this.HV.Is_Emmitting()){
-                if(this.HV.ArcPresent){
+            if(!this.HV.Is_Emmitting()&& !Killsig){
+                if(this.HV.ArcPresent ){
                     Double[] SetValuesResponse = this.HV.Get_Set_Voltage_Current();
                     
                     if(kvArc){
@@ -327,14 +327,14 @@ public class ConditioningHandler extends Thread{
         this.HV.Xray_On();
         _Wait_Ramping(this.CurrentSetKV, this.CurrentSetMA);
         
-        while(CurrentSetKV <= TargetKV){
+        while(CurrentSetKV <= TargetKV && !Killsig){
             this.HV.Set_Voltage(this.CurrentSetKV);
             log.Append_To_Log(String.format("Conditioning KV Ramp|| Voltage set to: %s",CurrentSetKV));
             _Wait_Ramping(this.CurrentSetKV, this.CurrentSetMA);
             
             TimeEnd = LocalTime.now().plusSeconds(Math.round(this.StepDwellTime*60));
            
-            while(_Time_Before_Check(TimeEnd)){
+            while(_Time_Before_Check(TimeEnd)&& !Killsig){
                 CheckXrayStatus(true);
             }
             
@@ -342,10 +342,12 @@ public class ConditioningHandler extends Thread{
             log.Append_To_Log("Conditioning KV Ramp|| Stepping up");
            MaxKVReached = PreviousSetKV;
         }
+        if(!Killsig){
         MaxKVReached = TargetKV;
         System.out.println("KV Ramping Complete");
         System.out.println(String.format("Max KV of: %s reached", MaxKVReached));
         log.Append_To_Log("Conditioning KV Ramp|| Finished KV Initial Ramp");
+        }
     }
     
     private void _MAInitialRamp(){
@@ -359,14 +361,14 @@ public class ConditioningHandler extends Thread{
         log.Append_To_Log(String.format("Conditioning MA Ramp|| Voltage set to: %s",CurrentSetKV));
         _Wait_Ramping(this.CurrentSetKV, this.CurrentSetMA);
         
-        while(CurrentSetMA <= TargetMA){
+        while(CurrentSetMA <= TargetMA && !Killsig){
             this.HV.Set_Current(CurrentSetMA);
             log.Append_To_Log(String.format("Conditioning MA Ramp|| Current set to: %s",CurrentSetMA));
             _Wait_Ramping(this.CurrentSetKV, this.CurrentSetMA);
             
             TimeEnd = LocalTime.now().plusSeconds(Math.round(this.StepDwellTime*60));
             
-            while(_Time_Before_Check(TimeEnd)){
+            while(_Time_Before_Check(TimeEnd)&& !Killsig){
                 CheckXrayStatus(false);
             }
             
@@ -374,17 +376,19 @@ public class ConditioningHandler extends Thread{
             log.Append_To_Log("Conditioning MA Ramp|| Stepping up");
             MaxMAReached = PreviousSetMA;
         }
+        if(!Killsig){
         _ChangeCurrentTracker(MAStepSize);
         MaxMAReached = TargetMA;
         System.out.println("MA Ramp Complete");
         System.out.println(String.format("Max MA of: %s reached", MaxMAReached));
         log.Append_To_Log("Conditioning MA Ramp|| Finished MA Initial Ramp");
+        }
     }
     private void _KVReramp(){
         System.out.println("Starting KV Reramp");
         log.Append_To_Log("Conditioning 2nd KV Ramp|| Starting KV Re-ramp");
         
-        while(CurrentSetKV <= TargetKV){
+        while(CurrentSetKV <= TargetKV && !Killsig){
             
             this.HV.Set_Voltage(CurrentSetKV);
             log.Append_To_Log(String.format("Conditioning 2nd KV Ramp|| Voltage set to: %s",CurrentSetKV));
@@ -392,17 +396,17 @@ public class ConditioningHandler extends Thread{
             
             TimeEnd = LocalTime.now().plusSeconds(Math.round(this.StepDwellTime*60));
             
-            while(_Time_Before_Check(TimeEnd)){
+            while(_Time_Before_Check(TimeEnd)&& !Killsig){
                 CheckXrayStatus(true);  
             }
             _ChangeVoltageTracker(KVStepSize);
             log.Append_To_Log("Conditioning 2nd KV Ramp|| Stepping up");
         }
-        
+        if(!Killsig){
         System.out.println("KV Reramp Complete");
         log.Append_To_Log("Conditioning 2nd KV Ramp|| Finished KV Re-ramp");
         
-        
+        }
         
         
     }
@@ -411,6 +415,8 @@ public class ConditioningHandler extends Thread{
         System.out.println("Starting On Off Cycles");
         log.Append_To_Log("Conditioning On/Off Cycle|| Starting On/Off Cycles");
         for (int count = 1; count <= this.OnOffCycleCount; count++) {
+            if (!Killsig)
+            {
             log.Append_To_Log(String.format("Conditioning On/Off Cycle|| On Off cycle %s",count));
             log.Append_To_Log(String.format("Conditioning On/Off Cycle|| Turning on for: %s min",OnTime));
             this.HV.Xray_On();
@@ -424,7 +430,7 @@ public class ConditioningHandler extends Thread{
 
             TimeEnd = LocalTime.now().plusSeconds(Math.round(this.OnTime*60));
                 
-            while(_Time_Before_Check(TimeEnd)){
+            while(_Time_Before_Check(TimeEnd) && !Killsig){
                 CheckXrayStatus(true);
                 
                 double val = this.HV.Get_Voltage_Current_Filament()[2];
@@ -438,14 +444,15 @@ public class ConditioningHandler extends Thread{
             log.Append_To_Log("Conditioning On/Off Cycle|| Xray Commanded Off");
             TimeEnd = LocalTime.now().plusSeconds(Math.round(this.OffTime*60));
                 
-            while(_Time_Before_Check(TimeEnd)){
+            while(_Time_Before_Check(TimeEnd) && !Killsig){
                 // do nothing as xrays are off;
                 }
-        
+            }
         }
+        if(!Killsig){
         System.out.println("On/Off Cycles Complete");
         log.Append_To_Log("Conditioning On/Off Cycle|| Finished On/Off Cycles");
-        
+        }
     }
     
     private void _Arc_Recovery(boolean KVInsteadOfMA){
@@ -464,7 +471,7 @@ public class ConditioningHandler extends Thread{
         
         this.HV.Reset_Faults();
         log.Append_To_Log("Arc Recovery|| Reseting faults");
-        if(ConcurrentArcCount <= ConcurrentArcsBeforeStop){
+        if(ConcurrentArcCount <= ConcurrentArcsBeforeStop && !Killsig){
             if(KVInsteadOfMA){
             //Arc recover should reduce KV to previous set
                 if ((this.PreviousSetKV - (KVStepSize*ConcurrentArcCount)) >= StartKV){
@@ -499,7 +506,7 @@ public class ConditioningHandler extends Thread{
             ConcurrentArcCount ++;
             ArcTimeEnd = LocalTime.now().plusSeconds(Math.round(this.ArcRecoveryDwellTime*60));
             System.out.println(String.format("Arc Recovery %s ,time to complete at: %s", ConcurrentArcCount,ArcTimeEnd));
-            while(_Time_Before_Check(ArcTimeEnd)){
+            while(_Time_Before_Check(ArcTimeEnd)&& !Killsig){
                 try{
                     Thread.sleep(2000);
                    
@@ -514,18 +521,22 @@ public class ConditioningHandler extends Thread{
                 CheckXrayStatus(KVInsteadOfMA);
         }
         }else{
-            JOptionPane.showMessageDialog(null, "Too Many Concurrent Arcs. Stopping");
+            if(!Killsig){
+            JOptionPane.showMessageDialog(null, String.format("Too Many Concurrent Arcs. Stopping %s",this.Name));
             log.Append_To_Log(String.format("Conditioning|| Too many concurrent arcs, stopping : %s Arcs",ConcurrentArcCount));
             this.Stop_Conditioning();
+            }
         }
+        if(!Killsig){
         System.out.println("Arc Recovery Complete");
         ArcTimeEnd = LocalTime.now().plusSeconds(Math.round(this.ArcRecoveryDwellTime*60));
         log.Append_To_Log("Conditioning|| Arc Recovered");
-        
+        }
     }
     
     
     public void Stop_Conditioning(){
+        Killsig = true;
         System.out.println("Stoping");
         log.Append_To_Log("Conditioning|| Stop command called");
         _TearDown();

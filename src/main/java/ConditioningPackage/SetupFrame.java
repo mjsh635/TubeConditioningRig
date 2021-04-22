@@ -166,7 +166,7 @@ public class SetupFrame extends javax.swing.JFrame {
                                 .addComponent(Supply1PortLabel)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(Supply1PortTBox, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 77, Short.MAX_VALUE)))
+                        .addGap(0, 76, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         SupplyPanelLayout.setVerticalGroup(SupplyPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -221,7 +221,7 @@ public class SetupFrame extends javax.swing.JFrame {
                                 .addComponent(Supply2PortLabel)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(Supply2PortTBox, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 77, Short.MAX_VALUE)))
+                        .addGap(0, 76, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         SupplyPanel1Layout.setVerticalGroup(SupplyPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -276,7 +276,7 @@ public class SetupFrame extends javax.swing.JFrame {
                                 .addComponent(Supply3PortLabel)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(Supply3PortTBox, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 77, Short.MAX_VALUE)))
+                        .addGap(0, 76, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         SupplyPanel2Layout.setVerticalGroup(SupplyPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -331,7 +331,7 @@ public class SetupFrame extends javax.swing.JFrame {
                                 .addComponent(Supply4PortLabel)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(Supply4PortTBox, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 77, Short.MAX_VALUE)))
+                        .addGap(0, 76, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         SupplyPanel4Layout.setVerticalGroup(SupplyPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
