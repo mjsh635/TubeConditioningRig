@@ -66,19 +66,22 @@ public class ConditioningHandler extends Thread{
     JLabel TimeRemaining;
     LocalTime EstimatedEndTime;
     Double TotalTime;
+    boolean Killsig = false;
+    String Name;
     
     
-    public ConditioningHandler(Settings userSettings, DXM supply, JProgressBar pb, LoggingController log, JLabel timeRemainingLabel) {
+    public ConditioningHandler(Settings userSettings, DXM supply, JProgressBar pb, LoggingController log, JLabel timeRemainingLabel, String name) {
         this.vals = userSettings;
         this.HV = supply;
         this.pb = pb;
         this.log = log;
         this.TimeRemaining = timeRemainingLabel;
-        
+        this.Name = name;
     }
     
     @Override
     public void run(){
+        
         log.Append_To_Log("###########################################################################################");
         log.Append_To_Log("Conditioning|| Starting Conditioning Routine");
         this._StartUp();
@@ -238,7 +241,7 @@ public class ConditioningHandler extends Thread{
                     
                     ArcCount++;
                     if(ArcCount >= MaxArcsBeforeStop){
-                        JOptionPane.showMessageDialog(null, "Total Allowed Arcs Reached, Stopping");
+                        JOptionPane.showMessageDialog(null, String.format("Total Allowed Arcs Reached, Stopping %s",this.Name));
                         log.Append_To_Log(String.format("Conditioning Check Status|| Total Allowed Arcs Reached: %s, Stopping", MaxArcsBeforeStop));
                         this.Stop_Conditioning();
                     }
@@ -246,42 +249,49 @@ public class ConditioningHandler extends Thread{
                     ConcurrentArcCount = 0;
                 }
                 else if(this.HV.InterlockOpen){
-                    JOptionPane.showMessageDialog(null, "Xrays are off, Interlock is open. Stopping");
+                    JOptionPane.showMessageDialog(null, String.format("Xrays are off, Interlock is open. Stopping %s", this.Name));
                     log.Append_To_Log("Conditioning Check Status|| Interlock open, stopping conditioning Cycle");
+                    this.HV.Reset_Faults();
                     this.Stop_Conditioning();
                 }
                 else if(this.HV.OverCurrent){
                    
-                    JOptionPane.showMessageDialog(null, "Xrays are off, Over Current Detected. Stopping");
+                    JOptionPane.showMessageDialog(null, String.format("Xrays are off, Over Current Detected. Stopping %s", this.Name));
                     log.Append_To_Log("Conditioning Check Status|| Over Current Detected. Stopping conditioning Cycle");
+                    this.HV.Reset_Faults();
                     this.Stop_Conditioning();
                 }
                 else if(this.HV.UnderCurrent){
-                    JOptionPane.showMessageDialog(null, "Xrays are off, Under Current Detected. Stopping");
+                    JOptionPane.showMessageDialog(null, String.format("Xrays are off, Under Current Detected. Stopping %s", this.Name));
                     log.Append_To_Log("Conditioning Check Status|| Under Current Detected. Stopping conditioning Cycle");
+                    this.HV.Reset_Faults();
                     this.Stop_Conditioning();
                 }
                 else if(this.HV.OverVoltage){
-                    JOptionPane.showMessageDialog(null, "Xrays are off, Over Voltage Detected. Stopping");
+                    JOptionPane.showMessageDialog(null, String.format("Xrays are off, Over Voltage Detected. Stopping %s", this.Name));
                     log.Append_To_Log("Conditioning Check Status|| Over Voltage Detected. Stopping conditioning Cycle");
+                    this.HV.Reset_Faults();
                     this.Stop_Conditioning();
                 }
                 else if(this.HV.UnderVoltage){
-                    JOptionPane.showMessageDialog(null, "Xrays are off, Under Voltage Detected. Stopping");
+                    JOptionPane.showMessageDialog(null, String.format("Xrays are off, Under Voltage Detected. Stopping %s",this.Name));
                     log.Append_To_Log("Conditioning Check Status|| Under Voltage Detected. Stopping conditioning Cycle");
+                    this.HV.Reset_Faults();
                     this.Stop_Conditioning();
                 }
                 else if (this.HV.OverTemperature){
-                    JOptionPane.showMessageDialog(null, "Xrays are off, Over Temperature. Stopping");
+                    JOptionPane.showMessageDialog(null, String.format("Xrays are off, Over Temperature. Stopping %s",this.Name));
                     log.Append_To_Log("Conditioning Check Status|| Over Temperature. Stopping conditioning Cycle");
+                    this.HV.Reset_Faults();
                     this.Stop_Conditioning();
                 }
+                this.HV.Reset_Faults();
             }
             else{
-                if(this.HV.ArcPresent){
+                if(this.HV.ArcPresent && !Killsig){
                     ArcCount++;
                     if(ArcCount == MaxArcsBeforeStop){
-                        JOptionPane.showMessageDialog(null, "Total Allowed Arcs Reached, Stopping");
+                        JOptionPane.showMessageDialog(null, String.format("Total Allowed Arcs Reached, Stopping %s",this.Name));
                         log.Append_To_Log(String.format("Conditioning Check Status|| Total Allowed Arcs Reached: %s, Stopping", MaxArcsBeforeStop));
                         this.Stop_Conditioning();
                     }
