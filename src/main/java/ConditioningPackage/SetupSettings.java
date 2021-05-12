@@ -15,7 +15,8 @@ import javax.swing.JCheckBox;
 public class SetupSettings implements Serializable {
     String Supply1IP,Supply2IP,Supply3IP,Supply4IP;
     String Supply1Port,Supply2Port,Supply3Port,Supply4Port;
-    boolean Use1,Use2,Use3,Use4;
+    boolean Use1,Use2,Use3,Use4,Df3Mode;
+    
     
     public void Defaults(){
         Use1 = true;
@@ -30,6 +31,7 @@ public class SetupSettings implements Serializable {
         Use4 = false;
         Supply4IP = "192.168.1.4";
         Supply4Port = "50001";
+        Df3Mode = false;
     }
     
 }

@@ -1,12 +1,17 @@
+Z:\MiscWorkJunk\JavaTubeConditioner\TubeConditioningRig\src\main\java\ConditioningPackage\MCP4725_DAC.java
 Z:\MiscWorkJunk\JavaTubeConditioner\TubeConditioningRig\src\main\java\ConditioningPackage\AutoReadOutHandler.java
 Z:\MiscWorkJunk\JavaTubeConditioner\TubeConditioningRig\src\main\java\ConditioningPackage\SupplyProgrammer.java
 Z:\MiscWorkJunk\JavaTubeConditioner\TubeConditioningRig\src\main\java\ConditioningPackage\SetupSettings.java
 Z:\MiscWorkJunk\JavaTubeConditioner\TubeConditioningRig\src\main\java\ConditioningPackage\ConditioningHandler.java
+Z:\MiscWorkJunk\JavaTubeConditioner\TubeConditioningRig\src\main\java\ConditioningPackage\IHighVoltagePowerSupply.java
+Z:\MiscWorkJunk\JavaTubeConditioner\TubeConditioningRig\src\main\java\ConditioningPackage\ADS1115_ADC.java
+Z:\MiscWorkJunk\JavaTubeConditioner\TubeConditioningRig\src\main\java\ConditioningPackage\DF_FF.java
 Z:\MiscWorkJunk\JavaTubeConditioner\TubeConditioningRig\src\main\java\ConditioningPackage\PopOutHandler.java
 Z:\MiscWorkJunk\JavaTubeConditioner\TubeConditioningRig\src\main\java\ConditioningPackage\SystemLoggingHandler.java
 Z:\MiscWorkJunk\JavaTubeConditioner\TubeConditioningRig\src\main\java\ConditioningPackage\GraphingHandler.java
 Z:\MiscWorkJunk\JavaTubeConditioner\TubeConditioningRig\src\main\java\ConditioningPackage\Warmup_Handler.java
 Z:\MiscWorkJunk\JavaTubeConditioner\TubeConditioningRig\src\main\java\ConditioningPackage\SupplyScreen.java
+Z:\MiscWorkJunk\JavaTubeConditioner\TubeConditioningRig\src\main\java\ConditioningPackage\AD5675RBRUZ_DAC.java
 Z:\MiscWorkJunk\JavaTubeConditioner\TubeConditioningRig\src\main\java\ConditioningPackage\SettingsHandler.java
 Z:\MiscWorkJunk\JavaTubeConditioner\TubeConditioningRig\src\main\java\ConditioningPackage\MainMethod.java
 Z:\MiscWorkJunk\JavaTubeConditioner\TubeConditioningRig\src\main\java\ConditioningPackage\SetupFrame.java

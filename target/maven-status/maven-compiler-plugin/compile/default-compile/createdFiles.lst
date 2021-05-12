@@ -17,6 +17,8 @@ ConditioningPackage\SupplyScreen$22.class
 ConditioningPackage\SupplyScreen$32.class
 ConditioningPackage\DXM.class
 ConditioningPackage\SupplyScreen$2.class
+ConditioningPackage\ADS1115_ADC.class
+ConditioningPackage\SetupFrame$3.class
 ConditioningPackage\SupplyScreen$20.class
 ConditioningPackage\SupplyScreen$40.class
 ConditioningPackage\SupplyScreen$15.class
@@ -29,6 +31,7 @@ ConditioningPackage\GraphingHandler.class
 ConditioningPackage\SupplyScreen$8.class
 ConditioningPackage\SupplyScreen.class
 ConditioningPackage\SupplyScreen$18.class
+ConditioningPackage\DF_FF.class
 ConditioningPackage\SupplyScreen$23.class
 ConditioningPackage\SupplyScreen$43.class
 ConditioningPackage\SupplyScreen$4.class
@@ -58,13 +61,16 @@ ConditioningPackage\SupplyScreen$3.class
 ConditioningPackage\SupplyScreen$45.class
 ConditioningPackage\SupplyScreen$17.class
 ConditioningPackage\SupplyScreen$30.class
+ConditioningPackage\IHighVoltagePowerSupply.class
 ConditioningPackage\SetupFrame.class
 ConditioningPackage\SupplyScreen$50.class
+ConditioningPackage\MCP4725_DAC.class
 ConditioningPackage\SupplyScreen$25.class
 ConditioningPackage\Settings.class
 ConditioningPackage\SystemLoggingHandler.class
 ConditioningPackage\SupplyScreen$48.class
 ConditioningPackage\SupplyScreen$6.class
 ConditioningPackage\SupplyScreen$28.class
+ConditioningPackage\AD5675RBRUZ_DAC.class
 ConditioningPackage\SupplyScreen$13.class
 ConditioningPackage\SupplyScreen$33.class
