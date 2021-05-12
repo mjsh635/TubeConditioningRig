@@ -16,7 +16,7 @@ import javax.swing.JTextField;
  * @author mjsh6
  */
 public class Warmup_Handler extends Thread {
-    DXM supply;
+    IHighVoltagePowerSupply supply;
     ButtonGroup btnGroup;
     int progress_number = 0;
     JProgressBar PBar;
@@ -29,7 +29,7 @@ public class Warmup_Handler extends Thread {
     boolean KeepOn;
     
     
-    public Warmup_Handler(DXM supply, ButtonGroup btn, JProgressBar progressBar, 
+    public Warmup_Handler(IHighVoltagePowerSupply supply, ButtonGroup btn, JProgressBar progressBar, 
             JTextField kv, JTextField ma, JTextField filCurr, JTextField pre,LoggingController log, boolean XrayStayOnAfterComplete) {
         this.supply = supply;
         this.btnGroup = btn;

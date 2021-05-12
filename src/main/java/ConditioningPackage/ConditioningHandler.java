@@ -23,7 +23,7 @@ import javax.swing.plaf.synth.SynthGraphicsUtils;
 public class ConditioningHandler extends Thread{
     
     Settings vals;
-    DXM HV;
+    IHighVoltagePowerSupply HV;
     LoggingController log;
     
     LocalTime TimeEnd;
@@ -70,7 +70,7 @@ public class ConditioningHandler extends Thread{
     String Name;
     
     
-    public ConditioningHandler(Settings userSettings, DXM supply, JProgressBar pb, LoggingController log, JLabel timeRemainingLabel, String name) {
+    public ConditioningHandler(Settings userSettings, IHighVoltagePowerSupply supply, JProgressBar pb, LoggingController log, JLabel timeRemainingLabel, String name) {
         this.vals = userSettings;
         this.HV = supply;
         this.pb = pb;
@@ -164,7 +164,7 @@ public class ConditioningHandler extends Thread{
         log.Append_To_Log(String.format("Conditioning|| Start Time: %s",ConditioningStartTime));
         log.Append_To_Log(String.format("Conditioning|| End Time: %s",ConditioningStopTime));
         log.Append_To_Log(String.format("Conditioning|| Tube Serial Number: %s",vals.TubeSerialNumber));
-        log.Append_To_Log(String.format("Conditioning|| Supply Model Used: %s",HV.modelNumber));
+        log.Append_To_Log(String.format("Conditioning|| Supply Model Used: %s",HV.getModelNumber()));
         log.Append_To_Log(String.format("Conditioning|| Max KV reached: %s",MaxKVReached));
         log.Append_To_Log(String.format("Conditioning|| Max MA reached: %s",MaxMAReached));
         double RecordsSummed = 0.0;
@@ -230,7 +230,7 @@ public class ConditioningHandler extends Thread{
     private void CheckXrayStatus(boolean kvArc){
         try {
             if(!this.HV.Is_Emmitting()&& !Killsig){
-                if(this.HV.ArcPresent ){
+                if(this.HV.isArcPresent() ){
                     Double[] SetValuesResponse = this.HV.Get_Set_Voltage_Current();
                     
                     if(kvArc){
@@ -248,38 +248,38 @@ public class ConditioningHandler extends Thread{
                     _Arc_Recovery(kvArc);
                     ConcurrentArcCount = 0;
                 }
-                else if(this.HV.InterlockOpen){
+                else if(this.HV.isInterlockOpen()){
                     JOptionPane.showMessageDialog(null, String.format("Xrays are off, Interlock is open. Stopping %s", this.Name));
                     log.Append_To_Log("Conditioning Check Status|| Interlock open, stopping conditioning Cycle");
                     this.HV.Reset_Faults();
                     this.Stop_Conditioning();
                 }
-                else if(this.HV.OverCurrent){
+                else if(this.HV.isOverCurrent()){
                    
                     JOptionPane.showMessageDialog(null, String.format("Xrays are off, Over Current Detected. Stopping %s", this.Name));
                     log.Append_To_Log("Conditioning Check Status|| Over Current Detected. Stopping conditioning Cycle");
                     this.HV.Reset_Faults();
                     this.Stop_Conditioning();
                 }
-                else if(this.HV.UnderCurrent){
+                else if(this.HV.isUnderCurrent()){
                     JOptionPane.showMessageDialog(null, String.format("Xrays are off, Under Current Detected. Stopping %s", this.Name));
                     log.Append_To_Log("Conditioning Check Status|| Under Current Detected. Stopping conditioning Cycle");
                     this.HV.Reset_Faults();
                     this.Stop_Conditioning();
                 }
-                else if(this.HV.OverVoltage){
+                else if(this.HV.isOverVoltage()){
                     JOptionPane.showMessageDialog(null, String.format("Xrays are off, Over Voltage Detected. Stopping %s", this.Name));
                     log.Append_To_Log("Conditioning Check Status|| Over Voltage Detected. Stopping conditioning Cycle");
                     this.HV.Reset_Faults();
                     this.Stop_Conditioning();
                 }
-                else if(this.HV.UnderVoltage){
+                else if(this.HV.isUnderVoltage()){
                     JOptionPane.showMessageDialog(null, String.format("Xrays are off, Under Voltage Detected. Stopping %s",this.Name));
                     log.Append_To_Log("Conditioning Check Status|| Under Voltage Detected. Stopping conditioning Cycle");
                     this.HV.Reset_Faults();
                     this.Stop_Conditioning();
                 }
-                else if (this.HV.OverTemperature){
+                else if (this.HV.isOverTemperature()){
                     JOptionPane.showMessageDialog(null, String.format("Xrays are off, Over Temperature. Stopping %s",this.Name));
                     log.Append_To_Log("Conditioning Check Status|| Over Temperature. Stopping conditioning Cycle");
                     this.HV.Reset_Faults();
@@ -288,7 +288,7 @@ public class ConditioningHandler extends Thread{
                 this.HV.Reset_Faults();
             }
             else{
-                if(this.HV.ArcPresent && !Killsig){
+                if(this.HV.isArcPresent() && !Killsig){
                     ArcCount++;
                     if(ArcCount == MaxArcsBeforeStop){
                         JOptionPane.showMessageDialog(null, String.format("Total Allowed Arcs Reached, Stopping %s",this.Name));

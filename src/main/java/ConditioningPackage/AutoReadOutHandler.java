@@ -13,14 +13,14 @@ import javax.swing.JTextField;
  * @author mjsh6
  */
 public class AutoReadOutHandler extends Thread {
-    DXM HV;
+    IHighVoltagePowerSupply HV;
     JLabel volt;
     JLabel curr;
     JTextField voltTF,currTF,FillTF;
     
     boolean StartReading = false;
     
-    public AutoReadOutHandler(DXM supply, JLabel ManualVoltageDisplay,JLabel ManualCurrentDisplay, 
+    public AutoReadOutHandler(IHighVoltagePowerSupply supply, JLabel ManualVoltageDisplay,JLabel ManualCurrentDisplay, 
             JTextField VoltField, JTextField CurrField, JTextField FillTextField) {
         
         HV = supply;

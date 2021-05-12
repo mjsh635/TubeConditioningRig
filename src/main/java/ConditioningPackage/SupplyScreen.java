@@ -35,7 +35,7 @@ public class SupplyScreen extends javax.swing.JFrame {
     String Name;
     LoggingController log;
     int port;
-    DXM supply;
+    IHighVoltagePowerSupply supply;
     Warmup_Handler warmup;
     boolean startRead = false;
     SettingsHandler sh;
@@ -46,7 +46,7 @@ public class SupplyScreen extends javax.swing.JFrame {
     
     
     
-    public SupplyScreen(String Name,String IPAddress,String port,String SettingsFilePath, String LogFolderPath) {
+    public SupplyScreen(String Name,String IPAddress,String port,String SettingsFilePath, String LogFolderPath, boolean DF3Mode) {
         initComponents();
         this.Name = Name;
         this.IPAddress = IPAddress;
@@ -56,7 +56,12 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.LogFolderPath = LogFolderPath;
         log = new LoggingController(this.LogFolderPath);
         this.port = Integer.valueOf(port);
+        //Decision tree for DXM or DF3
+        if(DF3Mode){
+            this.supply = new DF_FF();
+        }else{
         this.supply = new DXM(this.IPAddress,this.port);
+        }
         
         this.warmup = new Warmup_Handler(this.supply, this.WarmupSelectionButtonGroup, this.WarmUpProgressBar,
                 this.WarmVoltageTBox,this.WarmCurrentTBox,this.FillCurrTBox,this.PreHeatTBox, log,this.WarmupXrayStayOnCheckBox.isSelected());
@@ -64,7 +69,7 @@ public class SupplyScreen extends javax.swing.JFrame {
                 this.CurrentReadoutLabel, this.ConditionVoltageReadTBox, 
                 this.ConditionCurrentReadTBox, this.ConditionFillamentReadTBox);
         this.AROH.start();
-        if(!this.supply.connected){
+        if(!this.supply.isConnected()){
             this.XrayOnButton.setEnabled(false);
             this.StartWarmupButton.setEnabled(false);
             this.StartConditioningButton.setEnabled(false);
@@ -1349,18 +1354,18 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.supply.updates();
         AboutIPAddressTBox.setText(this.IPAddress);
         AboutPortTBox.setText(String.valueOf(this.port));
-        AboutSupplyModelTBox.setText(this.supply.modelNumber);
-        AboutArcTBox.setText(String.valueOf(this.supply.ArcPresent));
-        AboutOverTempTBox.setText(String.valueOf(this.supply.OverTemperature));
-        AboutOverVoltageTBox.setText(String.valueOf(this.supply.OverVoltage));
-        AboutUnderVoltageTBox.setText(String.valueOf(this.supply.UnderVoltage));
-        AboutOverCurrentTBox.setText(String.valueOf(this.supply.OverCurrent));
-        AboutUnderCurrentTBox.setText(String.valueOf(this.supply.UnderCurrent));
-        AboutMaxKVTBox.setText(String.valueOf(this.supply.MaxKV));
-        AboutMaxMATBox.setText(String.valueOf(this.supply.MaxMA));
-        AboutMaxWTBox.setText(String.valueOf(this.supply.MaxWatt));
+        AboutSupplyModelTBox.setText(this.supply.getModelNumber());
+        AboutArcTBox.setText(String.valueOf(this.supply.isArcPresent()));
+        AboutOverTempTBox.setText(String.valueOf(this.supply.isOverTemperature()));
+        AboutOverVoltageTBox.setText(String.valueOf(this.supply.isOverVoltage()));
+        AboutUnderVoltageTBox.setText(String.valueOf(this.supply.isUnderVoltage()));
+        AboutOverCurrentTBox.setText(String.valueOf(this.supply.isOverCurrent()));
+        AboutUnderCurrentTBox.setText(String.valueOf(this.supply.isUnderCurrent()));
+        AboutMaxKVTBox.setText(String.valueOf(this.supply.getMaxKV()));
+        AboutMaxMATBox.setText(String.valueOf(this.supply.getMaxMA()));
+        AboutMaxWTBox.setText(String.valueOf(this.supply.getMaxWatt()));
         
-        if(this.supply.HighVoltageState){
+        if(this.supply.isHighVoltageState()){
             AboutHighVoltageTBox.setText("ON");
             AboutHighVoltageTBox.setBackground(Color.yellow);
         }else{
@@ -1368,7 +1373,7 @@ public class SupplyScreen extends javax.swing.JFrame {
             AboutHighVoltageTBox.setBackground(Color.green);
         }
         
-        if(this.supply.InterlockOpen){
+        if(this.supply.isInterlockOpen()){
             AboutInterlockTBox.setText("OPEN");
             AboutInterlockTBox.setBackground(Color.red);
         }else{
@@ -1376,7 +1381,7 @@ public class SupplyScreen extends javax.swing.JFrame {
             AboutInterlockTBox.setBackground(Color.green);
         }
         
-        if(this.supply.FaultPresent){
+        if(this.supply.isFaultPresent()){
             AboutFaultTBox.setText("PRESENT");
             AboutFaultTBox.setBackground(Color.red);
         }else{
@@ -1384,7 +1389,7 @@ public class SupplyScreen extends javax.swing.JFrame {
             AboutFaultTBox.setBackground(Color.white);
         }
         
-        if(this.supply.RemoteMode){
+        if(this.supply.isRemoteMode()){
             AboutRemoteLocalTBox.setText("REMOTE");
         }
         else{
@@ -1427,7 +1432,7 @@ public class SupplyScreen extends javax.swing.JFrame {
                 this.ConditionCurrentReadTBox, this.ConditionFillamentReadTBox);
         this.AROH.start();
         
-        if(this.supply.connected){
+        if(this.supply.isConnected()){
         JOptionPane.showMessageDialog(null, String.format("%s Connected, re-enabling buttons", this.Name));
         
         this.XrayOnButton.setEnabled(true);
