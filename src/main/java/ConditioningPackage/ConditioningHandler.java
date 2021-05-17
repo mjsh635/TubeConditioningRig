@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ConditioningPackage;
 
 
@@ -16,9 +12,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.plaf.synth.SynthGraphicsUtils;
 
-/**
+/**The purpose of this class is to create a thread that performs an intelligent
+ * Conditioning of the Xray tubes. This class uses IHighvoltagePowerSupply as 
+ * a passable supply, this will allow for future supplies to be created and this
+ * class should still function so long as all the abstract functions be overridden
  *
- * @author mjsh6
+ * @author mjsh635
  */
 public class ConditioningHandler extends Thread{
     
@@ -69,7 +68,15 @@ public class ConditioningHandler extends Thread{
     boolean Killsig = false;
     String Name;
     
-    
+    /**
+     * 
+     * @param userSettings settings file
+     * @param supply Interface supply
+     * @param pb progress bar
+     * @param log log file handler
+     * @param timeRemainingLabel countdown timer
+     * @param name supply name
+     */
     public ConditioningHandler(Settings userSettings, IHighVoltagePowerSupply supply, JProgressBar pb, LoggingController log, JLabel timeRemainingLabel, String name) {
         this.vals = userSettings;
         this.HV = supply;
@@ -81,34 +88,34 @@ public class ConditioningHandler extends Thread{
     
     @Override
     public void run(){
-        
+       
         log.Append_To_Log("###########################################################################################");
         log.Append_To_Log("Conditioning|| Starting Conditioning Routine");
-        this._StartUp();
-        for (int i = 1; i <= NumberOfConditioningCycles; i++) {
+        this._StartUp(); // run start up, sets up various variables and settings
+        for (int i = 1; i <= NumberOfConditioningCycles; i++) { //depending how many cycles they want to run, run below
             System.out.println(String.format("Conditioning|| Starting Conditioning cycle: %s", i));
             log.Append_To_Log(String.format("Conditioning|| Starting Conditioning cycle: %s", i));
             this.pb.setValue(16);
             if(this.vals.PerformKVRamp.equals("true")&& !Killsig){
-            this._KVInitialRamp();
+            this._KVInitialRamp(); // ramp kv to target with low ma
             }
             this.pb.setValue(32);
             if(this.vals.PerformMARamp.equals("true")&& !Killsig){
-            this._MAInitialRamp();
+            this._MAInitialRamp(); //kv set to 70% then ma ramped to target
             }
             this.pb.setValue(48);
             if(this.vals.PerformKVReramp.equals("true")&& !Killsig){
-            this._KVReramp();
+            this._KVReramp(); //ma held at target and kv ramped from 70 > 100%
             }
             this.pb.setValue(64);
             if(this.vals.PerformOnOffCycles.equals("true")&& !Killsig){
-            this._OnOffCycle();
+            this._OnOffCycle(); // cycle on and off for requested cycles
             }
             this.pb.setValue(100);
             log.Append_To_Log(String.format("Conditioning|| Complete Conditioning cycle: %s", i));
             System.out.println(String.format("Conditioning|| Complete Conditioning cycle: %s", i));
         }
-        Stop_Conditioning();
+        Stop_Conditioning(); // run cleanup code
         
         
        

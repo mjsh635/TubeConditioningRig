@@ -17,8 +17,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
-
-
+import com.pi4j.io.gpio.*;
+import com.pi4j.io.i2c.*;
+import java.io.IOException;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -43,44 +48,57 @@ public class SupplyScreen extends javax.swing.JFrame {
     String SerialNumber = "";
     AutoReadOutHandler AROH;
     PopOutHandler xrayOnOffPop;
-    
-    
-    
-    public SupplyScreen(String Name,String IPAddress,String port,String SettingsFilePath, String LogFolderPath, boolean DF3Mode) {
+
+    public SupplyScreen(String Name, String IPAddress, String port, String SettingsFilePath, String LogFolderPath, boolean DF3Mode) {
         initComponents();
         this.Name = Name;
         this.IPAddress = IPAddress;
-        if(SettingsFilePath != ""){
+        if (SettingsFilePath != "") {
             this.sh = new SettingsHandler(SettingsFilePath);
-            Load_Settings();}
+            Load_Settings();
+        }
         this.LogFolderPath = LogFolderPath;
         log = new LoggingController(this.LogFolderPath);
         this.port = Integer.valueOf(port);
         //Decision tree for DXM or DF3
-        if(DF3Mode){
-            this.supply = new DF_FF();
-        }else{
-        this.supply = new DXM(this.IPAddress,this.port);
+        if (DF3Mode) {
+            I2CBus bus;
+            try {
+                bus = I2CFactory.getInstance(1); // create i2c bus to pass;
+                GpioController GPIO = GpioFactory.getInstance(); // create GPIO bus to pass;
+                AD5675RBRUZ_DAC dac = new AD5675RBRUZ_DAC(bus, 0x0C); //create DAC device
+                ADS1115_ADC ADC1 = new ADS1115_ADC(bus, 0x48); //create ADC1 device
+                ADS1115_ADC ADC2 = new ADS1115_ADC(bus, 0x49); //create ADC2 device
+                Lock Lock = new ReentrantLock();
+                this.supply = new DF_FF(bus, GPIO, Lock, dac, ADC1, ADC2, PROPERTIES); //Pass all requirements
+            } catch (I2CFactory.UnsupportedBusNumberException ex) {
+                Logger.getLogger(SupplyScreen.class.getName()).log(Level.SEVERE, null, ex);
+                
+            } catch (IOException ex) {
+                Logger.getLogger(SupplyScreen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            this.supply = new DXM(this.IPAddress, this.port);
         }
-        
+
         this.warmup = new Warmup_Handler(this.supply, this.WarmupSelectionButtonGroup, this.WarmUpProgressBar,
-                this.WarmVoltageTBox,this.WarmCurrentTBox,this.FillCurrTBox,this.PreHeatTBox, log,this.WarmupXrayStayOnCheckBox.isSelected());
-        this.AROH = new AutoReadOutHandler(this.supply, this.VoltageReadoutLabel, 
-                this.CurrentReadoutLabel, this.ConditionVoltageReadTBox, 
+                this.WarmVoltageTBox, this.WarmCurrentTBox, this.FillCurrTBox, this.PreHeatTBox, log, this.WarmupXrayStayOnCheckBox.isSelected());
+        this.AROH = new AutoReadOutHandler(this.supply, this.VoltageReadoutLabel,
+                this.CurrentReadoutLabel, this.ConditionVoltageReadTBox,
                 this.ConditionCurrentReadTBox, this.ConditionFillamentReadTBox);
         this.AROH.start();
-        if(!this.supply.isConnected()){
+        if (!this.supply.isConnected()) {
             this.XrayOnButton.setEnabled(false);
             this.StartWarmupButton.setEnabled(false);
             this.StartConditioningButton.setEnabled(false);
             this.StopConditioningButton.setEnabled(false);
         }
-        
-        xrayOnOffPop = new PopOutHandler(Name,XrayOnOffPanel,ManualControlPanel);
+
+        xrayOnOffPop = new PopOutHandler(Name, XrayOnOffPanel, ManualControlPanel);
     }
-   
-    
-    public SupplyScreen(){
+
+    public SupplyScreen() {
         initComponents();
     }
 
@@ -1348,8 +1366,8 @@ public class SupplyScreen extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
-    private void update_About_Page(){
+
+    private void update_About_Page() {
         // update all the text fields on the About page
         this.supply.updates();
         AboutIPAddressTBox.setText(this.IPAddress);
@@ -1364,91 +1382,90 @@ public class SupplyScreen extends javax.swing.JFrame {
         AboutMaxKVTBox.setText(String.valueOf(this.supply.getMaxKV()));
         AboutMaxMATBox.setText(String.valueOf(this.supply.getMaxMA()));
         AboutMaxWTBox.setText(String.valueOf(this.supply.getMaxWatt()));
-        
-        if(this.supply.isHighVoltageState()){
+
+        if (this.supply.isHighVoltageState()) {
             AboutHighVoltageTBox.setText("ON");
             AboutHighVoltageTBox.setBackground(Color.yellow);
-        }else{
+        } else {
             AboutHighVoltageTBox.setText("OFF");
             AboutHighVoltageTBox.setBackground(Color.green);
         }
-        
-        if(this.supply.isInterlockOpen()){
+
+        if (this.supply.isInterlockOpen()) {
             AboutInterlockTBox.setText("OPEN");
             AboutInterlockTBox.setBackground(Color.red);
-        }else{
+        } else {
             AboutInterlockTBox.setText("CLOSED");
             AboutInterlockTBox.setBackground(Color.green);
         }
-        
-        if(this.supply.isFaultPresent()){
+
+        if (this.supply.isFaultPresent()) {
             AboutFaultTBox.setText("PRESENT");
             AboutFaultTBox.setBackground(Color.red);
-        }else{
+        } else {
             AboutFaultTBox.setText("NONE");
             AboutFaultTBox.setBackground(Color.white);
         }
-        
-        if(this.supply.isRemoteMode()){
+
+        if (this.supply.isRemoteMode()) {
             AboutRemoteLocalTBox.setText("REMOTE");
-        }
-        else{
+        } else {
             AboutRemoteLocalTBox.setText("LOCAL");
         }
-        
+
     }
-    
-    
+
+
     private void StopConditioningButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopConditioningButtonActionPerformed
-        if(ch.isAlive()){
+        if (ch.isAlive()) {
             ch.Stop_Conditioning();
         }
         //this.AROH.StartReading = false;
         this.XrayOnButton.setEnabled(true);
         this.StartConditioningButton.setEnabled(true);
         this.StartWarmupButton.setEnabled(true);
-        
+
     }//GEN-LAST:event_StopConditioningButtonActionPerformed
 
     private void StartConditioningButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartConditioningButtonActionPerformed
         SaveAll(evt);
-        ch = new ConditioningHandler(sh.appsettings, supply,this.ConditioningProgressBar, log, this.TimeRemainingLabel,this.Name);
+        ch = new ConditioningHandler(sh.appsettings, supply, this.ConditioningProgressBar, log, this.TimeRemainingLabel, this.Name);
         System.out.println("Starting Conditioning");
         ch.start();
         this.XrayOnButton.setEnabled(false);
         this.StartConditioningButton.setEnabled(false);
         this.StartWarmupButton.setEnabled(false);
         this.AROH.StartReading = true;
-        
+
     }//GEN-LAST:event_StartConditioningButtonActionPerformed
 
     private void ReconnectToSupplyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReconnectToSupplyButtonActionPerformed
-        this.supply = new DXM(this.IPAddress,this.port);
-        
+        this.supply = new DXM(this.IPAddress, this.port);
+
         this.warmup = new Warmup_Handler(this.supply, this.WarmupSelectionButtonGroup, this.WarmUpProgressBar,
-                this.WarmVoltageTBox,this.WarmCurrentTBox,this.FillCurrTBox,this.PreHeatTBox, log,this.WarmupXrayStayOnCheckBox.isSelected());
-        this.AROH = new AutoReadOutHandler(this.supply, this.VoltageReadoutLabel, 
-                this.CurrentReadoutLabel, this.ConditionVoltageReadTBox, 
+                this.WarmVoltageTBox, this.WarmCurrentTBox, this.FillCurrTBox, this.PreHeatTBox, log, this.WarmupXrayStayOnCheckBox.isSelected());
+        this.AROH = new AutoReadOutHandler(this.supply, this.VoltageReadoutLabel,
+                this.CurrentReadoutLabel, this.ConditionVoltageReadTBox,
                 this.ConditionCurrentReadTBox, this.ConditionFillamentReadTBox);
         this.AROH.start();
-        
-        if(this.supply.isConnected()){
-        JOptionPane.showMessageDialog(null, String.format("%s Connected, re-enabling buttons", this.Name));
-        
-        this.XrayOnButton.setEnabled(true);
-            
-        this.StartWarmupButton.setEnabled(true);
-            
-        this.StartConditioningButton.setEnabled(true);
-         this.StopConditioningButton.setEnabled(true);
-        
-        }else{
-        JOptionPane.showMessageDialog(null, String.format("%s Not Found",this.Name));
+
+        if (this.supply.isConnected()) {
+            JOptionPane.showMessageDialog(null, String.format("%s Connected, re-enabling buttons", this.Name));
+
+            this.XrayOnButton.setEnabled(true);
+
+            this.StartWarmupButton.setEnabled(true);
+
+            this.StartConditioningButton.setEnabled(true);
+            this.StopConditioningButton.setEnabled(true);
+
+        } else {
+            JOptionPane.showMessageDialog(null, String.format("%s Not Found", this.Name));
         }
-        
+
     }//GEN-LAST:event_ReconnectToSupplyButtonActionPerformed
-    
-    private void ColorAllAsApproved(){
+
+    private void ColorAllAsApproved() {
         this.FillCurrTBox.setBackground(Color.lightGray);
         this.PreHeatTBox.setBackground(Color.lightGray);
 //        this.WarmVoltageTBox.setBackground(Color.lightGray);
@@ -1485,9 +1502,9 @@ public class SupplyScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_AboutRefreshButtonActionPerformed
 
     private void PerformKVRerampCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PerformKVRerampCheckBoxActionPerformed
-         sh.appsettings.PerformKVReramp = String.valueOf(this.PerformKVRerampCheckBox.isSelected());
-         this.sh.SaveSettings();
-         this.PerformKVRerampCheckBox.setBackground(Color.lightGray);
+        sh.appsettings.PerformKVReramp = String.valueOf(this.PerformKVRerampCheckBox.isSelected());
+        this.sh.SaveSettings();
+        this.PerformKVRerampCheckBox.setBackground(Color.lightGray);
     }//GEN-LAST:event_PerformKVRerampCheckBoxActionPerformed
 
     private void TubeSerialNumberTBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TubeSerialNumberTBoxActionPerformed
@@ -1517,11 +1534,11 @@ public class SupplyScreen extends javax.swing.JFrame {
 
     private void StopWarmupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopWarmupButtonActionPerformed
         this.warmup.Stop_Warmup();
-        if(!this.warmup.isAlive()){
+        if (!this.warmup.isAlive()) {
             this.StartWarmupButton.setEnabled(true);
         }
         this.warmup = new Warmup_Handler(this.supply, this.WarmupSelectionButtonGroup, this.WarmUpProgressBar,
-            this.WarmVoltageTBox,this.WarmCurrentTBox,this.FillCurrTBox,this.PreHeatTBox, log,this.WarmupXrayStayOnCheckBox.isSelected());
+                this.WarmVoltageTBox, this.WarmCurrentTBox, this.FillCurrTBox, this.PreHeatTBox, log, this.WarmupXrayStayOnCheckBox.isSelected());
         this.XrayOnButton.setEnabled(true);
         this.StartConditioningButton.setEnabled(true);
     }//GEN-LAST:event_StopWarmupButtonActionPerformed
@@ -1541,10 +1558,11 @@ public class SupplyScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_StartWarmupButtonActionPerformed
 
     private void XrayOnOffPanelPopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_XrayOnOffPanelPopButtonActionPerformed
-        if(!xrayOnOffPop.isPOP){
+        if (!xrayOnOffPop.isPOP) {
             xrayOnOffPop.POP();
-        }else
-        XrayOnOffPanel.setLocation(xrayOnOffPop.UNPOP());
+        } else {
+            XrayOnOffPanel.setLocation(xrayOnOffPop.UNPOP());
+        }
 
     }//GEN-LAST:event_XrayOnOffPanelPopButtonActionPerformed
 
@@ -1565,11 +1583,11 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.supply.Set_Filament_Limit(Double.valueOf(this.FillCurrTBox.getText()));
         this.supply.Set_Filament_Preheat(Double.valueOf(this.PreHeatTBox.getText()));
 
-        log.Append_To_Log(String.format("Manual|| Voltage: %s, Current: %s",voltage,current));
-        if(this.supply.Is_Emmitting()){
+        log.Append_To_Log(String.format("Manual|| Voltage: %s, Current: %s", voltage, current));
+        if (this.supply.Is_Emmitting()) {
             this.supply.Set_Voltage(voltage);
             this.supply.Set_Current(current);
-        }else{
+        } else {
             this.supply.Set_Voltage(voltage);
             this.supply.Set_Current(current);
             log.Append_To_Log("Manual|| Xrays on");
@@ -1758,14 +1776,14 @@ public class SupplyScreen extends javax.swing.JFrame {
     private void NumberOfConditioningCyclesTBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NumberOfConditioningCyclesTBoxMouseClicked
         this.NumberOfConditioningCyclesTBox.setBackground(Color.WHITE);
     }//GEN-LAST:event_NumberOfConditioningCyclesTBoxMouseClicked
-    
-    public void SaveAll(java.awt.event.ActionEvent evt){
+
+    public void SaveAll(java.awt.event.ActionEvent evt) {
         System.out.println("Saving All");
         WarmVoltageTBoxActionPerformed(evt);
         WarmMinVoltageTBoxActionPerformed(evt);
         WarmCurrentTBoxActionPerformed(evt);
         WarmMinCurrentTBoxActionPerformed(evt);
-        
+
         FillCurrTBoxActionPerformed(evt);
         PreHeatTBoxActionPerformed(evt);
         TotalStepCountTBoxActionPerformed(evt);
@@ -1788,7 +1806,8 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.sh.SaveSettings();
         this.ColorAllAsApproved();
     }
-    private void Load_Settings(){
+
+    private void Load_Settings() {
         this.FillCurrTBox.setText(sh.appsettings.FilamentCurrentLimit);
         this.PreHeatTBox.setText(sh.appsettings.FilamentPreHeat);
         this.WarmVoltageTBox.setText(sh.appsettings.WarmupKV);
@@ -1814,12 +1833,12 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.NumberOfConditioningCyclesTBox.setText(sh.appsettings.NumberOfConditioningCycles);
         this.ColorAllAsApproved();
     }
-    
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -1847,10 +1866,10 @@ public class SupplyScreen extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new SupplyScreen().setVisible(true);
-                
+
             }
         });
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

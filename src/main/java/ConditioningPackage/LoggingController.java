@@ -9,7 +9,11 @@ import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.Hashtable;
 import javax.swing.JOptionPane;
-
+/**Handles logging the conditioning and manual control events on a tube by tube 
+ * basis. This allows for tracking and data on the stability of a tube.
+ * 
+ * @author mjsh635
+ */
 public class LoggingController {
     
     Path folderPath;

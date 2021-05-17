@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ConditioningPackage;
 
 import com.pi4j.io.i2c.I2CBus;
@@ -11,15 +7,18 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 
 /**
+ * The purpose of this class is to handle the operation of an Adafruit 
+ * Analog to digital converter
  *
- * @author mjsh6
+ * @author mjsh635
  */
+
 public class ADS1115_ADC {
     I2CBus Bus;
     int BusAddress;
     I2CDevice device;
     
-    /**
+    /**construct a ADC object to read voltages on selected ADC Channel
      * 
      * @param bus i2c bus to be scanned
      * @param address address of the chip on the bus
@@ -29,8 +28,7 @@ public class ADS1115_ADC {
         this.BusAddress = address;
         try {
             
-            this.device = Bus.getDevice(address);
-//          JOptionPane.showMessageDialog(new JOptionPane(),device.toString(),"Device Found", JOptionPane.INFORMATION_MESSAGE);
+            this.device = Bus.getDevice(address); // create an i2c bus device
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(new JOptionPane(),ex,"Exception Occured", JOptionPane.ERROR_MESSAGE);
         }
@@ -42,10 +40,10 @@ public class ADS1115_ADC {
      * @param PGA  ±6.144 V, ±4.096 V ±2.048 V (default), ±1.024 V, ±0.512 V, ±0.256 V enter as mV
      * @return 0-4095 value measured from chip
      */
-    public int ReadVoltage(int channelNumber,int timeBetweenWriteAndRead, int PGA) throws UnsupportedOperationException, IOException, InterruptedException{
+    public double ReadVoltage(int channelNumber,int timeBetweenWriteAndRead, int PGA) throws UnsupportedOperationException, IOException, InterruptedException{
+        // I wrote this class on 7 cups of coffee, it works, not sure what black magic I did to make it work
         
-        
-        byte config1byte = (byte)0xc4;
+        byte config1byte = (byte)0xc4; 
         byte config2byte = (byte)0x23;
         switch(channelNumber){
             case 0:

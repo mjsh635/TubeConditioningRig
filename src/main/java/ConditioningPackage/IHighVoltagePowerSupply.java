@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
 
 /**
- *
- * @author mjsh6
+ * interface for what a "high voltage supply" should be able to to.
+ * creating a new supply type and inheriting this interface will allow the new
+ * supply to be used in the program without any rewriting
+ * @author mjsh635
  */
 public interface IHighVoltagePowerSupply {
 

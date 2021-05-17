@@ -9,6 +9,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import com.pi4j.io.i2c.*;
+import com.pi4j.io.gpio.*;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import jdk.internal.net.http.common.Pair;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -16,8 +23,41 @@ import java.util.concurrent.locks.ReentrantLock;
  * and open the template in the editor.
  */
 /**
+ * To use this class the dependency Pi4J is required.
  *
- * @author mjsh6
+ * Please see the expected IO Mapping below: -------------------- AD5675R 8
+ * channel DAC --------------------- DAC addr: 0x0C (A1/A2 pulled to GND) Vout0
+ * Supply 1 Voltage Set Vout1 Supply 1 Current Set Vout2 Supply 2 Voltage Set
+ * Vout3 Supply 2 Current Set Vout4 Supply 3 Voltage Set Vout5 Supply 3 Current
+ * Set Vout6 Supply 4 Voltage Set Vout7 Supply 4 Current Set
+ *
+ * -------------------- ADS1115 Adafruit 4 channel ADC -------------------- ADC1
+ * 0x48 (ADDR pulled to GND) Vin0 Supply 1 Voltage In Vin1 Supply 1 Current In
+ * Vin2 Supply 2 Voltage In Vin3 Supply 2 Current In
+ *
+ * ADC2 0x49 (ADDR pulled to VDD) Vin0 Supply 3 Voltage In Vin1 Supply 3 Current
+ * In Vin2 Supply 4 Voltage In Vin3 Supply 4 Current In
+ *
+ * ---------------------------------- GPIO PINOUT using WiringPI numbers
+ * --------------------------------- wiringPi #0 GPIO#17 Supply 1 Input: Xray
+ * are On wiringPi #1 GPIO#18 Supply 1 Input: Fault Present wiringPi #2 GPIO#27
+ * Supply 1 Input: KV Regulation Erro wiringPi #3 GPIO#22 Supply 1 Output: Xray
+ * ON/OFF Command wiringPi #4 GPIO#23 Supply 1 Output: Supply Reset wiringPi #5
+ * GPIO#24 Supply 2 Input: Xray are On wiringPi #6 GPIO#25 Supply 2 Input: Fault
+ * Present wiringPi #7 GPIO#4 Supply 2 Input: KV Regulation Erro wiringPi #12
+ * GPIO#10 Supply 2 Output: Xray ON/OFF Command wiringPi #13 GPIO#9 Supply 2
+ * Output: Supply Reset wiringPi #14 GPIO#11 Supply 3 Input: Xray are On
+ * wiringPi #10 GPIO#8 Supply 3 Input: Fault Present wiringPi #11 GPIO#7 Supply
+ * 3 Input: KV Regulation Erro wiringPi #21 GPIO#5 Supply 3 Output: Xray ON/OFF
+ * Command wiringPi #22 GPIO#6 Supply 3 Output: Supply Reset wiringPi #26
+ * GPIO#12 Supply 4 Input: Xray are On wiringPi #23 GPIO#13 Supply 4 Input:
+ * Fault Present wiringPi #24 GPIO#19 Supply 4 Input: KV Regulation Erro
+ * wiringPi #27 GPIO#16 Supply 4 Output: Xray ON/OFF Command wiringPi #25
+ * GPIO#26 Supply 4 Output: Supply Reset
+ *
+ * Supply 1
+ *
+ * @author mjsh635
  */
 public class DF_FF implements IHighVoltagePowerSupply {
 
@@ -41,246 +81,390 @@ public class DF_FF implements IHighVoltagePowerSupply {
     private Double voltageScaleFactor;
     private Double currentScaleFactor;
     private Lock SendCommandLock = new ReentrantLock();
-    
-    public DF_FF() {
-       
-         this.modelNumber = this.Get_Model_Type();
-        
-    }
-    
+    GpioController GPIO;
+    I2CBus i2c;
+    GpioPinDigitalInput XRaysOnSupply;
+    GpioPinDigitalInput PowerSupplyFault;
+    GpioPinDigitalInput KVRegulatorError;
+    GpioPinDigitalOutput XrayOnCommand;
+    GpioPinDigitalOutput ResetFaults;
 
-    
+    AD5675RBRUZ_DAC AnalogOutputs;
+    ADS1115_ADC AnalogInputChip1;
+    ADS1115_ADC AnalogInputChip2;
+    int intVOutDacNumber;
+    int intCOutDacNumber;
+    Pair<ADS1115_ADC, Integer> VInADCNumber;
+    Pair<ADS1115_ADC, Integer> CInADCNumber;
+
+    int supplyNumber;
+
+    public DF_FF(I2CBus bus, GpioController GPIO, Lock Lock, AD5675RBRUZ_DAC AnalogOut, ADS1115_ADC AnalogIn1, ADS1115_ADC AnalogIn2, int SupplyNumber) {
+
+        this.modelNumber = this.Get_Model_Type();
+        this.GPIO = GPIO;
+        this.i2c = bus;
+        this.supplyNumber = SupplyNumber;
+        this.AnalogOutputs = AnalogOut;
+        this.AnalogInputChip1 = AnalogIn1;
+        this.AnalogInputChip2 = AnalogIn2;
+
+        switch (SupplyNumber) {
+            case 1:
+                XRaysOnSupply = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_00);
+                PowerSupplyFault = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_01);
+                KVRegulatorError = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_02);
+                XrayOnCommand = GPIO.provisionDigitalOutputPin(RaspiPin.GPIO_03);
+                ResetFaults = GPIO.provisionDigitalOutputPin(RaspiPin.GPIO_04);
+                intVOutDacNumber = 0;
+                intCOutDacNumber = 1;
+                VInADCNumber = new Pair(this.AnalogInputChip1, 0);
+                CInADCNumber = new Pair(this.AnalogInputChip1, 1);
+                break;
+            case 2:
+                XRaysOnSupply = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_05);
+                PowerSupplyFault = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_06);
+                KVRegulatorError = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_07);
+                XrayOnCommand = GPIO.provisionDigitalOutputPin(RaspiPin.GPIO_12);
+                ResetFaults = GPIO.provisionDigitalOutputPin(RaspiPin.GPIO_13);
+                intVOutDacNumber = 2;
+                intCOutDacNumber = 3;
+                VInADCNumber = new Pair(this.AnalogInputChip1, 2);
+                CInADCNumber = new Pair(this.AnalogInputChip1, 3);
+                break;
+
+            case 3:
+                XRaysOnSupply = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_14);
+                PowerSupplyFault = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_10);
+                KVRegulatorError = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_11);
+                XrayOnCommand = GPIO.provisionDigitalOutputPin(RaspiPin.GPIO_21);
+                ResetFaults = GPIO.provisionDigitalOutputPin(RaspiPin.GPIO_22);
+                intVOutDacNumber = 4;
+                intCOutDacNumber = 5;
+                VInADCNumber = new Pair(this.AnalogInputChip2, 0);
+                CInADCNumber = new Pair(this.AnalogInputChip2, 1);
+                break;
+            case 4:
+                XRaysOnSupply = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_26);
+                PowerSupplyFault = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_23);
+                KVRegulatorError = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_24);
+                XrayOnCommand = GPIO.provisionDigitalOutputPin(RaspiPin.GPIO_27);
+                ResetFaults = GPIO.provisionDigitalOutputPin(RaspiPin.GPIO_25);
+                intVOutDacNumber = 6;
+                intCOutDacNumber = 7;
+                VInADCNumber = new Pair(this.AnalogInputChip2, 2);
+                CInADCNumber = new Pair(this.AnalogInputChip2, 3);
+                break;
+        }
+
+    }
+
     @Override
     public void set_IP_Address(String new_address) {
         return;
     }
 
     @Override
-    public String get_IP_Address(){
+    public String get_IP_Address() {
         return "0.0.0.0";
     }
 
     @Override
-    public void Set_Voltage(double voltage){
-        throw new UnsupportedOperationException("not supported yet");
+    public void Set_Voltage(double voltage) {
+        if (voltage >= 0.0 && voltage <= 60.0){
+            _Set_Voltage(voltage);
+        }
     }
-    
+
     @Override
-    public void Set_Current(double current){
-        throw new UnsupportedOperationException("not supported yet");
+    public void Set_Current(double current) {
+        if (current >= 0.0 && current <= 80.0){
+            _Set_Current(current);
+        }
     }
-    
+
     @Override
-    public void updates(){
+    public void updates() {
         _Update_Fault_States();
         _Update_Status_Signals();
     }
-    
+
     @Override
     public String Get_Model_Type() {
-        
+
         setConnected(true);
         return this._Read_Model_Type();
-        
+
     }
-    
-    
+
     @Override
     public boolean Get_Interlock_Status() {
-       
-            this._Update_Status_Signals();
-            return isInterlockOpen();
-        
+
+        this._Update_Status_Signals();
+        return isInterlockOpen();
+
     }
 
     @Override
     public void Reset_Faults() {
-        throw new UnsupportedOperationException();
+        try{
+            SendCommandLock.lock();
+            ResetFaults.pulse((long) 2.0);    
+        } catch (Exception e) {
+            Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, e);
+        }finally{
+            SendCommandLock.unlock();
+        }
     }
 
     @Override
     public boolean Is_Emmitting() {
-        
-            this._Update_Fault_States();
-            this._Update_Status_Signals();
-            return isHighVoltageState();
+
+        this._Update_Fault_States();
+        this._Update_Status_Signals();
+        return isHighVoltageState();
 
     }
-@Override
+
+    @Override
     public ArrayList<String> Are_There_Any_Faults() {
-        
-            this._Update_Fault_States();
-            ArrayList<String> Faults = new ArrayList<String>();
-            if (isArcPresent()) {
-                Faults.add("Arc Present");
-            }
-            if (isOverTemperature()) {
-                Faults.add("Over Temperature");
-            }
-            if (isOverVoltage()) {
-                Faults.add("Over Voltage");
-            }
-            if (isUnderVoltage()) {
-                Faults.add("Under Voltage");
-            }
-            if (isOverCurrent()) {
-                Faults.add("Over Current");
-            }
-            if (isUnderCurrent()) {
-                Faults.add("Under Current");
-            }
-            return Faults;
-        
+
+        this._Update_Fault_States();
+        ArrayList<String> Faults = new ArrayList<String>();
+        if (isArcPresent()) {
+            Faults.add("Arc Present");
+        }
+        if (isOverTemperature()) {
+            Faults.add("Over Temperature");
+        }
+        if (isOverVoltage()) {
+            Faults.add("Over Voltage");
+        }
+        if (isUnderVoltage()) {
+            Faults.add("Under Voltage");
+        }
+        if (isOverCurrent()) {
+            Faults.add("Over Current");
+        }
+        if (isUnderCurrent()) {
+            Faults.add("Under Current");
+        }
+        return Faults;
+
     }
 
     @Override
     public String Read_Voltage_Out_String() {
-       
-            return this._Get_Voltage().toString();
-        
+
+        return this._Get_Voltage().toString();
 
     }
 
     @Override
     public Double Read_Voltage_Out_Double() {
-        
-            return this._Get_Voltage();
-        
+
+        return this._Get_Voltage();
+
     }
 
     @Override
     public String Read_Current_Out_String() {
-        
-            return this._Get_Current().toString();
+
+        return this._Get_Current().toString();
 
     }
 
     @Override
     public Double Read_Current_Out_Double() {
-        
-            return this._Get_Current();
-        
+
+        return this._Get_Current();
+
     }
+
     @Override
-    public String[] Get_About_Information(){
-        
-            this._Read_Model_Type();
-            Double setVoltage = this._Get_Set_Voltage();
-            Double setCurrent = this._Get_Set_Current();
-            Double setFilLim =  this._Get_Set_Filament_Limit();
-            Double setPreHeat =  this._Get_Set_Preheat();
-            return new String[]{String.valueOf(setVoltage),String.valueOf(setCurrent),String.valueOf(setFilLim),String.valueOf(setPreHeat)};
-            
-      
+    public String[] Get_About_Information() {
+
+        this._Read_Model_Type();
+        Double setVoltage = this._Get_Set_Voltage();
+        Double setCurrent = this._Get_Set_Current();
+        Double setFilLim = this._Get_Set_Filament_Limit();
+        Double setPreHeat = this._Get_Set_Preheat();
+        return new String[]{String.valueOf(setVoltage), String.valueOf(setCurrent), String.valueOf(setFilLim), String.valueOf(setPreHeat)};
+
     }
+
     @Override
-    public Double[] Get_Set_Voltage_Current(){
-        throw new UnsupportedOperationException();
+    public Double[] Get_Set_Voltage_Current() {
+        return new Double[]{0.0,0.0};
     }
 
     @Override
     public Double[] Get_Voltage_Current_Filament() {
-        throw new UnsupportedOperationException();
-        
-           
+        Double[] values = new Double[]{_Get_Voltage(),_Get_Current(),0.0};
+        return values;
+
     }
 
     private Double _Get_Voltage() {
-        // send command, and then parse response to a double.
-       throw new UnsupportedOperationException("not supported yet");
+        double voltage = 0.0;
+        try {
+            SendCommandLock.lock();
+            voltage = VInADCNumber.first.ReadVoltage(VInADCNumber.second, 125, 2048);
+        } catch (Exception e) {
+            Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, e);
+        }finally{
+            SendCommandLock.unlock();
+            return voltage;
+        }
     }
 
     private Double _Get_Current() {
-        throw new UnsupportedOperationException("not supported yet");
+        double current = 0.0;
+        try {
+            SendCommandLock.lock();
+            current = CInADCNumber.first.ReadVoltage(CInADCNumber.second, 125, 2048);
+        } catch (Exception e) {
+            Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, e);
+        }finally{
+            SendCommandLock.unlock();
+            return current;
+        }
+        
     }
 
     private Double _Get_Set_Preheat() {
-        throw new UnsupportedOperationException("not supported yet");
+        return 0.0; //do nothing as this feature is not supported on this supply model
     }
 
     private Double _Get_Set_Filament_Limit() {
-        throw new UnsupportedOperationException("not supported yet");
+        return 0.0; //do nothing as this feature is not supported on this supply model
     }
 
     private Double _Get_Set_Voltage() {
-        throw new UnsupportedOperationException("not supported yet");
+        return 0.0; //do nothing as this feature is not supported on this supply model
     }
 
     private Double _Get_Set_Current() {
-        throw new UnsupportedOperationException("not supported yet");
+        return 0.0; //do nothing as this feature is not supported on this supply model
     }
 
     private void _Set_Voltage(double value) {
-throw new UnsupportedOperationException("not supported yet");
+        try {
+            SendCommandLock.lock();
+            AnalogOutputs.SetVoltageScaled(intVOutDacNumber, value/6);
+        } catch (IndexOutOfBoundsException ex) {
+            Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            SendCommandLock.unlock();
+        }
     }
 
     private void _Set_Current(double value) {
-        throw new UnsupportedOperationException("not supported yet");
+        try {
+            SendCommandLock.lock();
+            AnalogOutputs.SetVoltageScaled(intCOutDacNumber, value/8);
+        } catch (IndexOutOfBoundsException ex) {
+            Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            SendCommandLock.unlock();
+        }
     }
 
     @Override
     public void Set_Filament_Limit(double value) {
-        throw new UnsupportedOperationException("not supported yet");
+        return; //do nothing as this feature is not supported on this supply model
     }
 
     @Override
     public void Set_Filament_Preheat(double value) {
-        throw new UnsupportedOperationException("not supported yet");
+        return; //do nothing as this feature is not supported on this supply model
     }
 
     private void _Update_Status_Signals() {
-        throw new UnsupportedOperationException("not supported yet");
-        // set remote true, set fault false, set connected true, interlock closed, hv off
         
-
+        try {
+            SendCommandLock.lock();
+            setRemoteMode(true);
+            setFaultPresent(PowerSupplyFault.isHigh());
+            setConnected(true);
+            setInterlockOpen(true);
+            setHighVoltageState(XRaysOnSupply.isHigh());
+        } catch (Exception e) {
+        } finally{
+            SendCommandLock.unlock();
+        }
     }
 
     private void _Update_Fault_States() {
-        /*return args of faults
-        ARG1 = ARC
-        ARG2 = Over Temperature
-        ARG3 = Over Voltage
-        ARG4 = Under Voltage
-        ARG5 = Over Current
-        ARG6 = Under Current*/
-        throw new UnsupportedOperationException("not supported yet");
-        
+        try {
+            SendCommandLock.lock();
+            setArcPresent(KVRegulatorError.isHigh());
+            setOverCurrent(false);
+            setOverVoltage(false);
+            setUnderCurrent(false);
+            setUnderVoltage(false);
+            setOverTemperature(false);
+        } catch (Exception e) {
+        } finally{
+            SendCommandLock.unlock();
+        }
     }
 
     @Override
     public boolean Xray_On() {
-        throw new UnsupportedOperationException("not supported yet");
-       
+        
+        try {
+            SendCommandLock.lock();
+            if (XRaysOnSupply.isLow()) {
+                XrayOnCommand.high();
+            }
+        } catch (Exception e) {
+        }finally{
+            SendCommandLock.unlock();
+            return true;
+        }
     }
 
     @Override
     public boolean Xray_Off() {
-        throw new UnsupportedOperationException("not supported yet");
+        
+        try {
+            SendCommandLock.lock();
+            if (XRaysOnSupply.isHigh()) {
+                XrayOnCommand.low();
+                
+            }
+        } catch (Exception e) {
+        }finally{
+            SendCommandLock.unlock();
+            return true;
+        }
+        
     }
 
     private String _Read_Model_Type() {
-        
+
         setModelNumber("DF3");
         this.setVoltageScaleFactor((Double) 0.006);
         this.setCurrentScaleFactor((Double) 0.008);
-            _Supply_Limits();
-            return "DF3";
-        }
-    
-    
-    private void _Supply_Limits(){
-        setMaxKV((double)30);
-        setMaxMA((double)80);
-        setMaxWatt((double)3000);
+        _Supply_Limits();
+        return "DF3";
+    }
+
+    private void _Supply_Limits() {
+        setMaxKV((double) 30);
+        setMaxMA((double) 80);
+        setMaxWatt((double) 3000);
     }
 
     private void _Set_Mode_Remote() {
         setRemoteMode(true);
     }
 
-   
-
-    
     /**
      * @return the address
      */

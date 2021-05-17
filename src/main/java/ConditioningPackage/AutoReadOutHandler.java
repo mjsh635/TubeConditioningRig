@@ -1,16 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ConditioningPackage;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 /**
- *
- * @author mjsh6
+ * This class is a thread creator to handle reading out the values from a supply
+ * @author mjsh635
  */
 public class AutoReadOutHandler extends Thread {
     IHighVoltagePowerSupply HV;
@@ -19,7 +15,16 @@ public class AutoReadOutHandler extends Thread {
     JTextField voltTF,currTF,FillTF;
     
     boolean StartReading = false;
-    
+    /**create the handler with all the requested data, when "Startreading" is
+     * set true will continually read and update display boxes
+     * 
+     * @param supply power supply that inherits IHighvoltagePowerSupply
+     * @param ManualVoltageDisplay JLabel for display
+     * @param ManualCurrentDisplay JLabel for display
+     * @param VoltField JTextField for display
+     * @param CurrField JTextField for display
+     * @param FillTextField JTextField for display
+     */
     public AutoReadOutHandler(IHighVoltagePowerSupply supply, JLabel ManualVoltageDisplay,JLabel ManualCurrentDisplay, 
             JTextField VoltField, JTextField CurrField, JTextField FillTextField) {
         
@@ -50,7 +55,7 @@ public class AutoReadOutHandler extends Thread {
                 voltTF.setText(String.format("%.2f",values[0]));
                 currTF.setText(String.format("%.2f",values[1]));
                 FillTF.setText(String.format("%.2f",values[2]));
-                
+                // update text boxes
                 Thread.sleep(1000);
                 }
                 catch(Exception e){
