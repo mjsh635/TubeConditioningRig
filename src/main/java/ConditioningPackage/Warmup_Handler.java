@@ -23,6 +23,8 @@ public class Warmup_Handler extends Thread {
     JTextField KVTBox,MATBox,FilCurTBox,PreHeatTBox;
     double TargetKV;
     double TargetMA;
+    double StartKV;
+    double StartMA;
     double FilCur;
     double PreHeat;
     LoggingController log;
@@ -30,7 +32,7 @@ public class Warmup_Handler extends Thread {
     
     
     public Warmup_Handler(IHighVoltagePowerSupply supply, ButtonGroup btn, JProgressBar progressBar, 
-            JTextField kv, JTextField ma, JTextField filCurr, JTextField pre,LoggingController log, boolean XrayStayOnAfterComplete) {
+            JTextField kv, JTextField ma, JTextField filCurr, JTextField pre,LoggingController log, boolean XrayStayOnAfterComplete, JTextField startKV, JTextField startMA) {
         this.supply = supply;
         this.btnGroup = btn;
         this.PBar = progressBar;
@@ -40,6 +42,9 @@ public class Warmup_Handler extends Thread {
         this.PreHeatTBox =  pre;
         this.log = log;
         this.KeepOn = XrayStayOnAfterComplete;
+        this.StartKV = Double.valueOf(startKV.getText());
+        this.StartMA = Double.valueOf(startMA.getText());
+        
     }
     
     public void run(){
@@ -48,12 +53,12 @@ public class Warmup_Handler extends Thread {
         this.TargetMA = Double.valueOf(this.MATBox.getText());
         this.FilCur =  Double.valueOf(this.FilCurTBox.getText());
         this.PreHeat = Double.valueOf(this.PreHeatTBox.getText());
-        log.Append_To_Log("Warmup|| Started: 7 minute");
+        log.Append_To_Log("Warmup|| Started: " + runTime  +   " minute");
         int stepCount = runTime * 3;     
-        double kvStepSize = (this.TargetKV - 12.0)/stepCount;
-        double maStepSize = (this.TargetMA - 0.5)/stepCount;
-        this.supply.Set_Voltage(12.0);
-        this.supply.Set_Current(0.5);
+        double kvStepSize = (this.TargetKV - this.StartKV)/stepCount;
+        double maStepSize = (this.TargetMA - this.StartMA)/stepCount;
+        this.supply.Set_Voltage(this.StartKV);
+        this.supply.Set_Current(this.StartMA);
         this.supply.Set_Filament_Limit(this.FilCur);
         this.supply.Set_Filament_Preheat(this.PreHeat);
         log.Append_To_Log(String.format("Warmup|| Target Voltage:%s , Target Current: %s,Filament Limit: %s,Pre-Heat: %s",
@@ -72,8 +77,8 @@ public class Warmup_Handler extends Thread {
             }
             System.out.println("Step: " + loopnum);
             log.Append_To_Log(String.format("Warmup|| Step: %s",loopnum));
-            double kvSet = 12.0 + (kvStepSize* loopnum);
-            double maSet = 0.5 + (maStepSize * loopnum);
+            double kvSet = StartKV + (kvStepSize* loopnum);
+            double maSet = StartMA + (maStepSize * loopnum);
             System.out.println(kvSet + " " + maSet);
             this.supply.Set_Voltage(kvSet);
             this.supply.Set_Current(maSet);

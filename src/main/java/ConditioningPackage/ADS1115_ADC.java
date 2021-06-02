@@ -38,22 +38,26 @@ public class ADS1115_ADC {
      * @param channelNumber Chip Channel number 0-3
      * @param timeBetweenWriteAndRead Time to sleep after writing config to chip, default 500
      * @param PGA  ±6.144 V, ±4.096 V ±2.048 V (default), ±1.024 V, ±0.512 V, ±0.256 V enter as mV
-     * @return 0-4095 value measured from chip
+     * @return -10V --> +10V value measured from chip
      */
     public double ReadVoltage(int channelNumber,int timeBetweenWriteAndRead, int PGA) throws UnsupportedOperationException, IOException, InterruptedException{
         // I wrote this class on 7 cups of coffee, it works, not sure what black magic I did to make it work
         
         byte config1byte = (byte)0xc4; 
-        byte config2byte = (byte)0x23;
+        byte config2byte = (byte)0x83;
         switch(channelNumber){
             case 0:
                 config1byte = (byte)0xc4;
+                break;
             case 1:
                 config1byte = (byte)0xd4;
+                break;
             case 2:
                 config1byte = (byte)0xe4;
+                break;
             case 3:
                 config1byte = (byte)0xf4;
+                break;
             default:
                 config1byte = (byte)0xc4;
                 
@@ -85,10 +89,13 @@ public class ADS1115_ADC {
         byte[] response = new byte[2];
         device.read(0x00,response, 0, 2);
         
-        //return value in volts
-        int Value = (response[0] << 8 | response[1]);
-        
-            return ((Value*PGA)/32768);
+        //return value in volts -10/10
+        int Value = ((response[0] & 0xff) * 256) + (response[1] & 0xff);
+            if (Value > 32767){
+                Value -= 65535;
+            }
+        double ScaledValue = (((double)Value/(double)32767) *(double)10);
+        return ScaledValue;
             
         
         

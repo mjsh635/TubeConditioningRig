@@ -194,7 +194,7 @@ public class ConditioningHandler extends Thread{
         boolean ramped = false;
         log.Append_To_Log(String.format("Conditioning|| Ramping up: %s kv, %s ma",kv,ma));
         while(!ramped && !Killsig){
-            if((this.HV.Read_Voltage_Out_Double() < (kv * 0.98)) && (this.HV.Read_Current_Out_Double() < (ma * 0.98))){
+            if((this.HV.Read_Voltage_Out_Double() < (kv * 0.85)) && (this.HV.Read_Current_Out_Double() < (ma * 0.85))){
                 ramped = false;
             }
             else{

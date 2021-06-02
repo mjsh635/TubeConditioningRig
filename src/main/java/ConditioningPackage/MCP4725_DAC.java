@@ -10,7 +10,7 @@ import com.pi4j.io.i2c.*;
  * This is a class that will handle the control of a MCP4725 Adafruit DAC chip,
  * requires the inclusion of the pi4j.core dependencies
  * 
- * written by : mjsh635
+ * @author mjsh635
  */
 import com.sun.org.apache.bcel.internal.generic.BIPUSH;
 import java.io.IOException;

@@ -13,9 +13,10 @@ import com.pi4j.io.i2c.*;
 import com.pi4j.io.gpio.*;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jdk.internal.net.http.common.Pair;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -40,7 +41,8 @@ import jdk.internal.net.http.common.Pair;
  *
  * ---------------------------------- GPIO PINOUT using WiringPI numbers
  * --------------------------------- wiringPi #0 GPIO#17 Supply 1 Input: Xray
- * are On wiringPi #1 GPIO#18 Supply 1 Input: Fault Present wiringPi #2 GPIO#27
+ * are On 
+ * wiringPi #1 GPIO#18 Supply 1 Input: Fault Present wiringPi #2 GPIO#27
  * Supply 1 Input: KV Regulation Erro wiringPi #3 GPIO#22 Supply 1 Output: Xray
  * ON/OFF Command wiringPi #4 GPIO#23 Supply 1 Output: Supply Reset wiringPi #5
  * GPIO#24 Supply 2 Input: Xray are On wiringPi #6 GPIO#25 Supply 2 Input: Fault
@@ -94,15 +96,16 @@ public class DF_FF implements IHighVoltagePowerSupply {
     ADS1115_ADC AnalogInputChip2;
     int intVOutDacNumber;
     int intCOutDacNumber;
-    Pair<ADS1115_ADC, Integer> VInADCNumber;
-    Pair<ADS1115_ADC, Integer> CInADCNumber;
-
+    int VInADCNumber;
+    ADS1115_ADC VoltageADCChip;
+    int CInADCNumber;
+    ADS1115_ADC CurrentADCChip;
     int supplyNumber;
 
-    public DF_FF(I2CBus bus, GpioController GPIO, Lock Lock, AD5675RBRUZ_DAC AnalogOut, ADS1115_ADC AnalogIn1, ADS1115_ADC AnalogIn2, int SupplyNumber) {
+    public DF_FF(I2CBus bus, GpioController gpioController, Lock Lock, AD5675RBRUZ_DAC AnalogOut, ADS1115_ADC AnalogIn1, ADS1115_ADC AnalogIn2, int SupplyNumber) {
 
         this.modelNumber = this.Get_Model_Type();
-        this.GPIO = GPIO;
+        this.GPIO = gpioController;
         this.i2c = bus;
         this.supplyNumber = SupplyNumber;
         this.AnalogOutputs = AnalogOut;
@@ -118,8 +121,10 @@ public class DF_FF implements IHighVoltagePowerSupply {
                 ResetFaults = GPIO.provisionDigitalOutputPin(RaspiPin.GPIO_04);
                 intVOutDacNumber = 0;
                 intCOutDacNumber = 1;
-                VInADCNumber = new Pair(this.AnalogInputChip1, 0);
-                CInADCNumber = new Pair(this.AnalogInputChip1, 1);
+                VInADCNumber = 0;//(this.AnalogInputChip1, 0);
+                VoltageADCChip = this.AnalogInputChip1;
+                CurrentADCChip = this.AnalogInputChip1;
+                CInADCNumber = 1;//.put(this.AnalogInputChip1, 1);
                 break;
             case 2:
                 XRaysOnSupply = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_05);
@@ -129,8 +134,10 @@ public class DF_FF implements IHighVoltagePowerSupply {
                 ResetFaults = GPIO.provisionDigitalOutputPin(RaspiPin.GPIO_13);
                 intVOutDacNumber = 2;
                 intCOutDacNumber = 3;
-                VInADCNumber = new Pair(this.AnalogInputChip1, 2);
-                CInADCNumber = new Pair(this.AnalogInputChip1, 3);
+                VoltageADCChip = this.AnalogInputChip1;
+                CurrentADCChip = this.AnalogInputChip1;
+                VInADCNumber = 2; //.put(this.AnalogInputChip1, 2);
+                CInADCNumber = 3;//.put(this.AnalogInputChip1, 3);
                 break;
 
             case 3:
@@ -141,8 +148,10 @@ public class DF_FF implements IHighVoltagePowerSupply {
                 ResetFaults = GPIO.provisionDigitalOutputPin(RaspiPin.GPIO_22);
                 intVOutDacNumber = 4;
                 intCOutDacNumber = 5;
-                VInADCNumber = new Pair(this.AnalogInputChip2, 0);
-                CInADCNumber = new Pair(this.AnalogInputChip2, 1);
+                VoltageADCChip = this.AnalogInputChip2;
+                CurrentADCChip = this.AnalogInputChip2;
+                VInADCNumber = 0;//.put(this.AnalogInputChip2, 0);
+                CInADCNumber = 1;//.put(this.AnalogInputChip2, 1);
                 break;
             case 4:
                 XRaysOnSupply = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_26);
@@ -152,8 +161,10 @@ public class DF_FF implements IHighVoltagePowerSupply {
                 ResetFaults = GPIO.provisionDigitalOutputPin(RaspiPin.GPIO_25);
                 intVOutDacNumber = 6;
                 intCOutDacNumber = 7;
-                VInADCNumber = new Pair(this.AnalogInputChip2, 2);
-                CInADCNumber = new Pair(this.AnalogInputChip2, 3);
+                VoltageADCChip = this.AnalogInputChip2;
+                CurrentADCChip = this.AnalogInputChip2;
+                VInADCNumber = 6;//.put(this.AnalogInputChip2, 2);
+                CInADCNumber = 7;// .put(this.AnalogInputChip2, 3);
                 break;
         }
 
@@ -208,12 +219,12 @@ public class DF_FF implements IHighVoltagePowerSupply {
     @Override
     public void Reset_Faults() {
         try{
-            SendCommandLock.lock();
-            ResetFaults.pulse((long) 2.0);    
+            //SendCommandLock.lock();
+            ResetFaults.pulse((long) 2000);    
         } catch (Exception e) {
             Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, e);
         }finally{
-            SendCommandLock.unlock();
+           // SendCommandLock.unlock();
         }
     }
 
@@ -304,16 +315,18 @@ public class DF_FF implements IHighVoltagePowerSupply {
         return values;
 
     }
-
+    
     private Double _Get_Voltage() {
         double voltage = 0.0;
         try {
-            SendCommandLock.lock();
-            voltage = VInADCNumber.first.ReadVoltage(VInADCNumber.second, 125, 2048);
+          //  SendCommandLock.lock();
+            
+            voltage = VoltageADCChip.ReadVoltage(VInADCNumber, 300, 2048);
+            voltage = voltage*6;
         } catch (Exception e) {
             Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, e);
         }finally{
-            SendCommandLock.unlock();
+           // SendCommandLock.unlock();
             return voltage;
         }
     }
@@ -321,12 +334,13 @@ public class DF_FF implements IHighVoltagePowerSupply {
     private Double _Get_Current() {
         double current = 0.0;
         try {
-            SendCommandLock.lock();
-            current = CInADCNumber.first.ReadVoltage(CInADCNumber.second, 125, 2048);
+            //SendCommandLock.lock();
+            current = CurrentADCChip.ReadVoltage(CInADCNumber, 300, 2048);
+            current = current * 8;
         } catch (Exception e) {
             Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, e);
         }finally{
-            SendCommandLock.unlock();
+            //SendCommandLock.unlock();
             return current;
         }
         
@@ -350,27 +364,27 @@ public class DF_FF implements IHighVoltagePowerSupply {
 
     private void _Set_Voltage(double value) {
         try {
-            SendCommandLock.lock();
+            //SendCommandLock.lock();
             AnalogOutputs.SetVoltageScaled(intVOutDacNumber, value/6);
         } catch (IndexOutOfBoundsException ex) {
             Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
-            SendCommandLock.unlock();
+            //SendCommandLock.unlock();
         }
     }
 
     private void _Set_Current(double value) {
         try {
-            SendCommandLock.lock();
+            //SendCommandLock.lock();
             AnalogOutputs.SetVoltageScaled(intCOutDacNumber, value/8);
         } catch (IndexOutOfBoundsException ex) {
             Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
-            SendCommandLock.unlock();
+            //SendCommandLock.unlock();
         }
     }
 
@@ -387,21 +401,22 @@ public class DF_FF implements IHighVoltagePowerSupply {
     private void _Update_Status_Signals() {
         
         try {
-            SendCommandLock.lock();
+           // SendCommandLock.lock();
             setRemoteMode(true);
-            setFaultPresent(PowerSupplyFault.isHigh());
+            setFaultPresent(PowerSupplyFault.isLow());
             setConnected(true);
-            setInterlockOpen(true);
-            setHighVoltageState(XRaysOnSupply.isHigh());
+            setInterlockOpen(false);
+            setHighVoltageState(XRaysOnSupply.isLow());
         } catch (Exception e) {
+            Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, e);
         } finally{
-            SendCommandLock.unlock();
+           // SendCommandLock.unlock();
         }
     }
 
     private void _Update_Fault_States() {
         try {
-            SendCommandLock.lock();
+           // SendCommandLock.lock();
             setArcPresent(KVRegulatorError.isHigh());
             setOverCurrent(false);
             setOverVoltage(false);
@@ -409,8 +424,9 @@ public class DF_FF implements IHighVoltagePowerSupply {
             setUnderVoltage(false);
             setOverTemperature(false);
         } catch (Exception e) {
+            Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, e);
         } finally{
-            SendCommandLock.unlock();
+            //SendCommandLock.unlock();
         }
     }
 
@@ -418,13 +434,14 @@ public class DF_FF implements IHighVoltagePowerSupply {
     public boolean Xray_On() {
         
         try {
-            SendCommandLock.lock();
-            if (XRaysOnSupply.isLow()) {
-                XrayOnCommand.high();
-            }
+           // SendCommandLock.lock();
+            XrayOnCommand.high();
+            System.out.println("Xray On set high");
+            
         } catch (Exception e) {
+            Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, e);
         }finally{
-            SendCommandLock.unlock();
+           // SendCommandLock.unlock();
             return true;
         }
     }
@@ -433,14 +450,15 @@ public class DF_FF implements IHighVoltagePowerSupply {
     public boolean Xray_Off() {
         
         try {
-            SendCommandLock.lock();
-            if (XRaysOnSupply.isHigh()) {
+           // SendCommandLock.lock();
+            
                 XrayOnCommand.low();
-                
-            }
+                System.out.println("Xray On set Low");
+            
         } catch (Exception e) {
+            Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, e);
         }finally{
-            SendCommandLock.unlock();
+           // SendCommandLock.unlock();
             return true;
         }
         

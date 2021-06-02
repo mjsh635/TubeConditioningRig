@@ -84,15 +84,16 @@ public class SetupFrame extends javax.swing.JFrame {
         this.Supply4UseCheckbox4.setSelected(sh.setupSettings.Use4);
 
         this.DF3ModeCheckBox.setSelected(sh.setupSettings.Df3Mode);
-        if (DF3Mode) {
+        if (sh.setupSettings.Df3Mode) {
             Supply1IPAddressTBox.setEnabled(false);
             Supply2IPAddressTBox.setEnabled(false);
-            Supply2IPAddressTBox.setEnabled(false);
+            Supply3IPAddressTBox.setEnabled(false);
             Supply4IPAddressTBox.setEnabled(false);
             Supply1PortTBox.setEnabled(false);
             Supply2PortTBox.setEnabled(false);
             Supply3PortTBox.setEnabled(false);
             Supply4PortTBox.setEnabled(false);
+            DF3Mode = true;
         }
     }
 
@@ -544,29 +545,29 @@ public class SetupFrame extends javax.swing.JFrame {
         JTabbedPane tabbedPane = new JTabbedPane();
         if (!DF3Mode) {
             if (UseSupply1) {
-                tabbedPane.add("Supply1", new SupplyScreen("Supply1", Supply1Address, Supply1Port, this.SettingsFilePath, this.LogFolderPath, DF3Mode).getContentPane());
+                tabbedPane.add("Supply1", new SupplyScreen("Supply1", Supply1Address, Supply1Port, this.SettingsFilePath, this.LogFolderPath, DF3Mode,1).getContentPane());
             }
             if (UseSupply2) {
-                tabbedPane.add("Supply2", new SupplyScreen("Supply2", Supply2Address, Supply2Port, this.SettingsFilePath1, this.LogFolderPath, DF3Mode).getContentPane());
+                tabbedPane.add("Supply2", new SupplyScreen("Supply2", Supply2Address, Supply2Port, this.SettingsFilePath1, this.LogFolderPath, DF3Mode,2).getContentPane());
             }
             if (UseSupply3) {
-                tabbedPane.add("Supply3", new SupplyScreen("Supply3", Supply3Address, Supply3Port, this.SettingsFilePath2, this.LogFolderPath, DF3Mode).getContentPane());
+                tabbedPane.add("Supply3", new SupplyScreen("Supply3", Supply3Address, Supply3Port, this.SettingsFilePath2, this.LogFolderPath, DF3Mode,3).getContentPane());
             }
             if (UseSupply4) {
-                tabbedPane.add("Supply4", new SupplyScreen("Supply4", Supply4Address, Supply4Port, this.SettingsFilePath3, this.LogFolderPath, DF3Mode).getContentPane());
+                tabbedPane.add("Supply4", new SupplyScreen("Supply4", Supply4Address, Supply4Port, this.SettingsFilePath3, this.LogFolderPath, DF3Mode,4).getContentPane());
             }
         } else {
             if (UseSupply1) {
-                tabbedPane.add("Supply1", new SupplyScreen("Supply1", "0.0.0.0", "0", this.SettingsFilePath, this.LogFolderPath, DF3Mode).getContentPane());
+                tabbedPane.add("Supply1", new SupplyScreen("Supply1", "0.0.0.0", "0", this.SettingsFilePath, this.LogFolderPath, DF3Mode,1).getContentPane());
             }
             if (UseSupply2) {
-                tabbedPane.add("Supply2", new SupplyScreen("Supply2", "0.0.0.0", "0", this.SettingsFilePath1, this.LogFolderPath, DF3Mode).getContentPane());
+                tabbedPane.add("Supply2", new SupplyScreen("Supply2", "0.0.0.0", "0", this.SettingsFilePath1, this.LogFolderPath, DF3Mode,2).getContentPane());
             }
             if (UseSupply3) {
-                tabbedPane.add("Supply3", new SupplyScreen("Supply3", "0.0.0.0", "0", this.SettingsFilePath2, this.LogFolderPath, DF3Mode).getContentPane());
+                tabbedPane.add("Supply3", new SupplyScreen("Supply3", "0.0.0.0", "0", this.SettingsFilePath2, this.LogFolderPath, DF3Mode,3).getContentPane());
             }
             if (UseSupply4) {
-                tabbedPane.add("Supply4", new SupplyScreen("Supply4", "0.0.0.0", "0", this.SettingsFilePath3, this.LogFolderPath, DF3Mode).getContentPane());
+                tabbedPane.add("Supply4", new SupplyScreen("Supply4", "0.0.0.0", "0", this.SettingsFilePath3, this.LogFolderPath, DF3Mode,4).getContentPane());
             }
         }
 

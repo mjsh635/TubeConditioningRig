@@ -48,11 +48,12 @@ public class SupplyScreen extends javax.swing.JFrame {
     String SerialNumber = "";
     AutoReadOutHandler AROH;
     PopOutHandler xrayOnOffPop;
-
-    public SupplyScreen(String Name, String IPAddress, String port, String SettingsFilePath, String LogFolderPath, boolean DF3Mode) {
+    int SupplyNumber;
+    public SupplyScreen(String Name, String IPAddress, String port, String SettingsFilePath, String LogFolderPath, boolean DF3Mode, int supplyNumber) {
         initComponents();
         this.Name = Name;
         this.IPAddress = IPAddress;
+        this.SupplyNumber = supplyNumber;
         if (SettingsFilePath != "") {
             this.sh = new SettingsHandler(SettingsFilePath);
             Load_Settings();
@@ -63,14 +64,15 @@ public class SupplyScreen extends javax.swing.JFrame {
         //Decision tree for DXM or DF3
         if (DF3Mode) {
             I2CBus bus;
+            GpioController GPIO = GpioFactory.getInstance(); // create GPIO bus to pass;
             try {
                 bus = I2CFactory.getInstance(1); // create i2c bus to pass;
-                GpioController GPIO = GpioFactory.getInstance(); // create GPIO bus to pass;
+                
                 AD5675RBRUZ_DAC dac = new AD5675RBRUZ_DAC(bus, 0x0C); //create DAC device
                 ADS1115_ADC ADC1 = new ADS1115_ADC(bus, 0x48); //create ADC1 device
                 ADS1115_ADC ADC2 = new ADS1115_ADC(bus, 0x49); //create ADC2 device
                 Lock Lock = new ReentrantLock();
-                this.supply = new DF_FF(bus, GPIO, Lock, dac, ADC1, ADC2, PROPERTIES); //Pass all requirements
+                this.supply = new DF_FF(bus, GPIO, Lock, dac, ADC1, ADC2,supplyNumber); //Pass all requirements
             } catch (I2CFactory.UnsupportedBusNumberException ex) {
                 Logger.getLogger(SupplyScreen.class.getName()).log(Level.SEVERE, null, ex);
                 
@@ -83,7 +85,7 @@ public class SupplyScreen extends javax.swing.JFrame {
         }
 
         this.warmup = new Warmup_Handler(this.supply, this.WarmupSelectionButtonGroup, this.WarmUpProgressBar,
-                this.WarmVoltageTBox, this.WarmCurrentTBox, this.FillCurrTBox, this.PreHeatTBox, log, this.WarmupXrayStayOnCheckBox.isSelected());
+                this.WarmVoltageTBox, this.WarmCurrentTBox, this.FillCurrTBox, this.PreHeatTBox, log, this.WarmupXrayStayOnCheckBox.isSelected(),WarmMinVoltageTBox,WarmMinCurrentTBox);
         this.AROH = new AutoReadOutHandler(this.supply, this.VoltageReadoutLabel,
                 this.CurrentReadoutLabel, this.ConditionVoltageReadTBox,
                 this.ConditionCurrentReadTBox, this.ConditionFillamentReadTBox);
@@ -1443,7 +1445,7 @@ public class SupplyScreen extends javax.swing.JFrame {
         this.supply = new DXM(this.IPAddress, this.port);
 
         this.warmup = new Warmup_Handler(this.supply, this.WarmupSelectionButtonGroup, this.WarmUpProgressBar,
-                this.WarmVoltageTBox, this.WarmCurrentTBox, this.FillCurrTBox, this.PreHeatTBox, log, this.WarmupXrayStayOnCheckBox.isSelected());
+                this.WarmVoltageTBox, this.WarmCurrentTBox, this.FillCurrTBox, this.PreHeatTBox, log, this.WarmupXrayStayOnCheckBox.isSelected(),WarmMinVoltageTBox,WarmMinCurrentTBox);
         this.AROH = new AutoReadOutHandler(this.supply, this.VoltageReadoutLabel,
                 this.CurrentReadoutLabel, this.ConditionVoltageReadTBox,
                 this.ConditionCurrentReadTBox, this.ConditionFillamentReadTBox);
@@ -1538,7 +1540,7 @@ public class SupplyScreen extends javax.swing.JFrame {
             this.StartWarmupButton.setEnabled(true);
         }
         this.warmup = new Warmup_Handler(this.supply, this.WarmupSelectionButtonGroup, this.WarmUpProgressBar,
-                this.WarmVoltageTBox, this.WarmCurrentTBox, this.FillCurrTBox, this.PreHeatTBox, log, this.WarmupXrayStayOnCheckBox.isSelected());
+                this.WarmVoltageTBox, this.WarmCurrentTBox, this.FillCurrTBox, this.PreHeatTBox, log, this.WarmupXrayStayOnCheckBox.isSelected(),WarmMinVoltageTBox,WarmMinCurrentTBox);
         this.XrayOnButton.setEnabled(true);
         this.StartConditioningButton.setEnabled(true);
     }//GEN-LAST:event_StopWarmupButtonActionPerformed
