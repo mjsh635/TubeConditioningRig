@@ -20,7 +20,7 @@ public class Warmup_Handler extends Thread {
     ButtonGroup btnGroup;
     int progress_number = 0;
     JProgressBar PBar;
-    JTextField KVTBox,MATBox,FilCurTBox,PreHeatTBox;
+    JTextField KVTBox,MATBox,FilCurTBox,PreHeatTBox,JTextStartingKV,JTextStartingMA;
     double TargetKV;
     double TargetMA;
     double StartKV;
@@ -42,8 +42,9 @@ public class Warmup_Handler extends Thread {
         this.PreHeatTBox =  pre;
         this.log = log;
         this.KeepOn = XrayStayOnAfterComplete;
-        this.StartKV = Double.valueOf(startKV.getText());
-        this.StartMA = Double.valueOf(startMA.getText());
+        this.JTextStartingKV = startKV;
+        this.JTextStartingMA = startMA;
+       
         
     }
     
@@ -51,6 +52,8 @@ public class Warmup_Handler extends Thread {
         int runTime = Integer.valueOf(this.btnGroup.getSelection().getActionCommand());
         this.TargetKV = Double.valueOf(this.KVTBox.getText());
         this.TargetMA = Double.valueOf(this.MATBox.getText());
+         this.StartKV = Double.valueOf(JTextStartingKV.getText());
+        this.StartMA = Double.valueOf(JTextStartingMA.getText());
         this.FilCur =  Double.valueOf(this.FilCurTBox.getText());
         this.PreHeat = Double.valueOf(this.PreHeatTBox.getText());
         log.Append_To_Log("Warmup|| Started: " + runTime  +   " minute");

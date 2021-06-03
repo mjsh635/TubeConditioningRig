@@ -93,6 +93,7 @@ public class ConditioningHandler extends Thread{
         log.Append_To_Log("Conditioning|| Starting Conditioning Routine");
         this._StartUp(); // run start up, sets up various variables and settings
         for (int i = 1; i <= NumberOfConditioningCycles; i++) { //depending how many cycles they want to run, run below
+            this._StartUp(); // run start up, sets up various variables and settings
             System.out.println(String.format("Conditioning|| Starting Conditioning cycle: %s", i));
             log.Append_To_Log(String.format("Conditioning|| Starting Conditioning cycle: %s", i));
             this.pb.setValue(16);
@@ -142,9 +143,15 @@ public class ConditioningHandler extends Thread{
         this.ConcurrentArcsBeforeStop = Integer.valueOf(this.vals.ConcurrentArcsBeforeStop);
         this.MaxArcsBeforeStop = Integer.valueOf(this.vals.TotalArcsBeforeStop);
         this.ArcRecoveryDwellTime = Double.valueOf(this.vals.ArcRecoveryTime);
-        this.NumberOfConditioningCycles = Integer.valueOf(this.vals.NumberOnOffCycles);
+        this.NumberOfConditioningCycles = Integer.valueOf(this.vals.NumberOfConditioningCycles);
         RecordedFilamentCurrents = new ArrayList<>();
         AverageFilamenCurrent = 0.0;
+        this.CurrentSetKV = this.StartKV;
+        this.PreviousSetKV = this.StartKV;
+        this.CurrentSetMA = this.StartMA;
+        this.PreviousSetMA = this.StartMA;
+        this.NextToSetKV = CurrentSetKV + this.KVStepSize;
+        this.NextToSetMA = CurrentSetMA + this.MAStepSize;
         log.Append_To_Log(String.format("Conditioning|| Voltage: %s --> %s, with %s Steps", StartKV,TargetKV, KVStepSize));
         log.Append_To_Log(String.format("Conditioning|| Current: %s --> %s, with %s Steps", StartMA,TargetMA,MAStepSize));
         log.Append_To_Log(String.format("Conditioning|| Filament Limit: %s, PreHeat: %s", this.vals.FilamentCurrentLimit,this.vals.FilamentPreHeat));
@@ -236,7 +243,9 @@ public class ConditioningHandler extends Thread{
     
     private void CheckXrayStatus(boolean kvArc){
         try {
+            
             if(!this.HV.Is_Emmitting()&& !Killsig){
+                
                 if(this.HV.isArcPresent() ){
                     Double[] SetValuesResponse = this.HV.Get_Set_Voltage_Current();
                     
@@ -292,7 +301,22 @@ public class ConditioningHandler extends Thread{
                     this.HV.Reset_Faults();
                     this.Stop_Conditioning();
                 }
+                else if (this.HV.isFaultPresent()){
+                    JOptionPane.showMessageDialog(null, String.format("Xrays are off, Power Supply Fault. Stopping %s",this.Name));
+                    log.Append_To_Log("Conditioning Check Status|| Power Supply Fault. Stopping conditioning Cycle");
+                    this.HV.Reset_Faults();
+                    this.Stop_Conditioning();
+                }else
+                {
+                    JOptionPane.showMessageDialog(null, String.format("Xrays are off, Unknown Cause. Stopping %s",this.Name));
+                    log.Append_To_Log("Conditioning Check Status|| Unknown stop condition. Stopping conditioning Cycle");
+                    this.HV.Reset_Faults();
+                    this.Stop_Conditioning();
+                }
                 this.HV.Reset_Faults();
+                
+                
+                
             }
             else{
                 if(this.HV.isArcPresent() && !Killsig){
@@ -320,13 +344,8 @@ public class ConditioningHandler extends Thread{
     private void _KVInitialRamp(){
         log.Append_To_Log("Conditioning KV Ramp|| Starting KV Initial Ramp");
         System.out.println("Starting KV Initial Ramp");
-         
-        this.CurrentSetKV = this.StartKV;
-        this.PreviousSetKV = this.StartKV;
-        this.CurrentSetMA = this.StartMA;
-        this.PreviousSetMA = this.StartMA;
-        this.NextToSetKV = CurrentSetKV + this.KVStepSize;
-        this.NextToSetMA = CurrentSetMA + this.MAStepSize;
+         this.KVStepSize = ((this.TargetKV - this.StartKV)/this.StepCount);
+        
         
         this.HV.Set_Voltage(this.CurrentSetKV);
         this.HV.Set_Current(this.CurrentSetMA);
@@ -361,10 +380,13 @@ public class ConditioningHandler extends Thread{
         System.out.println("Starting Ma Ramp");
         log.Append_To_Log("Conditioning MA Ramp|| Starting MA Initial Ramp");
         CurrentSetKV = TargetKV;
+        CurrentSetMA = StartMA;
         this.NextToSetKV = (CurrentSetKV *0.75);
         _ChangeVoltageTracker(0.0);
         
         this.HV.Set_Voltage(this.CurrentSetKV);
+        this.HV.Set_Current(this.CurrentSetMA);
+        this.HV.Xray_On();
         log.Append_To_Log(String.format("Conditioning MA Ramp|| Voltage set to: %s",CurrentSetKV));
         _Wait_Ramping(this.CurrentSetKV, this.CurrentSetMA);
         
@@ -394,11 +416,19 @@ public class ConditioningHandler extends Thread{
     private void _KVReramp(){
         System.out.println("Starting KV Reramp");
         log.Append_To_Log("Conditioning 2nd KV Ramp|| Starting KV Re-ramp");
+        CurrentSetMA = TargetMA;
+        
+        CurrentSetKV = (TargetKV *0.75);
+        this.KVStepSize = ((TargetKV -CurrentSetKV)/this.StepCount);
+        
         
         while(CurrentSetKV <= TargetKV && !Killsig){
             
             this.HV.Set_Voltage(CurrentSetKV);
+            this.HV.Set_Current(CurrentSetMA);
+            this.HV.Xray_On();
             log.Append_To_Log(String.format("Conditioning 2nd KV Ramp|| Voltage set to: %s",CurrentSetKV));
+            
             _Wait_Ramping(this.CurrentSetKV, this.CurrentSetMA);
             
             TimeEnd = LocalTime.now().plusSeconds(Math.round(this.StepDwellTime*60));
