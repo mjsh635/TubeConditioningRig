@@ -505,7 +505,7 @@ public class ConditioningHandler extends Thread{
         // if arc Arc-count-limit times, interrupt()
         // return kv to pre-arc value
         // exit
-        
+
         this.HV.Reset_Faults();
         log.Append_To_Log("Arc Recovery|| Reseting faults");
         if(ConcurrentArcCount <= ConcurrentArcsBeforeStop && !Killsig){
@@ -545,7 +545,7 @@ public class ConditioningHandler extends Thread{
             System.out.println(String.format("Arc Recovery %s ,time to complete at: %s", ConcurrentArcCount,ArcTimeEnd));
             while(_Time_Before_Check(ArcTimeEnd)&& !Killsig){
                 try{
-                    Thread.sleep(2000);
+                    Thread.sleep(1000);
                    
                 }
                 catch(InterruptedException ie){
@@ -556,7 +556,23 @@ public class ConditioningHandler extends Thread{
                     log.Append_To_Log("Arc Recovery|| Logic Exception occured");
                 }
                 CheckXrayStatus(KVInsteadOfMA);
-        }
+             
+        }    
+            int tempStep = ConcurrentArcCount;
+            if((tempStep-1)<0){
+                tempStep = 0;
+            }else{
+                tempStep -=1;
+            }
+           
+            if(KVInsteadOfMA){
+                this.reducedKVSet = this.PreviousSetKV - (KVStepSize*tempStep);
+                this.HV.Set_Voltage(reducedKVSet);
+            }else{
+                this.reducedMASet = this.PreviousSetMA -(MAStepSize*tempStep);
+                this.HV.Set_Current(reducedMASet);
+            }
+            
         }else{
             if(!Killsig){
             JOptionPane.showMessageDialog(null, String.format("Too Many Concurrent Arcs. Stopping %s",this.Name));

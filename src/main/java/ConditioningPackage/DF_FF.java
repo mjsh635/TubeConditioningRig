@@ -114,6 +114,7 @@ public class DF_FF implements IHighVoltagePowerSupply {
 
         switch (SupplyNumber) {
             case 1:
+                System.out.println("creating supply 1");
                 XRaysOnSupply = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_00);
                 PowerSupplyFault = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_01);
                 KVRegulatorError = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_02);
@@ -127,6 +128,7 @@ public class DF_FF implements IHighVoltagePowerSupply {
                 CInADCNumber = 1;//.put(this.AnalogInputChip1, 1);
                 break;
             case 2:
+                System.out.println("creating supply 2");
                 XRaysOnSupply = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_05);
                 PowerSupplyFault = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_06);
                 KVRegulatorError = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_07);
@@ -141,6 +143,7 @@ public class DF_FF implements IHighVoltagePowerSupply {
                 break;
 
             case 3:
+                System.out.println("creating supply 3");
                 XRaysOnSupply = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_14);
                 PowerSupplyFault = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_10);
                 KVRegulatorError = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_11);
@@ -154,6 +157,7 @@ public class DF_FF implements IHighVoltagePowerSupply {
                 CInADCNumber = 1;//.put(this.AnalogInputChip2, 1);
                 break;
             case 4:
+                System.out.println("creating supply 4");
                 XRaysOnSupply = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_26);
                 PowerSupplyFault = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_23);
                 KVRegulatorError = GPIO.provisionDigitalInputPin(RaspiPin.GPIO_24);
@@ -321,12 +325,13 @@ public class DF_FF implements IHighVoltagePowerSupply {
         try {
           //  SendCommandLock.lock();
             
-            voltage = VoltageADCChip.ReadVoltage(VInADCNumber, 300, 2048);
+            voltage = VoltageADCChip.ReadVoltage(VInADCNumber, 25, 2048);
             voltage = voltage*6;
         } catch (Exception e) {
             Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, e);
         }finally{
            // SendCommandLock.unlock();
+           //System.out.println("Voltage from Supply"+this.supplyNumber +"  : " + voltage);
             return voltage;
         }
     }
@@ -335,12 +340,13 @@ public class DF_FF implements IHighVoltagePowerSupply {
         double current = 0.0;
         try {
             //SendCommandLock.lock();
-            current = CurrentADCChip.ReadVoltage(CInADCNumber, 300, 2048);
+            current = CurrentADCChip.ReadVoltage(CInADCNumber, 25, 2048);
             current = current * 8;
         } catch (Exception e) {
             Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, e);
         }finally{
             //SendCommandLock.unlock();
+            //System.out.println("current from Supply"+this.supplyNumber +"  : " + current);
             return current;
         }
         
@@ -365,6 +371,8 @@ public class DF_FF implements IHighVoltagePowerSupply {
     private void _Set_Voltage(double value) {
         try {
             //SendCommandLock.lock();
+            
+           
             AnalogOutputs.SetVoltageScaled(intVOutDacNumber, value/6);
         } catch (IndexOutOfBoundsException ex) {
             Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, ex);
@@ -378,6 +386,7 @@ public class DF_FF implements IHighVoltagePowerSupply {
     private void _Set_Current(double value) {
         try {
             //SendCommandLock.lock();
+            
             AnalogOutputs.SetVoltageScaled(intCOutDacNumber, value/8);
         } catch (IndexOutOfBoundsException ex) {
             Logger.getLogger(DF_FF.class.getName()).log(Level.SEVERE, null, ex);
@@ -417,7 +426,7 @@ public class DF_FF implements IHighVoltagePowerSupply {
     private void _Update_Fault_States() {
         try {
            // SendCommandLock.lock();
-            setArcPresent(KVRegulatorError.isHigh());
+            setArcPresent(KVRegulatorError.isLow());
             setOverCurrent(false);
             setOverVoltage(false);
             setUnderCurrent(false);
